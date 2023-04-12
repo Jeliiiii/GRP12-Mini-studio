@@ -1,3 +1,4 @@
 # GRP12-Mini-studio
 
-Super epik gaym
+Projet Volant futuriste
+
