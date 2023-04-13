@@ -15,5 +15,7 @@ while jouer:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             jouer = False
+        elif event.type == pygame.K_ESCAPE:
+            jouer = False
 
 pygame.quit()
