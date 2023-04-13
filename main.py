@@ -9,6 +9,8 @@ pygame.display.set_icon(icon)
 
 jouer = True
 
+pygame.display.flip()
+
 while jouer:
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN:
