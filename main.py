@@ -4,7 +4,7 @@ pygame.init()
 ecran = pygame.display.set_mode((810, 540), pygame.RESIZABLE)
 
 pygame.display.set_caption("Birds Of Chaos")
-icon = pygame.image.load("ressources/img/dodo.png").convert()
+icon = pygame.image.load("ressources/img/dodo.png").convert_alpha()
 pygame.display.set_icon(icon)
 
 jouer = True
