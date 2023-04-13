@@ -15,7 +15,7 @@ while jouer:
     for event in pygame.event.get():
         if event.type == pygame.QUIT:
             jouer = False
-        elif event.type == pygame.K_ESCAPE:
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             jouer = False
 
 pygame.quit()
