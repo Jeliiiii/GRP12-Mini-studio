@@ -11,7 +11,7 @@ jouer = True
 
 while jouer:
     for event in pygame.event.get():
-        if event.type == pygame.KEYDOWN:
+        if event.type == pygame.QUIT:
             jouer = False
 
 pygame.quit()
