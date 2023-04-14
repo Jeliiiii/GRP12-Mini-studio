@@ -1,11 +1,27 @@
 import pygame
+import * from button
 
-pygame.init()
-pygame.font.init()
-ecran = pygame.display.set_mode((1920, 1080), pygame.NOFRAME)
-pygame.display.set_caption("Birds Of Chaos")
-icon = pygame.image.load("ressources/img/dodo.png").convert_alpha()
-pygame.display.set_icon(icon)
-mouse = pygame.image.load("ressources/img/curseur.png").convert_alpha()
-mouse_pos = (0, 0)
-pygame.mouse.set_visible(0)
+class MainMenu:
+    def __init__(self, screen):
+        self.screen = screen
+        self.buttons = [Button(0,0,100,30,"Play",switchToAgent),Button(0,0,100,30,"Options",switchToOptions)]
+        self.option = False
+        self.running = True
+
+
+    def menu(self):
+        pause = True
+        while pause:
+            for event in pygame.event.get():
+
+    def display(self):
+        for b in buttons:
+            b.display()
+
+    def update(self, x,y):
+        x = event.mouseClicked.x
+        y = event.mouseClicked.y
+        for b in buttons:
+            if (b.isClicked(x,y)):
+                b.callback()
+                
