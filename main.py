@@ -29,5 +29,5 @@ while jouer:
     ecran.blit(mouse, mouse_pos)
     ecran.blit(option, option_pos)
     pygame.display.flip()
-
 pygame.quit()
+
