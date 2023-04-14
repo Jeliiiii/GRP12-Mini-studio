@@ -18,7 +18,7 @@ pygame.font.init()
 fenetre = pygame.display.set_mode((500,500))
  
 myfont = pygame.font.SysFont('Helvetic', 20)
- 
+
 
 class Rect:
     x = 10
@@ -97,7 +97,6 @@ def boucle_principale():
                 ## Exécute la fonction affecté à afficher (menu/jeu)
                 blitDisplay(rect)
                 
-                
                 pygame.display.update()
                 clock.tick(60)
                 
@@ -106,3 +105,57 @@ def boucle_principale():
  
  
 boucle_principale()
+
+class Server():
+
+    def __init__(self, port):
+        self.PORT = port  # The port used by the server
+        self.HOST = socket.gethostname()  # The server's hostname or IP address
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as self.serverSocket:
+            self.serverSocket.bind((HOST, PORT))
+            self.serverSocket.listen(2)
+            print("Server loaded")
+
+    def send(self, clientSocket, data):
+        data = pickle.dumps(data)
+        header = pickle.dumps(len(data))
+        clientSocket.sendall(header, data)
+        pass
+
+    def sendAll(self, data):
+        for clientSocket in self.clientSockets:
+            self.send(clientSocket, data)
+
+    def receive(self):
+        pass
+
+    def acceptConnections(self, connAmount):
+        while(len(self.clientSockets) < connAmount):
+            conn, addr = s.accept(connAmount)
+            self.clientSockets = [[conn, addr],[conn, addr]] = [conn, conn]
+
+
+    def main():
+        with socket.socket(socket.AF_INET, socket.SOCK_STREAM) as s:
+            s.bind((HOST, PORT))
+            s.listen(1)
+            print("Server loaded")
+            self.acceptConnection(2)
+            
+            
+            print(f"Connected by {addr}")
+
+
+if (__name__ == "__main__"):
+    server = Server(65432)
+
+
+# serializedGameState = dumps(GameState)
+# header = encode(len(serializedGameState)) + encode(len(type))
+# serializedGameState = header + type + serializedGameState
+
+
+
+# header = decode(recv(8))
+# type = decode(recv(8))
+# gameState = recv(header)

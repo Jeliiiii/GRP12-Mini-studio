@@ -54,3 +54,6 @@ def boucle_principale():
             clock.tick(60)
  
 boucle_principale()
+
+
+500
