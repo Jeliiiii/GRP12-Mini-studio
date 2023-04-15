@@ -70,7 +70,7 @@ while running:
     screen.blit(option, option_pos)
     pygame.display.flip()
 
-# Fermeture de pygame
+
 pygame.quit()
 
 
