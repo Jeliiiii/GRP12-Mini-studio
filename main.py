@@ -1,12 +1,15 @@
 import pygame
 from character import *
+import math
 
 pygame.init()
 
+info = pygame.display.Info()
+screen_width = info.current_w
+screen_height = info.current_h
 
-screen_width = 1920
-screen_height = 1080
-
+clock = pygame.time.Clock()
+FPS = 60
 
 black = (0, 0, 0)
 white = (255, 255, 255)
@@ -28,14 +31,31 @@ rect_width = 50
 rect_height = 100
 rect_x = (screen_width - rect_width) // 2
 rect_y = (screen_height - rect_height) // 2
-rect_speed = 1
+rect_speed = 15
 rect = Rectangle(screen, rect_x, rect_y, rect_width, rect_height, rect_speed)
 
 
 keys = []
 
+# Image background
+bg = pygame.image.load("ressources/img/bg.png").convert()
+bg_width = bg.get_width()
+bg_rect = bg.get_rect()
+
+scroll = 0
+tiles = math.ceil(screen_width / bg_width) + 1
+
+# Blit the background image
+for i in range(0, tiles):
+    screen.blit(bg, (i * bg_width, 0))
+
+# Boucle de jeu
 running = True
 while running:
+    # Affichage du scorlling background
+    clock.tick(FPS)
+
+
     # Gestion des événements pygame
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
@@ -60,7 +80,18 @@ while running:
         rect.move_right()
 
     # Effacement de l'écran
-    screen.fill(white)
+    # screen.fill(white)
+
+    # Blit the background image with scrolling
+    for i in range(0, tiles):
+        screen.blit(bg, (i * bg_width + scroll, 0))
+
+    #Scrolling background
+    scroll -= 5
+
+    #boucle du background
+    if abs(scroll) > bg_width:
+        scroll = 0
 
     # Dessin du rectangle
     rect.draw(black)
@@ -68,9 +99,8 @@ while running:
     # Rafraîchissement de l'affichage
     screen.blit(mouse, mouse_pos)
     screen.blit(option, option_pos)
-    pygame.display.flip()
+    # pygame.display.flip()
 
+    pygame.display.update()
 
 pygame.quit()
-
-
