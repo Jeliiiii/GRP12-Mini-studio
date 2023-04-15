@@ -13,6 +13,7 @@ white = (255, 255, 255)
 
 pygame.font.init()
 screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
+screen = pygame.display.set_mode((1920, 1080), pygame.NOFRAME)
 pygame.display.set_caption("Birds Of Chaos")
 icon = pygame.image.load("ressources/img/dodo.png").convert_alpha()
 pygame.display.set_icon(icon)
@@ -33,10 +34,13 @@ rect = Rectangle(screen, rect_x, rect_y, rect_width, rect_height, rect_speed)
 
 keys = []
 
+running = True
 
 running = True
 while running:
     # Gestion des événements pygame
+while running:
+    pygame.draw.rect(screen, (255, 255, 255), (0, 0, 1920, 1080))
     for event in pygame.event.get():
         if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
             running = False
@@ -44,6 +48,10 @@ while running:
             keys.append(event.key)
         elif event.type == pygame.KEYUP:
             keys.remove(event.key)
+        if event.type == pygame.QUIT:
+            running = False
+        elif event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+            running = False
         if event.type == pygame.MOUSEMOTION:
             mouse_pos = event.pos
         if event == pygame.MOUSEBUTTONDOWN == option:
@@ -66,6 +74,9 @@ while running:
     rect.draw(black)
 
     # Rafraîchissement de l'affichage
+    screen.blit(mouse, mouse_pos)
+    screen.blit(option, option_pos)
+            pygame.draw.rect(screen, (0, 0, 0), (0, 0, 100, 100))
     screen.blit(mouse, mouse_pos)
     screen.blit(option, option_pos)
     pygame.display.flip()
