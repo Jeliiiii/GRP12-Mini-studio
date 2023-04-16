@@ -34,7 +34,7 @@ rect_speed = 15
 rect = Rectangle(window.screen, rect_x, rect_y, rect_width, rect_height, rect_speed)
 
 
-test = Rectangle(screen, 1500, 500, rect_width, rect_height, rect_speed)
+test = Rectangle(window.screen, 1500, 500, rect_width, rect_height, rect_speed)
 
 objectsList = [test]
 
@@ -87,7 +87,7 @@ while running:
 
     #Tir
     if pygame.K_SPACE in keys:
-        bulletList.append(Bullet(screen, rect.getCoordinates()[0], rect.getCoordinates()[1]+40, 20, 10, 30))
+        bulletList.append(Bullet(window.screen, rect.getCoordinates()[0], rect.getCoordinates()[1]+40, 20, 10, 30))
 
     # Effacement de l'écran
     # screen.fill(white)
@@ -118,7 +118,7 @@ while running:
             if bullet.rect.colliderect(test):
                 bulletList.remove(bullet)
         #Destruction des balles une fois le field traversé sans avoir rien touché
-        if bullet.getCoordinates()[0] == screen_width-20 :
+        if bullet.getCoordinates()[0] == window.largeur-20 :
             bulletList.remove(bullet)
 
 
