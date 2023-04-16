@@ -1,12 +1,13 @@
 import pygame
 from character import *
 import math
+from window import *
 
 pygame.init()
 
-info = pygame.display.Info()
-screen_width = info.current_w
-screen_height = info.current_h
+
+window = Window()
+
 
 clock = pygame.time.Clock()
 FPS = 60
@@ -15,8 +16,6 @@ black = (0, 0, 0)
 white = (255, 255, 255)
 
 pygame.font.init()
-screen = pygame.display.set_mode((screen_width, screen_height), pygame.RESIZABLE)
-screen = pygame.display.set_mode((1920, 1080), pygame.NOFRAME)
 pygame.display.set_caption("Birds Of Chaos")
 icon = pygame.image.load("ressources/img/dodo.png").convert_alpha()
 pygame.display.set_icon(icon)
@@ -29,10 +28,10 @@ pygame.mouse.set_visible(0)
 
 rect_width = 50
 rect_height = 100
-rect_x = (screen_width - rect_width) // 2
-rect_y = (screen_height - rect_height) // 2
+rect_x = (window.largeur - rect_width) // 2
+rect_y = (window.hauteur - rect_height) // 2
 rect_speed = 15
-rect = Rectangle(screen, rect_x, rect_y, rect_width, rect_height, rect_speed)
+rect = Rectangle(window.screen, rect_x, rect_y, rect_width, rect_height, rect_speed)
 
 
 keys = []
@@ -43,11 +42,11 @@ bg_width = bg.get_width()
 bg_rect = bg.get_rect()
 
 scroll = 0
-tiles = math.ceil(screen_width / bg_width) + 1
+tiles = math.ceil(window.largeur / bg_width) + 1
 
 # Blit the background image
 for i in range(0, tiles):
-    screen.blit(bg, (i * bg_width, 0))
+    window.screen.blit(bg, (i * bg_width, 0))
 
 # Boucle de jeu
 running = True
@@ -67,7 +66,7 @@ while running:
         if event.type == pygame.MOUSEMOTION:
             mouse_pos = event.pos
         if event == pygame.MOUSEBUTTONDOWN == option:
-            pygame.draw.rect(screen, (0, 0, 0), (0, 0, 100, 100))
+            pygame.draw.rect(window.screen, (0, 0, 0), (0, 0, 100, 100))
 
     # Déplacement continu avec collisions
     if pygame.K_UP in keys:
@@ -84,7 +83,7 @@ while running:
 
     # Blit the background image with scrolling
     for i in range(0, tiles):
-        screen.blit(bg, (i * bg_width + scroll, 0))
+        window.screen.blit(bg, (i * bg_width + scroll, 0))
 
     #Scrolling background
     scroll -= 5
@@ -94,12 +93,12 @@ while running:
         scroll = 0
 
     # Dessin du rectangle
-    rect.draw(black)
+    rect.draw(white)
 
     # Rafraîchissement de l'affichage
-    screen.blit(mouse, mouse_pos)
-    screen.blit(option, option_pos)
-    # pygame.display.flip()
+    window.screen.blit(mouse, mouse_pos)
+    window.screen.blit(option, option_pos)
+    pygame.display.flip()
 
     pygame.display.update()
 
