@@ -28,3 +28,16 @@ class Rectangle:
 
     def draw(self, color):
         pygame.draw.rect(self.screen, color, self.rect)
+
+    def getCoordinates(self):
+        return [self.rect.x, self.rect.y]
+
+
+
+class Bullet(Rectangle):
+    def __init__(self, screen, x, y, width, height, speed):
+        Rectangle.__init__(self, screen, x, y, width, height, speed)
+            
+    def go_on(self):
+        self.move_right()
+        self.draw((255, 255, 255))
