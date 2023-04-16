@@ -1,6 +1,8 @@
 import pygame
 from character import *
+from level import *
 import math
+import csv
 
 pygame.init()
 
@@ -10,6 +12,11 @@ screen_height = info.current_h
 
 clock = pygame.time.Clock()
 FPS = 60
+ROWS = 16
+COLS = 150
+TILE_SIZE = screen_height // ROWS
+TILE_TYPES = 21
+level = 0
 
 black = (0, 0, 0)
 white = (255, 255, 255)
@@ -26,6 +33,12 @@ mouse = pygame.image.load("ressources/img/curseur.png").convert_alpha()
 mouse_pos = (0, 0)
 pygame.mouse.set_visible(0)
 
+#tiles liste
+img_list = []
+for x in range(TILE_TYPES):
+    img = pygame.image.load(f"ressources/img/{x}.png")
+    img = pygame.transform.scale(img, (TILE_SIZE, TILE_SIZE))
+    img_list.append(img)
 
 rect_width = 50
 rect_height = 100
@@ -56,12 +69,30 @@ tiles = math.ceil(screen_width / bg_width) + 1
 for i in range(0, tiles):
     screen.blit(bg, (i * bg_width, 0))
 
+
+#créer un liste de tile vide
+level_data = []
+for row in range(ROWS):
+    r = [-1] * COLS
+    level_data.append(r)
+#charger des données de niveau et créer un monde (pour lire le dossier csv)
+with open(f"level{level}_data.csv", newline="") as csvfile:
+    reader = csv.reader(csvfile, delimiter=",")
+    for x, row in enumerate(reader):
+        for y, tile in enumerate(row):
+            level_data[x][y] =  int(tile)
+level = World()
+player = level.process_data(level_data)
+
+
+
 # Boucle de jeu
 running = True
 while running:
     # Affichage du scorlling background
     clock.tick(FPS)
 
+    level.draw()
 
     # Gestion des événements pygame
     for event in pygame.event.get():
