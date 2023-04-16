@@ -35,7 +35,14 @@ rect_speed = 15
 rect = Rectangle(screen, rect_x, rect_y, rect_width, rect_height, rect_speed)
 
 
+test = Rectangle(screen, 1500, 500, rect_width, rect_height, rect_speed)
+
+objectsList = [test]
+
 keys = []
+
+#Liste des balles à l'écran
+bulletList = []
 
 # Image background
 bg = pygame.image.load("ressources/img/bg.png").convert()
@@ -70,14 +77,18 @@ while running:
             pygame.draw.rect(screen, (0, 0, 0), (0, 0, 100, 100))
 
     # Déplacement continu avec collisions
-    if pygame.K_UP in keys:
+    if pygame.K_z in keys:
         rect.move_up()
-    if pygame.K_DOWN in keys:
+    if pygame.K_s in keys:
         rect.move_down()
-    if pygame.K_LEFT in keys:
+    if pygame.K_q in keys:
         rect.move_left()
-    if pygame.K_RIGHT in keys:
+    if pygame.K_d in keys:
         rect.move_right()
+
+    #Tir
+    if pygame.K_SPACE in keys:
+        bulletList.append(Bullet(screen, rect.getCoordinates()[0], rect.getCoordinates()[1]+40, 20, 10, 30))
 
     # Effacement de l'écran
     # screen.fill(white)
@@ -95,6 +106,22 @@ while running:
 
     # Dessin du rectangle
     rect.draw(black)
+
+    test.draw(black)
+
+
+    #Operations des balles
+    for bullet in bulletList:
+        #Déplacement
+        bullet.go_on()
+        #Check des collisions avec les objets de objectsList
+        for object in objectsList:
+            if bullet.rect.colliderect(test):
+                bulletList.remove(bullet)
+        #Destruction des balles une fois le field traversé sans avoir rien touché
+        if bullet.getCoordinates()[0] == screen_width-20 :
+            bulletList.remove(bullet)
+
 
     # Rafraîchissement de l'affichage
     screen.blit(mouse, mouse_pos)
