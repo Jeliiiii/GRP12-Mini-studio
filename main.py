@@ -12,7 +12,7 @@ pygame.init()
 
 window = Window()
 
-test = ennemy(window.screen, 400, 100, 50, 50, 10)
+
 
 clock = pygame.time.Clock()
 FPS = 60
@@ -40,7 +40,7 @@ rect = Character(window.screen, rect_x, rect_y, rect_width, rect_height, rect_sp
 
 
 
-objectsList = [test]
+objectsList = [ennemy(window.screen, window.largeur+20, 100, 50, 50, 10)]
 
 keys = []
 
@@ -119,8 +119,10 @@ while running:
     # Dessin du rectangle
     rect.draw(white)
 
+
+
     for object in objectsList:
-        object.go_on
+        object.go_on()
 
 
     #Operations des balles
@@ -129,10 +131,11 @@ while running:
         bullet.go_on()
         #Check des collisions avec les objets de objectsList
         for object in objectsList:
-            if bullet.rect.colliderect(test):
+            if bullet.rect.colliderect(object):
                 bulletList.remove(bullet)
+                objectsList.remove(object)
         #Destruction des balles une fois le field traversé sans avoir rien touché
-        if bullet.getCoordinates()[0] == window.largeur-20 :
+        if bullet.getCoordinates()[0] == window.largeur+20 :
             bulletList.remove(bullet)
 
 
@@ -144,4 +147,4 @@ while running:
     pygame.display.update()
 
 pygame.quit()
-sys.quit()
+
