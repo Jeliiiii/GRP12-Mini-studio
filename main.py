@@ -2,6 +2,7 @@ import pygame
 from character import *
 import math
 from window import *
+from weapons import *
 
 pygame.init()
 
@@ -55,6 +56,9 @@ tiles = math.ceil(window.largeur / bg_width) + 1
 for i in range(0, tiles):
     window.screen.blit(bg, (i * bg_width, 0))
 
+#On initialise la variable de cooldown du shoot
+shootCd = 0
+
 # Boucle de jeu
 running = True
 while running:
@@ -86,8 +90,12 @@ while running:
         rect.move_right()
 
     #Tir
-    if pygame.K_SPACE in keys:
-        bulletList.append(Bullet(window.screen, rect.getCoordinates()[0], rect.getCoordinates()[1]+40, 20, 10, 30))
+    if pygame.K_SPACE in keys and shootCd == 0:
+        bulletList.append(classic.bullet(window.screen, rect.getCoordinates()[0], rect.getCoordinates()[1]+40, 20, 10, 30))
+        shootCd = classic.tear
+    
+    if shootCd > 0:
+        shootCd -= 1
 
     # Effacement de l'écran
     # screen.fill(white)

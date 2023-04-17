@@ -34,10 +34,4 @@ class Rectangle:
 
 
 
-class Bullet(Rectangle):
-    def __init__(self, screen, x, y, width, height, speed):
-        Rectangle.__init__(self, screen, x, y, width, height, speed)
-            
-    def go_on(self):
-        self.move_right()
-        self.draw((255, 255, 255))
+
