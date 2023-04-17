@@ -5,6 +5,7 @@ from window import *
 from weapons import *
 import sys
 from ennemies import *
+from rectangle import *
 
 pygame.init()
 
@@ -35,7 +36,7 @@ rect_height = 100
 rect_x = (window.largeur - rect_width) // 2
 rect_y = (window.hauteur - rect_height) // 2
 rect_speed = 15
-rect = Rectangle(window.screen, rect_x, rect_y, rect_width, rect_height, rect_speed)
+rect = Character(window.screen, rect_x, rect_y, rect_width, rect_height, rect_speed)
 
 
 
