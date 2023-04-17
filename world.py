@@ -57,8 +57,8 @@ class World():
 
         return player
     
-    def draw(self):
-        for tile in self.obstacle_list:
+    def draw(window):
+        for tile in window.obstacle_list:
             window.screen.blit(tile[0], tile[1])
 
 #créer un liste de tile vide

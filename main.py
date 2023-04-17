@@ -1,6 +1,6 @@
 import pygame
-from character import *
 import math
+from character import *
 from window import *
 from weapons import *
 from ennemies import *
@@ -156,5 +156,3 @@ while running:
     pygame.display.update()
 
 pygame.quit()
-
-
