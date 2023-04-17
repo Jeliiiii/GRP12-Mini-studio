@@ -2,9 +2,9 @@ from character import *
    
 
 
-class ennemy(Rectangle):
+class ennemy(Character):
     def __init__(self, screen, x, y, width, height, speed):
-        Rectangle.__init__(self, screen, x, y, width, height, speed)
+        Character.__init__(self, screen, x, y, width, height, speed)
 
     def go_on(self):
         self.move_left()

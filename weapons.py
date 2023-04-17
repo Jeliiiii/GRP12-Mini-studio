@@ -1,5 +1,5 @@
 import pygame
-from character import *
+from rectangle import *
 
 class weapon:
     def __init__(self, tear, bullet):
