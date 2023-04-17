@@ -3,12 +3,15 @@ from character import *
 import math
 from window import *
 from weapons import *
+import sys
+from ennemies import *
 
 pygame.init()
 
 
 window = Window()
 
+rect_gen = RectangleGenerator(window.screen, 10, 30, 60, 30, 60, 100, 300)
 
 clock = pygame.time.Clock()
 FPS = 60
@@ -89,6 +92,11 @@ while running:
     if pygame.K_d in keys:
         rect.move_right()
 
+    # Génération, déplacement et dessin des rectangles aléatoires
+    rect_gen.generate()
+    rect_gen.move()
+    rect_gen.draw((255, 0, 0))
+
     #Tir
     if pygame.K_SPACE in keys and shootCd == 0:
         bulletList.append(classic.bullet(window.screen, rect.getCoordinates()[0], rect.getCoordinates()[1]+40, 20, 10, 30))
@@ -138,3 +146,4 @@ while running:
     pygame.display.update()
 
 pygame.quit()
+sys.quit()
