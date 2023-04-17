@@ -49,7 +49,7 @@ class Idle(Rectangle):
             else :
                 self.doing = self.move_up
                 print('%s'%(self.doing))
-            left = 40
+            self.left = 40
         else:
             self.doing()
-            self.left-=1
+            self.left -=1

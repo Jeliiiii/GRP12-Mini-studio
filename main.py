@@ -3,7 +3,6 @@ from character import *
 import math
 from window import *
 from weapons import *
-import sys
 from ennemies import *
 from rectangle import *
 
@@ -31,11 +30,7 @@ mouse_pos = (0, 0)
 pygame.mouse.set_visible(0)
 
 
-rect_width = 50
-rect_height = 100
-rect_x = (window.largeur - rect_width) // 2
-rect_y = (window.hauteur - rect_height) // 2
-rect_speed = 15
+
 rect = Character(window.screen, rect_x, rect_y, rect_width, rect_height, rect_speed)
 
 
