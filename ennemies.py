@@ -53,7 +53,7 @@ class Idle(Rectangle):
         self.height = window.hauteur
         self.left = 40
         self.doing = self.move_down
-        self.bullet = Weapon(25, Bullet)
+        self.bullet = Weapon(25, VerticalBullet)
         self.tearTimer = 20
         self.tearRemaining = self.tearTimer
         self.side = "ennemy"
@@ -71,3 +71,5 @@ class Idle(Rectangle):
         else:
             self.doing()
             self.left -=1
+
+        self.tearRemaining -= 1

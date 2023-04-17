@@ -28,3 +28,14 @@ class Bullet(Rectangle):
         self.draw((255, 255, 255))
 
 classic = Weapon(15, Bullet)
+
+
+
+class VerticalBullet(Rectangle):
+    def __init__(self, screen, x, y, width, height, speed, side):
+        Rectangle.__init__(self, screen, x, y, width, height, speed)
+        self.side =side
+            
+    def go_on(self):
+        self.move_down()
+        self.draw((255, 255, 255))

@@ -35,8 +35,8 @@ rect = Character(window.screen, rect_x, rect_y, rect_width, rect_height, rect_sp
 
 
 #Liste des objets à l'écran
-objectsList = [Basic(window, window.largeur+20, 100, 50, 50, 5)]
-#objectsList = [Idle(window, window.largeur+20, 100, 50, 50, 5)]
+#objectsList = [Basic(window, window.largeur+20, 100, 50, 50, 5)]
+objectsList = [Idle(window, window.largeur+20, 100, 50, 50, 5)]
 
 keys = []
 
@@ -129,8 +129,10 @@ while running:
                             object.doing = object.move_up
             if object.tearRemaining==0:
                 object.tearRemaining = object.tearTimer
-                bulletList.append(object.bullet.bullet(window.screen, object.getCoordinates()[0], object.getCoordinates()[1]+40, 20, 10, 30, "ennemy"))
-
+                if type(object)== Basic:
+                    bulletList.append(object.bullet.bullet(window.screen, object.getCoordinates()[0], object.getCoordinates()[1]+40, 20, 10, 30, "ennemy"))
+                elif type(object)== Idle:
+                    bulletList.append(object.bullet.bullet(window.screen, object.getCoordinates()[0], object.getCoordinates()[1]+40, 10, 20, 10, "ennemy"))
 
 
     #Operations des balles
