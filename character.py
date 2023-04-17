@@ -5,6 +5,7 @@ class Character:
         self.screen = screen
         self.rect = pygame.Rect(x, y, width, height)
         self.speed = speed
+        self.side = "ally"
 
     def move_up(self):
         self.rect.move_ip(0, -self.speed)

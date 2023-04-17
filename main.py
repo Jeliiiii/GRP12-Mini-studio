@@ -40,8 +40,8 @@ rect = Character(window.screen, rect_x, rect_y, rect_width, rect_height, rect_sp
 
 
 #Liste des objets à l'écran
-#objectsList = [Basic(window, window.largeur+20, 100, 50, 50, 5), Basic(window, window.largeur+20, 200, 50, 50, 5), Basic(window, window.largeur+20, 300, 50, 50, 5)]
-objectsList = [Idle(window, window.largeur+20, 100, 50, 50, 5)]
+objectsList = [Basic(window, window.largeur+20, 100, 50, 50, 5)]
+#objectsList = [Idle(window, window.largeur+20, 100, 50, 50, 5)]
 
 keys = []
 
@@ -97,7 +97,7 @@ while running:
 
     #Tir
     if pygame.K_SPACE in keys and shootCd == 0:
-        bulletList.append(classic.bullet(window.screen, rect.getCoordinates()[0], rect.getCoordinates()[1]+40, 20, 10, 30))
+        bulletList.append(classic.bullet(window.screen, rect.getCoordinates()[0], rect.getCoordinates()[1]+40, 20, 10, 30, "ally"))
         shootCd = classic.tear
     
     if shootCd > 0:
@@ -132,6 +132,9 @@ while running:
                             object.doing = object.move_down
                         else :
                             object.doing = object.move_up
+            if object.tearRemaining==0:
+                object.tearRemaining = object.tearTimer
+                bulletList.append(object.bullet.bullet(window.screen, object.getCoordinates()[0], object.getCoordinates()[1]+40, 20, 10, 30, "ennemy"))
 
 
 
@@ -141,9 +144,11 @@ while running:
         bullet.go_on()
         #Check des collisions avec les objets de objectsList
         for object in objectsList:
-            if bullet.rect.colliderect(object):
+            if bullet.rect.colliderect(object) and object.side!=bullet.side:
                 bulletList.remove(bullet)
                 objectsList.remove(object)
+        if bullet.rect.colliderect(rect):
+            print("game over")#game over a set ici
         #Destruction des balles une fois le field traversé sans avoir rien touché
         if bullet.getCoordinates()[0] == window.largeur+20 :
             bulletList.remove(bullet)
