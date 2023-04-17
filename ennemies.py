@@ -70,4 +70,4 @@ class Idle(Rectangle):
             self.left = 40
         else:
             self.doing()
-            self.left-=1
+            self.left -=1

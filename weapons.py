@@ -6,6 +6,13 @@ class Weapon:
         self.tear = tear
         self.bullet = bullet
 
+    def fire(self, position, direction):
+        if self.ammo_count > 0:
+            ammo = self.ammo_class(self.screen, position[0], position[1], 5, 5, 10)
+            ammo.direction = direction
+            self.ammo_count -= 1
+            return ammo
+
 
 
 class Bullet(Rectangle):
