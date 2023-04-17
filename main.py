@@ -11,7 +11,7 @@ pygame.init()
 
 window = Window()
 
-rect_gen = RectangleGenerator(window.screen, 10, 30, 60, 30, 60, 100, 300)
+test = ennemy(window.screen, window.largeur-100, 100, 50, 50, 10)
 
 clock = pygame.time.Clock()
 FPS = 60
@@ -38,7 +38,6 @@ rect_speed = 15
 rect = Rectangle(window.screen, rect_x, rect_y, rect_width, rect_height, rect_speed)
 
 
-test = Rectangle(window.screen, 1500, 500, rect_width, rect_height, rect_speed)
 
 objectsList = [test]
 
@@ -92,10 +91,7 @@ while running:
     if pygame.K_d in keys:
         rect.move_right()
 
-    # Génération, déplacement et dessin des rectangles aléatoires
-    rect_gen.generate()
-    rect_gen.move()
-    rect_gen.draw((255, 0, 0))
+    
 
     #Tir
     if pygame.K_SPACE in keys and shootCd == 0:
@@ -122,7 +118,8 @@ while running:
     # Dessin du rectangle
     rect.draw(white)
 
-    test.draw(black)
+    for object in objectsList:
+        object.go_on
 
 
     #Operations des balles
