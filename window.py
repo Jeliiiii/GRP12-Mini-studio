@@ -6,7 +6,7 @@ class Window :
         # obtenir les informations sur l'écran actuel.
         info = pygame.display.Info()
         # définir les dimensions de la fenêtre à la taille de l'écran actuel.
-        self.largeur = info.current_w
-        self.hauteur = info.current_h
+        self.width = info.current_w
+        self.height = info.current_h
         # créer une fenêtre avec les dimensions définies et sans bordure
-        self.screen = pygame.display.set_mode((self.largeur, self.hauteur),pygame.NOFRAME)
+        self.screen = pygame.display.set_mode((self.width, self.height),pygame.NOFRAME)

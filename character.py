@@ -5,8 +5,8 @@ window = Window()
 
 rect_width = 50
 rect_height = 100
-rect_x = (window.largeur - rect_width) // 2
-rect_y = (window.hauteur - rect_height) // 2
+rect_x = (window.width - rect_width) // 2
+rect_y = (window.height - rect_height) // 2
 rect_speed = 15
 class Character:
     def __init__(self, screen, x, y, width, height, speed):

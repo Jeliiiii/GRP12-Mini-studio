@@ -36,7 +36,7 @@ rect = Character(window.screen, rect_x, rect_y, rect_width, rect_height, rect_sp
 
 #Liste des objets à l'écran
 #objectsList = [Basic(window, window.largeur+20, 100, 50, 50, 5)]
-objectsList = [Idle(window, window.largeur+20, 100, 50, 50, 5)]
+objectsList = [Idle(window, window.width+20, 100, 50, 50, 5)]
 
 keys = []
 
@@ -49,7 +49,7 @@ bg_width = bg.get_width()
 bg_rect = bg.get_rect()
 
 scroll = 0
-tiles = math.ceil(window.largeur / bg_width) + 1
+tiles = math.ceil(window.width / bg_width) + 1
 
 # Blit the background image
 for i in range(0, tiles):
@@ -57,6 +57,8 @@ for i in range(0, tiles):
 
 #On initialise la variable de cooldown du shoot
 shootCd = 0
+
+is_hit = False
 
 # Boucle de jeu
 running = True
@@ -144,10 +146,11 @@ while running:
             if bullet.rect.colliderect(object) and object.side!=bullet.side:
                 bulletList.remove(bullet)
                 objectsList.remove(object)
-        if bullet.rect.colliderect(rect):
+        if bullet.rect.colliderect(rect) and is_hit == False:
             print("game over")#game over a set ici
+            is_hit = True
         #Destruction des balles une fois le field traversé sans avoir rien touché
-        if bullet.getCoordinates()[0] == window.largeur+20 :
+        if bullet.getCoordinates()[0] == window.width+20 :
             bulletList.remove(bullet)
 
 

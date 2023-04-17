@@ -50,7 +50,7 @@ class Basic(Rectangle):
 class Idle(Rectangle):
     def __init__(self, window, x, y, width, height, speed):
         Rectangle.__init__(self, window.screen, x, y, width, height, speed)
-        self.height = window.hauteur
+        self.height = window.height
         self.left = 40
         self.doing = self.move_down
         self.bullet = Weapon(25, VerticalBullet)
