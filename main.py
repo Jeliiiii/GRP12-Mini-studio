@@ -39,8 +39,9 @@ rect_speed = 15
 rect = Character(window.screen, rect_x, rect_y, rect_width, rect_height, rect_speed)
 
 
-
-objectsList = [ennemy(window.screen, window.largeur+20, 100, 50, 50, 10)]
+#Liste des objets à l'écran
+#objectsList = [Basic(window, window.largeur+20, 100, 50, 50, 5), Basic(window, window.largeur+20, 200, 50, 50, 5), Basic(window, window.largeur+20, 300, 50, 50, 5)]
+objectsList = [Idle(window, window.largeur+20, 100, 50, 50, 5)]
 
 keys = []
 
@@ -120,9 +121,18 @@ while running:
     rect.draw(white)
 
 
-
+    #On active les go_on
     for object in objectsList:
         object.go_on()
+        if object.doing: #point mystere
+            for referencial in objectsList:
+                if object != referencial :
+                    if object.rect.colliderect(referencial):
+                        if object.doing == object.move_up:
+                            object.doing = object.move_down
+                        else :
+                            object.doing = object.move_up
+
 
 
     #Operations des balles
