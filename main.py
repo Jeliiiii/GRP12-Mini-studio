@@ -1,8 +1,9 @@
 import pygame
 from character import *
-from level import *
+# from level import *
 import math
 import csv
+import os
 
 pygame.init()
 
@@ -15,7 +16,7 @@ FPS = 60
 ROWS = 16
 COLS = 150
 TILE_SIZE = screen_height // ROWS
-TILE_TYPES = 21
+TILE_TYPES = 10
 level = 0
 
 black = (0, 0, 0)
@@ -32,6 +33,29 @@ option_pos = (1600, 150)
 mouse = pygame.image.load("ressources/img/curseur.png").convert_alpha()
 mouse_pos = (0, 0)
 pygame.mouse.set_visible(0)
+
+class World():
+    def __init__(self):
+        self.obstacle_list = []
+
+    def process_data(self, data):
+        #parcourir chaque valeur dans le fichier de données de niveau
+        for y, row in enumerate(data):
+            for x, tile in enumerate(row):
+                if tile >= 0:
+                    img = img_list[tile]
+                    img_rect = img.get_rect()
+                    img_rect.x = x * TILE_SIZE
+                    img_rect.y = y * TILE_SIZE
+                    tile_data = (img, img_rect)
+                    if tile >= 0 and tile <= 10:
+                        self.obstacle_list.append(tile_data)
+
+        return
+    
+    def draw(self):
+        for tile in self.obstacle_list:
+            screen.blit(tile[0], tile[1])
 
 #tiles liste
 img_list = []
@@ -71,18 +95,19 @@ for i in range(0, tiles):
 
 
 #créer un liste de tile vide
-level_data = []
+world_data = []
 for row in range(ROWS):
     r = [-1] * COLS
-    level_data.append(r)
+    world_data.append(r)
 #charger des données de niveau et créer un monde (pour lire le dossier csv)
 with open(f"level{level}_data.csv", newline="") as csvfile:
     reader = csv.reader(csvfile, delimiter=",")
     for x, row in enumerate(reader):
         for y, tile in enumerate(row):
-            level_data[x][y] =  int(tile)
-level = World()
-player = level.process_data(level_data)
+            world_data[x][y] =  int(tile)
+print(world_data)
+# world = World()
+# player = world.process_data(world_data)
 
 
 
@@ -92,7 +117,7 @@ while running:
     # Affichage du scorlling background
     clock.tick(FPS)
 
-    level.draw()
+    world.draw()
 
     # Gestion des événements pygame
     for event in pygame.event.get():
