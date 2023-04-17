@@ -11,7 +11,7 @@ pygame.init()
 
 window = Window()
 
-test = ennemy(window.screen, window.largeur-100, 100, 50, 50, 10)
+test = ennemy(window.screen, 400, 100, 50, 50, 10)
 
 clock = pygame.time.Clock()
 FPS = 60

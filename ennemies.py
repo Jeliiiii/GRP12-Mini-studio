@@ -8,4 +8,6 @@ class ennemy(Rectangle):
 
     def go_on(self):
         self.move_left()
-        self.draw((255, 255, 255))
+        self.draw((0, 0, 0))
+
+
