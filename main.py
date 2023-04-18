@@ -5,6 +5,7 @@ from window import *
 from weapons import *
 from ennemies import *
 from rectangle import *
+from mainmenu import *
 
 pygame.init()
 
