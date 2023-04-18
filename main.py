@@ -61,6 +61,8 @@ shootCd = 0
 
 is_hit = False
 
+main_menu = MainMenu(window)
+
 # Boucle de jeu
 running = True
 while running:
