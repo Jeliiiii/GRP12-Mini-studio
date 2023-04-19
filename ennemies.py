@@ -13,8 +13,8 @@ class EnnemyBullet(Rectangle):
 
 
 class Basic(Rectangle):
-    def __init__(self, window, x, y, width, height, speed):
-        Rectangle.__init__(self, window.screen, x, y, width, height, speed)
+    def __init__(self, window, x, y, speed):
+        Rectangle.__init__(self, window.screen, x, y, 50, 50, speed)
         self.height = window.hauteur
         self.left = 0
         self.doing = 0
@@ -48,8 +48,8 @@ class Basic(Rectangle):
 
 
 class Idle(Rectangle):
-    def __init__(self, window, x, y, width, height, speed):
-        Rectangle.__init__(self, window.screen, x, y, width, height, speed)
+    def __init__(self, window, x, y, speed):
+        Rectangle.__init__(self, window.screen, x, y, 50, 50, speed)
         self.height = window.height
         self.left = 40
         self.doing = self.move_down

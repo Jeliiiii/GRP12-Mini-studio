@@ -35,7 +35,7 @@ class Block(Rectangle):
 
 class World():
     def __init__(self):
-        '''self.obstacle_list = []'''
+        pass
 
     def process_data(self, data, objectsList):
         #parcourir chaque valeur dans le fichier de données de niveau
@@ -49,7 +49,6 @@ class World():
                     tile_data = (img, img_rect)
                     if tile >= 0 and tile <= 8:
                         objectsList[0].append(Block(tile_data, window))
-                        '''self.obstacle_list.append(tile_data) #Sol + murs'''
                     elif tile >= 9 and tile <= 10:
                         pass #murs destructibles/ créables par l'opérateur
                     elif tile == 11 and tile <= 14:
@@ -61,7 +60,10 @@ class World():
                     elif tile == 14 :
                         pass #14 : non utilisé
                     elif tile == 15 : 
-                        enemy = Character(window.screen, x*TILE_SIZE, y*TILE_SIZE, 50, 100, 5) #15 : ennemi horizontal
+                        #objectsList[1].append(Basic(window, x*TILE_SIZE, y*TILE_SIZE, 5))
+                        """ca fonctionne mais il y a beaucoup trop d'operations a chaque frame : ca fait lag une dinguerie"""
+                        #enemy = Character(window.screen, x*TILE_SIZE, y*TILE_SIZE, 50, 100, 5) #15 : ennemi horizontal
+                        pass
                     elif tile == 16 : 
                         enemy = Character(window.screen, x*TILE_SIZE, y*TILE_SIZE, 50, 100, 5) #16 : ennemi vertical
                     elif tile == 17 :
@@ -73,9 +75,6 @@ class World():
 
         return player
     
-    """def draw(window):
-        for tile in window.obstacle_list:
-            window.screen.blit(tile[0], tile[1])"""
 
 #créer un liste de tile vide
 world_data = []
