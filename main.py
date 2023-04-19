@@ -145,11 +145,10 @@ while running:
                     objectsList[0].remove(object)
                 break
         for referencial in objectsList[1]:
-            if bullet.side == "ally":
-                if bullet.rect.colliderect(referencial):
-                    objectsList[2].remove(bullet)
-                    objectsList[1].remove(object)
-                    break"""
+            if bullet.rect.colliderect(referencial):
+                objectsList[2].remove(bullet)
+                objectsList[1].remove(referencial)
+                break"""
         #Destruction des balles une fois le field traversé sans avoir rien touché
         if bullet.getCoordinates()[0] == window.largeur+20 :
             objectsList[2].remove(bullet)
