@@ -1,5 +1,15 @@
 from rectangle import *
 from random import randint
+from weapons import *
+
+
+class EnnemyBullet(Rectangle):
+    def __init__(self, screen, x, y, width, height, speed):
+        Rectangle.__init__(self, screen, x, y, width, height, speed)
+            
+    def go_on(self):
+        self.move_right()
+        self.draw((255, 255, 255))
 
 
 class Basic(Rectangle):
@@ -8,6 +18,10 @@ class Basic(Rectangle):
         self.height = window.hauteur
         self.left = 0
         self.doing = 0
+        self.bullet = Weapon(25, Bullet)
+        self.tearTimer = 20
+        self.tearRemaining = self.tearTimer
+        self.side = "ennemy"
 
     def go_on(self):
         self.move_left()
@@ -29,14 +43,20 @@ class Basic(Rectangle):
             if self.left == 0:
                 self.doing = 0
 
+        self.tearRemaining -= 1
+
 
 
 class Idle(Rectangle):
     def __init__(self, window, x, y, width, height, speed):
         Rectangle.__init__(self, window.screen, x, y, width, height, speed)
-        self.height = window.hauteur
+        self.height = window.height
         self.left = 40
         self.doing = self.move_down
+        self.bullet = Weapon(25, VerticalBullet)
+        self.tearTimer = 20
+        self.tearRemaining = self.tearTimer
+        self.side = "ennemy"
 
     def go_on(self):
         self.move_left()
@@ -51,3 +71,5 @@ class Idle(Rectangle):
         else:
             self.doing()
             self.left -=1
+
+        self.tearRemaining -= 1

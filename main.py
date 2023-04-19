@@ -93,7 +93,7 @@ while running:
 
     #Tir
     if pygame.K_SPACE in keys and shootCd == 0:
-        bulletList.append(classic.bullet(window.screen, rect.getCoordinates()[0], rect.getCoordinates()[1]+40, 20, 10, 30))
+        bulletList.append(classic.bullet(window.screen, rect.getCoordinates()[0], rect.getCoordinates()[1]+40, 20, 10, 30, "ally"))
         shootCd = classic.tear
     
     if shootCd > 0:
@@ -157,6 +157,7 @@ while running:
         #Destruction des balles une fois le field traversé sans avoir rien touché
         if bullet.getCoordinates()[0] == window.largeur+20 :
             objectsList[2].remove(bullet)
+        bullet.draw(black)
 
 
     # Rafraîchissement de l'affichage
