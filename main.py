@@ -120,11 +120,11 @@ while running:
     for object in objectsList[0]:
         object.go_on()
 
-    for stun in tempon :
+    for stun in buffer :
         stun.move_left()
         if stun.getCoordinates()[0] <= window.largeur:
             objectsList[1].append(stun)
-            tempon.remove(stun)
+            buffer.remove(stun)
             
 
     #On active les go_on ennemies
@@ -138,17 +138,18 @@ while running:
         #Déplacement
         bullet.go_on()
         #Check des collisions avec les objets de objectsList
-        for referencial in objectsList[0]:
+        """for referencial in objectsList[0]:
             if bullet.rect.colliderect(referencial):
                 objectsList[2].remove(bullet)
                 if referencial.destructible :
                     objectsList[0].remove(object)
                 break
         for referencial in objectsList[1]:
-            if bullet.rect.colliderect(referencial):
-                objectsList[2].remove(bullet)
-                objectsList[1].remove(object)
-                break
+            if bullet.side == "ally":
+                if bullet.rect.colliderect(referencial):
+                    objectsList[2].remove(bullet)
+                    objectsList[1].remove(object)
+                    break"""
         #Destruction des balles une fois le field traversé sans avoir rien touché
         if bullet.getCoordinates()[0] == window.largeur+20 :
             objectsList[2].remove(bullet)

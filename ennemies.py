@@ -18,40 +18,44 @@ class Basic(Rectangle):
         self.height = window.hauteur
         self.left = 0
         self.doing = 0
-        self.bullet = Weapon(25, Bullet)
+        self.bullet = Weapon(25, Bullet(window.screen, self.rect.x, self.rect.y, 20, 10, 10, "ennemy"))
         self.tearTimer = 20
         self.tearRemaining = self.tearTimer
         self.side = "ennemy"
+
+    
 
     def go_on(self, objectsList):
         self.move_left()
         self.draw((0, 0, 0))
         
         #check collisions au décor
-        for referencial in objectsList[0]:
-            if self.rect.colliderect(referencial):
-                if self.doing == self.move_up:
-                    self.doing = self.move_down
-                else :
-                    self.doing = self.move_up
-        #check collisions entre ennemies
-        for referencial in objectsList[1]:
-            if self != referencial :
-                if self.rect.colliderect(referencial):
-                    if self.doing == self.move_up:
-                        self.doing = self.move_down
-                    else :
-                        self.doing = self.move_up
+        collider = self.rect.collidelist(objectsList[0])
+        if collider != -1 :
+            self.switchDir()
 
-        if self.left == 0:
+        #check collisions entre ennemies
+        collider = self.rect.collidelist(objectsList[1])
+
+        if self.rect in objectsList[1]:
+            myself = objectsList[1].index(self.rect)
+        else :
+            myself = -1
+
+
+        if collider != -1 and collider!= myself: #si je touches quelque chose qui n'est pas moi
+            self.switchDir()
+
+        #choice
+        if self.doing == 0:
             if self.getCoordinates()[1]-20*self.speed < 0 :
                 self.doing = self.move_down
             elif self.getCoordinates()[1]+20*self.speed > self.height :
                 self.doing = self.move_up
             elif randint(1,2)==1:
-                self.doing = self.move_up
-            else:
                 self.doing = self.move_down
+            else :
+                self.doing = self.move_up
             self.left = 20
         else:
             self.doing()
@@ -60,6 +64,20 @@ class Basic(Rectangle):
                 self.doing = 0
 
         self.tearRemaining -= 1
+        if self.tearRemaining == 0:
+            self.shoot(objectsList)
+            self.tearRemaining = self.tearTimer
+
+
+    def switchDir(self):
+        if self.doing == self.move_up:
+            self.doing = self.move_down
+        else :
+            self.doing = self.move_up
+
+
+    def shoot(self, objectsList):
+        objectsList[2].append(self.bullet.bullet)
 
 
 

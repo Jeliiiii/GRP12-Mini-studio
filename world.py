@@ -61,7 +61,7 @@ class World():
                     elif tile == 14 :
                         pass #14 : non utilisé
                     elif tile == 15 : 
-                        tempon.append(Basic(window, x*TILE_SIZE, y*TILE_SIZE, 5))
+                        buffer.append(Basic(window, x*TILE_SIZE, y*TILE_SIZE, 5))
                         """ca fonctionne mais il y a beaucoup trop d'operations a chaque frame : ca fait lag une dinguerie"""
                         #enemy = Character(window.screen, x*TILE_SIZE, y*TILE_SIZE, 50, 100, 5) #15 : ennemi horizontal
                         pass
