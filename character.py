@@ -1,13 +1,14 @@
 import pygame
 from window import *
+from setup import *
 
-window = Window()
 
 rect_width = 50
-rect_height = 100
+rect_height = 50
 rect_x = (window.largeur - rect_width) // 2
 rect_y = (window.hauteur - rect_height) // 2
 rect_speed = 15
+
 class Character:
     def __init__(self, screen, x, y, width, height, speed):
         """
@@ -20,6 +21,8 @@ class Character:
         self.screen = screen
         self.rect = pygame.Rect(x, y, width, height)
         self.speed = speed
+        self.img = pygame.image.load("ressources/img/dodo/0.png")
+        self.img = pygame.transform.scale(self.img, (50, 50))
 
     def move_up(self):
         #Déplace le personnage vers le haut.
@@ -45,9 +48,10 @@ class Character:
         if self.rect.right > self.screen.get_width():
             self.rect.right = self.screen.get_width()
 
-    def draw(self, color):
+    def draw(self):
         #dessine le personnage sur l'écran.
-        pygame.draw.rect(self.screen, color, self.rect)
+        #pygame.draw.rect(self.screen, color, self.rect)
+        self.screen.blit(self.img, self.rect)
 
     def getCoordinates(self):
         #renvoie les coordonnées actuelles du personnage.
@@ -56,3 +60,4 @@ class Character:
 
 
 
+rect = Character(window.screen, rect_x, rect_y, rect_width, rect_height, rect_speed)

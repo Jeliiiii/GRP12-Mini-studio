@@ -33,8 +33,6 @@ pygame.mouse.set_visible(0)
 
 
 
-rect = Character(window.screen, rect_x, rect_y, rect_width, rect_height, rect_speed)
-
 
 #Liste des objets à l'écran
 #objectsList = [Basic(window, window.largeur+20, 100, 50, 50, 5), Basic(window, window.largeur+20, 200, 50, 50, 5), Basic(window, window.largeur+20, 300, 50, 50, 5)]
@@ -93,7 +91,7 @@ while running:
 
     #Tir
     if pygame.K_SPACE in keys and shootCd == 0:
-        bulletList.append(classic.bullet(window.screen, rect.getCoordinates()[0], rect.getCoordinates()[1]+40, 20, 10, 30, "ally"))
+        objectsList[2].append(classic.bullet(window.screen, rect.getCoordinates()[0], rect.getCoordinates()[1]+40, 20, 10, 30, "ally"))
         shootCd = classic.tear
     
     if shootCd > 0:
@@ -114,11 +112,11 @@ while running:
         scroll = 0
 
     # Dessin du rectangle
-    rect.draw(white)
+    rect.draw()
 
 
 
-
+    #On fait avancezr chaque objets
     for object in objectsList[0]:
         object.go_on()
         object.draw()
@@ -149,15 +147,20 @@ while running:
         #Déplacement
         bullet.go_on()
         #Check des collisions avec les objets de objectsList
-        for type in objectsList:
-            for object in type :
-                if bullet.rect.colliderect(object):
-                    objectsList[2].remove(bullet)
-                    objectsList.remove(object)
+        for referencial in objectsList[0]:
+            if bullet.rect.colliderect(referencial):
+                objectsList[2].remove(bullet)
+                if referencial.destructible :
+                    objectsList[0].remove(object)
+                break
+        for referencial in objectsList[1]:
+            if bullet.rect.colliderect(referencial):
+                objectsList[2].remove(bullet)
+                objectsList[1].remove(object)
+                break
         #Destruction des balles une fois le field traversé sans avoir rien touché
         if bullet.getCoordinates()[0] == window.largeur+20 :
             objectsList[2].remove(bullet)
-        bullet.draw(black)
 
 
     # Rafraîchissement de l'affichage
