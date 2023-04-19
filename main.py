@@ -38,7 +38,7 @@ rect = Character(window.screen, rect_x, rect_y, rect_width, rect_height, rect_sp
 
 #Liste des objets à l'écran
 #objectsList = [Basic(window, window.largeur+20, 100, 50, 50, 5), Basic(window, window.largeur+20, 200, 50, 50, 5), Basic(window, window.largeur+20, 300, 50, 50, 5)]
-objectsList = [Idle(window, window.largeur+20, 100, 50, 50, 5)]
+#objectsList = [[],[Idle(window, window.largeur+20, 100, 50, 50, 5)],[]]
 
 keys = []
 
@@ -117,32 +117,46 @@ while running:
     rect.draw(white)
 
 
-    #On active les go_on
-    for object in objectsList:
+
+
+    for object in objectsList[0]:
         object.go_on()
-        if object.doing: #point mystere
-            for referencial in objectsList:
-                if object != referencial :
-                    if object.rect.colliderect(referencial):
-                        if object.doing == object.move_up:
-                            object.doing = object.move_down
-                        else :
-                            object.doing = object.move_up
+        object.draw()
+
+    #On active les go_on ennemies
+    for object in objectsList[1]:
+        object.go_on()
+        #check collisions au décor
+        for referencial in objectsList[0]:
+            if object.rect.colliderect(referencial):
+                if object.doing == object.move_up:
+                    object.doing = object.move_down
+                else :
+                    object.doing = object.move_up
+        #check collisions entre ennemies
+        for referencial in objectsList[1]:
+            if object != referencial :
+                if object.rect.colliderect(referencial):
+                    if object.doing == object.move_up:
+                        object.doing = object.move_down
+                    else :
+                        object.doing = object.move_up
 
 
 
     #Operations des balles
-    for bullet in bulletList:
+    for bullet in objectsList[2]:
         #Déplacement
         bullet.go_on()
         #Check des collisions avec les objets de objectsList
-        for object in objectsList:
-            if bullet.rect.colliderect(object):
-                bulletList.remove(bullet)
-                objectsList.remove(object)
+        for type in objectsList:
+            for object in type :
+                if bullet.rect.colliderect(object):
+                    objectsList[2].remove(bullet)
+                    objectsList.remove(object)
         #Destruction des balles une fois le field traversé sans avoir rien touché
         if bullet.getCoordinates()[0] == window.largeur+20 :
-            bulletList.remove(bullet)
+            objectsList[2].remove(bullet)
 
 
     # Rafraîchissement de l'affichage
@@ -151,7 +165,7 @@ while running:
     pygame.display.flip()
 
     
-    World.draw(window.screen)
+    '''World.draw(window.screen)'''
 
     pygame.display.update()
 

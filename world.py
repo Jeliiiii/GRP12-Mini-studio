@@ -1,12 +1,11 @@
 import pygame
 import csv
 from character import *
-from window import *
-from ennemies import *
+from setup import *
 
-window = Window()
-ROWS = 16
-COLS = 150
+
+ROWS = 32
+COLS = 401
 TILE_SIZE = window.hauteur // ROWS
 TILE_TYPES = 21
 level = 0
@@ -18,11 +17,27 @@ for x in range(TILE_TYPES):
     img = pygame.transform.scale(img, (TILE_SIZE, TILE_SIZE))
     img_list.append(img)
 
+
+class Block(Rectangle):
+    def __init__(self, data, window):
+        Rectangle.__init__(self, window.screen, data[1].x, data[1].y, window.hauteur/32, window.hauteur/32, 5)
+        self.data = data
+        self.destructible = False
+
+    def go_on(self):
+        self.move_left()
+        self.data[1][0] = self.getCoordinates()[0]
+
+    def draw(self):
+        self.screen.blit(self.data[0], self.data[1])
+
+
+
 class World():
     def __init__(self):
-        self.obstacle_list = []
+        '''self.obstacle_list = []'''
 
-    def process_data(self, data):
+    def process_data(self, data, objectsList):
         #parcourir chaque valeur dans le fichier de données de niveau
         for y, row in enumerate(data):
             for x, tile in enumerate(row):
@@ -33,7 +48,8 @@ class World():
                     img_rect.y = y*TILE_SIZE
                     tile_data = (img, img_rect)
                     if tile >= 0 and tile <= 8:
-                        self.obstacle_list.append(tile_data) #Sol + murs
+                        objectsList[0].append(Block(tile_data, window))
+                        '''self.obstacle_list.append(tile_data) #Sol + murs'''
                     elif tile >= 9 and tile <= 10:
                         pass #murs destructibles/ créables par l'opérateur
                     elif tile == 11 and tile <= 14:
@@ -57,9 +73,9 @@ class World():
 
         return player
     
-    def draw(window):
+    """def draw(window):
         for tile in window.obstacle_list:
-            window.screen.blit(tile[0], tile[1])
+            window.screen.blit(tile[0], tile[1])"""
 
 #créer un liste de tile vide
 world_data = []
@@ -72,6 +88,6 @@ with open(f"level{level}_data.csv", newline="") as csvfile:
     for x, row in enumerate(reader):
         for y, tile in enumerate(row):
             world_data[x][y] =  int(tile)
-print(world_data)
 world = World()
-player = world.process_data(world_data)
+player = world.process_data(world_data, objectsList)
+

@@ -45,10 +45,8 @@ class Idle(Rectangle):
         if self.left == 0:
             if self.doing == self.move_up:
                 self.doing = self.move_down
-                print('%s'%(self.doing))
             else :
                 self.doing = self.move_up
-                print('%s'%(self.doing))
             self.left = 40
         else:
             self.doing()
