@@ -77,7 +77,7 @@ while running:
     clock.tick(FPS)
     
     # On entre dans la boucle du menu
-    while menu:
+    if menu == True:
         
         events = pygame.event.get()
         for event in events:
@@ -92,14 +92,11 @@ while running:
                 play = True
 
             main_menu.draw()
-            window.screen.blit(mouse, mouse_pos)
-            pygame.display.flip()
-            pygame.display.update()
             
             
             
     # On entre dans la boucle de jeu
-    while play:
+    if play == True:
         
         # Gestion des événements pygame
         for event in pygame.event.get():
@@ -185,10 +182,11 @@ while running:
             if bullet.getCoordinates()[0] == window.width+20 :
                 bulletList.remove(bullet)
 
-            # Rafraîchissement de l'affichage
-            window.screen.blit(mouse, mouse_pos)
-            pygame.display.flip()
-            pygame.display.update()
+    # Rafraîchissement de l'affichage
+    window.screen.blit(mouse, mouse_pos)
+    pygame.display.flip()
+    pygame.display.update()
+            
 
 pygame.quit()
 
