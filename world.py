@@ -27,6 +27,7 @@ class Block(Rectangle):
     def go_on(self):
         self.move_left()
         self.data[1][0] = self.getCoordinates()[0]
+        self.draw()
 
     def draw(self):
         self.screen.blit(self.data[0], self.data[1])
@@ -60,7 +61,7 @@ class World():
                     elif tile == 14 :
                         pass #14 : non utilisé
                     elif tile == 15 : 
-                        #objectsList[1].append(Basic(window, x*TILE_SIZE, y*TILE_SIZE, 5))
+                        tempon.append(Basic(window, x*TILE_SIZE, y*TILE_SIZE, 5))
                         """ca fonctionne mais il y a beaucoup trop d'operations a chaque frame : ca fait lag une dinguerie"""
                         #enemy = Character(window.screen, x*TILE_SIZE, y*TILE_SIZE, 50, 100, 5) #15 : ennemi horizontal
                         pass

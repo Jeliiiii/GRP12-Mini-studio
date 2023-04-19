@@ -116,29 +116,20 @@ while running:
 
 
 
-    #On fait avancezr chaque objets
+    #On fait avancer chaque objets
     for object in objectsList[0]:
         object.go_on()
-        object.draw()
+
+    for stun in tempon :
+        stun.move_left()
+        if stun.getCoordinates()[0] <= window.largeur:
+            objectsList[1].append(stun)
+            tempon.remove(stun)
+            
 
     #On active les go_on ennemies
     for object in objectsList[1]:
-        object.go_on()
-        #check collisions au décor
-        for referencial in objectsList[0]:
-            if object.rect.colliderect(referencial):
-                if object.doing == object.move_up:
-                    object.doing = object.move_down
-                else :
-                    object.doing = object.move_up
-        #check collisions entre ennemies
-        for referencial in objectsList[1]:
-            if object != referencial :
-                if object.rect.colliderect(referencial):
-                    if object.doing == object.move_up:
-                        object.doing = object.move_down
-                    else :
-                        object.doing = object.move_up
+        object.go_on(objectsList)
 
 
 

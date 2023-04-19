@@ -23,9 +23,25 @@ class Basic(Rectangle):
         self.tearRemaining = self.tearTimer
         self.side = "ennemy"
 
-    def go_on(self):
+    def go_on(self, objectsList):
         self.move_left()
         self.draw((0, 0, 0))
+        
+        #check collisions au décor
+        for referencial in objectsList[0]:
+            if self.rect.colliderect(referencial):
+                if self.doing == self.move_up:
+                    self.doing = self.move_down
+                else :
+                    self.doing = self.move_up
+        #check collisions entre ennemies
+        for referencial in objectsList[1]:
+            if self != referencial :
+                if self.rect.colliderect(referencial):
+                    if self.doing == self.move_up:
+                        self.doing = self.move_down
+                    else :
+                        self.doing = self.move_up
 
         if self.left == 0:
             if self.getCoordinates()[1]-20*self.speed < 0 :
