@@ -41,6 +41,7 @@ class Client:
             while True:
                 try:
                     clientSocket, addr = serverSocket.accept()
+                    print(f'[SERVER] Accepted Connection to : {clientSocket}, {addr}')
                     Thread(target=self.onNewClient, args=(clientSocket, serverSocket, eventsQueue)).start()
                 except socket.error:
                     pass
