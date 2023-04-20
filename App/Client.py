@@ -1,9 +1,4 @@
 import pygame
-import pygame.freetype
-import socket
-from threading import Thread
-from Shared.Networking.Server import Server
-from Shared.Networking.ClientSocket import ClientSocket
 from Shared.Scenes.Menus.MainMenuScene import MainMenuScene
 
 class Client:

@@ -26,14 +26,15 @@ class ButtonActor:
     def isHovering(self, x, y):
         return self.sprite[1].collidepoint(x, y)
 
-    def handleMouse(self, x, y, clicking):
+    def handleMouse(self, x, y, mouseInputs):
         if self.isHovering(x, y):
             if self.displaySize != "big":
                 self.displaySize = "big"
-            
+            clicking = (1 in mouseInputs)
             if clicking:
                 self.onClick()
-                print("Clicked")
+                if clicking:
+                    mouseInputs.remove(1)
         elif self.displaySize != "normal":
             self.displaySize = "normal"
 

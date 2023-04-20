@@ -24,11 +24,10 @@ class MenuActor:
             button.move
 
     def handleMouse(self, x, y, mouseInputs):
-        clicking = (1 in mouseInputs)
+        
         for button in self.buttonsList:
-            button.handleMouse(x, y, clicking)
-        if clicking:
-            mouseInputs.remove(1)
+            button.handleMouse(x, y, mouseInputs)
+
 
 
     def draw(self, window):
