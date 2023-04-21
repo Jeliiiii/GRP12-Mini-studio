@@ -3,7 +3,7 @@ from Shared.Utilities.charactersReferencesList import charactersReferencesList
 
 class TypingFieldActor:
 
-    def __init__(self, x, y, font, fontSize, fontColor, value="", placeHolder="", active = False, maxLength=16, displayedWidth=9):
+    def __init__(self, x, y, font, fontSize, fontColor, value="", placeHolder="", active = False, maxLength=16, displayedWidth=15):
         self.font = font
         self.fontSize = fontSize
         self.fontColor = fontColor
@@ -56,5 +56,5 @@ class TypingFieldActor:
             print(self.active)
 
     def draw(self, window):
-        pygame.draw.rect(window, "red", self.hitBox)
+        pygame.draw.rect(window, "#1b1b42", self.hitBox)
         window.blit(self.textSprite[0], self.textSprite[1])
