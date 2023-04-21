@@ -112,6 +112,9 @@ while running:
             if menu.quit_game(events):
                 running = False
                 pygame.quit()
+            if menu.restart_game(events):
+                play = True
+                pause = False
             
             menu.draw()
             
@@ -143,7 +146,6 @@ while running:
         if pygame.K_d in keys:
             rect.move_right()
 
-        
 
         #Tir
         if pygame.K_SPACE in keys and shootCd == 0:

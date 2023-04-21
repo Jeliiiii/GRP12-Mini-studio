@@ -5,7 +5,7 @@ class MainMenu:
     def __init__(self, window):
         self.window = window
         self.font = pygame.font.Font(None, 50)
-        self.play_button = pygame.Rect(570, 300, 400, 200) # Crée un rectangle pour le bouton "play"
+        self.play_button = pygame.Rect(620, 300, 300, 150) # Crée un rectangle pour le bouton "play"
         self.quit_button = pygame.Rect(100, 700, 200, 100)
 
     def draw(self):
