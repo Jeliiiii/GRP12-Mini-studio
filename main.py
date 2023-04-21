@@ -90,6 +90,9 @@ while running:
                 print("Starting game...")
                 menu = False
                 play = True
+            if main_menu.quit_game(events):
+                running = False
+                pygame.quit()
 
             main_menu.draw()
             
