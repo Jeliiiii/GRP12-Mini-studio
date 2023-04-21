@@ -103,7 +103,7 @@ class Idle(Rectangle):
         self.height = window.height
         self.left = 40
         self.doing = self.move_down
-        self.bullet = Weapon(25, VerticalBullet)
+        self.bullet = Weapon(40, VerticalBullet)
         self.tearTimer = 20
         self.tearRemaining = self.tearTimer
         self.side = "ennemy"
@@ -123,3 +123,32 @@ class Idle(Rectangle):
             self.left -=1
 
         self.tearRemaining -= 1
+
+
+
+class Static(Rectangle):
+    def __init__(self, window, x, y, speed):
+        Rectangle.__init__(self, window.screen, x, y, 50, 50, speed)
+        self.height = window.hauteur
+        self.left = 0
+        self.doing = 0
+        self.tearTimer = 20
+        self.tearRemaining = self.tearTimer
+        self.side = "ennemy"
+        self.lastCollid = -1
+
+    
+
+    def go_on(self, objectsList):
+        self.move_left()
+        self.draw((0, 0, 0))
+        self.bullet = Weapon(40, Bullet(self.screen, self.rect.x, self.rect.y, 20, 10, 10, "ennemy"))#on met a jour la bullet (pas opti)
+
+        self.tearRemaining -= 1
+        if self.tearRemaining == 0:
+            self.shoot(objectsList)
+            self.tearRemaining = self.tearTimer
+
+
+    def shoot(self, objectsList):
+        objectsList[2].append(self.bullet.bullet)

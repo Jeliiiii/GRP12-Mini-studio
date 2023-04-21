@@ -59,12 +59,10 @@ class World():
                     elif tile == 13 :
                         pass #13 : shield fort -> indestructible
                     elif tile == 14 :
-                        pass #14 : non utilisé
+                        buffer.append(Static(window, x*TILE_SIZE, y*TILE_SIZE, 5))
                     elif tile == 15 : 
                         buffer.append(Basic(window, x*TILE_SIZE, y*TILE_SIZE, 5))
                         """ca fonctionne mais il y a beaucoup trop d'operations a chaque frame : ca fait lag une dinguerie"""
-                        #enemy = Character(window.screen, x*TILE_SIZE, y*TILE_SIZE, 50, 100, 5) #15 : ennemi horizontal
-                        pass
                     elif tile == 16 : 
                         enemy = Character(window.screen, x*TILE_SIZE, y*TILE_SIZE, 50, 100, 5) #16 : ennemi vertical
                     elif tile == 17 :
