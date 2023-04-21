@@ -118,6 +118,7 @@ while running:
     for object in objectsList[0]:
         object.go_on()
 
+    #limitation de lags, surement etmporaire
     for stun in buffer :
         stun.move_left()
         if stun.getCoordinates()[0] <= window.largeur:

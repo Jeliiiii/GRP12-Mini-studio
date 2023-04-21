@@ -31,6 +31,7 @@ class Basic(Rectangle):
         
         #check collisions au décor
         collider = self.rect.collidelist(objectsList[0])
+        print("aled")
         if collider != -1 :
             self.switchDir()
 
