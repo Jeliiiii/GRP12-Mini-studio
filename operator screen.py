@@ -43,13 +43,14 @@ class PseudoWindow:
     # Stores every "window" to make them interactive in main loop
     loadedPseudoWindows = []
 
-    def __init__(self, coord=(0, 0), dim=(1, 1), color=(128, 128, 128, 1), borderSize=6, menuSize=26):
+    def __init__(self, coord = (0, 0), dim = (1, 1), color = (128, 128, 128, 1), closeCond = True):
         # Saves the object caracteristics
         self.coord = coord
         self.dim = dim
         self.color = color
         self.borderSize = 5
         self.menuSize = 20
+        self.closeCond = closeCond
         # self.priority = ???
 
         
@@ -69,7 +70,10 @@ class PseudoWindow:
 
         # Hitbox and surface for the cross to close the window
         self.surfCross = pygame.Surface((16, 16))
-        self.surfCross.fill((255, 0, 0))
+        if self.closeCond:
+            self.surfCross.fill((255, 0, 0))
+        else:
+            self.surfCross.fill((70, 70, 70))
         self.rectCross = self.surfCross.get_rect(topright = (self.coord[0] + self.dim[0] - self.borderSize, self.coord[1] + (self.menuSize - self.surfCross.get_height()) // 2))
 
         # Adding the new instance to the list
@@ -98,7 +102,8 @@ class PseudoWindow:
 
 # Carthage((100, 100), (300, 300), color = (45, 177, 88, 1), menuSize = 16, borderSize = 8)
 # Simon((300, 100), (300, 300), color = (45, 177, 88, 1), menuSize = 16, borderSize = 8)
-PseudoWindow((100, 100), (300, 300), color = (45, 177, 88, 1), menuSize = 16, borderSize = 8)
+PseudoWindow((100, 100), (300, 300), color = (45, 177, 88, 1))
+PseudoWindow((110, 100), (300, 300), color = (45, 177, 88, 1), closeCond = False)
     
 
 # Boucle de jeu
@@ -132,14 +137,18 @@ while running:
             if pygame.mouse.get_pressed(3)[0]:
                 print("Liste des fenêtres chargés :\n", PseudoWindow.loadedPseudoWindows)
                 for cur in range(len(PseudoWindow.loadedPseudoWindows)):
-                    if PseudoWindow.loadedPseudoWindows[cur].surfCross.get_rect().collidepoint(mouse_pos):
+                    if PseudoWindow.loadedPseudoWindows[cur].rectCross.collidepoint(mouse_pos) and PseudoWindow.loadedPseudoWindows[cur].closeCond:
                         del PseudoWindow.loadedPseudoWindows[cur]
                         print("element removed from list")
+                        break
                 #     elif instance.surfContent.get_rect().collidepoint(mouse_pos):
                 #         print("Left Click on surfContent")
-                for i in PseudoWindow.loadedPseudoWindows:
-                    if i.Content_Rect.collidepoint(mouse_pos):
-                        i.clicked((mouse_pos[0] - i.coord[0] - i.borderSize, mouse_pos[1] - i.coord[1] - i.menuSize))   # On envoie les coordonnees relatives
+
+                """ ALED VALENTIN AAAAAAAAAAAAAAAAAAAAAAAA """
+
+                # for i in PseudoWindow.loadedPseudoWindows:
+                #     if i.Content_Rect.collidepoint(mouse_pos):
+                #         i.clicked((mouse_pos[0] - i.coord[0] - i.borderSize, mouse_pos[1] - i.coord[1] - i.menuSize))   # On envoie les coordonnees relatives
 
 
 
