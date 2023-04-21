@@ -1,4 +1,7 @@
 import pygame
+import random
+import time
+import os
 
 # Initialization of diverse pygame functionnalities
 
@@ -9,7 +12,7 @@ pygame.font.init()
 # Setting up screen size
 
 userScreenInfo = pygame.display.Info()
-spyScreen_dimension = (userScreenInfo.current_w//2, userScreenInfo.current_h//2)
+spyScreen_dimension = (userScreenInfo.current_w, userScreenInfo.current_h)
 spyScreen = pygame.display.set_mode(spyScreen_dimension, pygame.NOFRAME)
 pygame.display.set_caption("Birds Of Chaos")
 
@@ -24,3 +27,9 @@ white = (255, 255, 255)
 
 defaultFont = pygame.font.Font(size = 50)
 testFont = pygame.freetype.Font("Square.ttf")
+
+
+# Setting up 
+
+clock = pygame.time.Clock()
+FPS = 60

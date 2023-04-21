@@ -1,5 +1,4 @@
 from pseudoWindow import *
-from random import randint
 
 class SimPart:
     def __init__(self, surface, x, y, size, color):
@@ -14,9 +13,9 @@ class SimPart:
 
 
 class Simon(PseudoWindow):
-    def __init__(self, coord=(0, 0), dim=(1, 1), closeCondition=0, color=(128, 128, 128, 1), gridSize=4):
+    def __init__(self, coord=(0, 0), dim=(1, 1), closeCond = False, color=(128, 128, 128, 1), gridSize=4):
         self.size = 50 #ask Baptiste
-        PseudoWindow.__init__(self, coord, dim, closeCondition, color)
+        PseudoWindow.__init__(self, coord, dim, closeCond, color)
         self.squares = []
         self.replayCountDown = -1
         for i in range(gridSize):
