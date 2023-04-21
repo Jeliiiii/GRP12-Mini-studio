@@ -50,10 +50,6 @@ bg_rect = bg.get_rect()
 scroll = 0
 tiles = math.ceil(window.width / bg_width) + 1
 
-# Blit the background image
-for i in range(0, tiles):
-    window.screen.blit(bg, (i * bg_width, 0))
-
 #On initialise la variable de cooldown du shoot
 shootCd = 0
 
@@ -96,11 +92,13 @@ while running:
 
             main_menu.draw()
             
-            
-            
     # On entre dans la boucle de jeu
     if play == True:
         
+        # Blit the background image
+        for i in range(0, tiles):
+            window.screen.blit(bg, (i * bg_width, 0))
+            
         # Gestion des événements pygame
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
