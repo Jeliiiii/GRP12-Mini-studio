@@ -61,13 +61,10 @@ menu = Menu(window)
 
 # Boucle du programme
 running = True
-
 # Boucle du jeu
 play = False
-
 # Boucle du menu
 mainmenu = True
-
 pause = False
 
 # On entre dans la boucle du programme (Le programme se lance)
@@ -113,8 +110,8 @@ while running:
                 running = False
                 pygame.quit()
             if menu.restart_game(events):
-                play = True
                 pause = False
+                
             
             menu.draw()
             
@@ -205,7 +202,7 @@ while running:
                 print("game over")#game over a set ici
                 is_hit = True
             #Destruction des balles une fois le field traversé sans avoir rien touché
-            if bullet.getCoordinates()[0] == window.width+20 :
+            if bullet.getCoordinates()[0] == window.width+20 or bullet.getCoordinates()[0] == 0 :
                 bulletList.remove(bullet)
 
     # Rafraîchissement de l'affichage

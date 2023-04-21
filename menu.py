@@ -65,4 +65,4 @@ class Menu:
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.restart_button.collidepoint(event.pos):
                    return True
-        return False 
+        return False
