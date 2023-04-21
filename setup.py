@@ -18,3 +18,9 @@ pygame.display.set_caption("Birds Of Chaos")
 
 black = (0, 0, 0)
 white = (255, 255, 255)
+
+
+# Font delcaration
+
+defaultFont = pygame.font.Font(size = 50)
+testFont = pygame.freetype.Font("Square.ttf")

@@ -6,6 +6,7 @@ import math
 import os
 from pseudoWindow import *
 from Simon import *
+from carthage import *
 
 
 # Changes pyhton3 working directory. This is a fix fro a problem only present on Baptiste's machine
@@ -29,12 +30,8 @@ mouse_pos = (500, 500)
 pygame.mouse.set_visible(0)
 
 
-# Font delcaration
-
-defaultFont = pygame.font.Font(size = 50)
-
-
-Simon((100, 100), (300, 300), color = (45, 177, 88, 1), menuSize = 16, borderSize = 8)
+Carthage((100, 100), (300, 300), color = (45, 177, 88, 1), menuSize = 16, borderSize = 8)
+Simon((300, 100), (300, 300), color = (45, 177, 88, 1), menuSize = 16, borderSize = 8)
 #PseudoWindow((600, 100), (300, 300), color = (45, 177, 88, 1), menuSize = 16, borderSize = 8)
     
 
@@ -45,6 +42,12 @@ while running:
     clock.tick(FPS)
 
 
+
+
+    #--TEST--
+
+
+
     # Gestion des événements pygame
     for event in pygame.event.get():
 
@@ -52,10 +55,15 @@ while running:
         if event.type == pygame.KEYDOWN:
             if event.key == pygame.K_ESCAPE:
                 running = False
+            else:
+                for trying in PseudoWindow.loadedPseudoWindows:
+                    trying.typeField.onTick( {"MOUSE_POS":[0,0], "MOUSE_BUTTONS":[], "ACTIVE_KEYS":[event.key]}, 1)
+
 
         # Manage pointer movement event
         if event.type == pygame.MOUSEMOTION:
             mouse_pos = event.pos
+        
 
         # Manage click events
         if event.type == pygame.MOUSEBUTTONDOWN:
@@ -72,6 +80,7 @@ while running:
                 #         print("Left Clikc on Content")
                 #     else:
                 #         print("Left Click somewhere else")
+
 
 
     # Resets the screen
