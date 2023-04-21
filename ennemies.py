@@ -1,15 +1,9 @@
 from rectangle import *
 from random import randint
 from weapons import *
+from copy import deepcopy
 
 
-class EnnemyBullet(Rectangle):
-    def __init__(self, screen, x, y, width, height, speed):
-        Rectangle.__init__(self, screen, x, y, width, height, speed)
-            
-    def go_on(self):
-        self.move_right()
-        self.draw((255, 255, 255))
 
 
 class Basic(Rectangle):
@@ -18,7 +12,6 @@ class Basic(Rectangle):
         self.height = window.hauteur
         self.left = 0
         self.doing = 0
-        self.bullet = Weapon(25, Bullet(window.screen, self.rect.x, self.rect.y, 20, 10, 10, "ennemy"))
         self.tearTimer = 20
         self.tearRemaining = self.tearTimer
         self.side = "ennemy"
@@ -29,28 +22,45 @@ class Basic(Rectangle):
     def go_on(self, objectsList):
         self.move_left()
         self.draw((0, 0, 0))
+        self.bullet = Weapon(25, Bullet(self.screen, self.rect.x, self.rect.y, 20, 10, 10, "ennemy"))#on met a jour la bullet (pas opti)
+
+        
         
         #check collisions au décor
-        collider = self.rect.collidelist(objectsList[0])
-        """if self.rect.collidelist(objectsList[0])!=-1:
-            print(self.rect.collidelist(objectsList[0]))"""
+
+        testUp = deepcopy(self.rect)
+        testDown = deepcopy(self.rect)
+
+        testUp[1] = self.getCoordinates()[1] -20
+        testDown[1] = self.getCoordinates()[1] +20
+
+        collider = testUp.collidelist(objectsList[0])
+
         
-        print(self.lastCollid)
-        if collider != -1 and collider !=self.lastCollid:
+        if collider != -1 :
             self.switchDir()
-            self.lastCollid = collider
+        else :
+            collider = testDown.collidelist(objectsList[0])
+            if collider != -1 :
+                self.switchDir()
+
 
         #check collisions entre ennemies
-        collider = self.rect.collidelist(objectsList[1])
 
         if self.rect in objectsList[1]:
             myself = objectsList[1].index(self.rect)
         else :
             myself = -1
 
+        
+        collider = testUp.collidelist(objectsList[1])
 
         if collider != -1 and collider!= myself: #si je touches quelque chose qui n'est pas moi
             self.switchDir()
+        else :
+            collider = testDown.collidelist(objectsList[1])
+            if collider != -1 and collider!= myself:
+                self.switchDir()
 
         #choice
         if self.doing == 0:

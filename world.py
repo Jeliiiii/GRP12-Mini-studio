@@ -8,7 +8,7 @@ ROWS = 32
 COLS = 401
 TILE_SIZE = window.hauteur // ROWS
 TILE_TYPES = 21
-level = 3
+level = 0
 
 #tiles liste
 img_list = []

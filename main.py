@@ -132,24 +132,25 @@ while running:
 
 
 
-    #Operations des balles
+    #Operations des balles (pas opti, a deplacer dans les class)
     for bullet in objectsList[2]:
         #Déplacement
         bullet.go_on()
         #Check des collisions avec les objets de objectsList
-        # for referencial in objectsList[0]:
-        #     if bullet.rect.colliderect(referencial):
-        #         objectsList[2].remove(bullet)
-        #         if referencial.destructible :
-        #             objectsList[0].remove(object)
-        #         break
-        # for referencial in objectsList[1]:
-        #     if bullet.rect.colliderect(referencial):
-        #         objectsList[2].remove(bullet)
-        #         objectsList[1].remove(referencial)
-        #         break
+        for referencial in objectsList[0]:
+            if bullet.rect.colliderect(referencial):
+                objectsList[2].remove(bullet)
+                if referencial.destructible :
+                    objectsList[0].remove(object)
+                break
+        for referencial in objectsList[1]:
+            if bullet.rect.colliderect(referencial):
+                if bullet.side != referencial.side :
+                    objectsList[2].remove(bullet)
+                    objectsList[1].remove(referencial)
+                    break
         #Destruction des balles une fois le field traversé sans avoir rien touché
-        if bullet.getCoordinates()[0] == window.largeur+20 :
+        if bullet.getCoordinates()[0] == window.largeur+20 or bullet.getCoordinates()[0] == 0 :
             objectsList[2].remove(bullet)
 
 
