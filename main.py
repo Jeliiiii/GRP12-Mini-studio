@@ -114,11 +114,11 @@ while running:
 
 
 
-    #On fait avancer chaque objets
+    #On fait avancer chaque objets du décor 
     for object in objectsList[0]:
         object.go_on()
 
-    #limitation de lags, surement etmporaire
+    #limitation de lags, surement tmporaire
     for stun in buffer :
         stun.move_left()
         if stun.getCoordinates()[0] <= window.largeur:

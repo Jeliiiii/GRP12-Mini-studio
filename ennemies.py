@@ -22,6 +22,7 @@ class Basic(Rectangle):
         self.tearTimer = 20
         self.tearRemaining = self.tearTimer
         self.side = "ennemy"
+        self.lastCollid = -1
 
     
 
@@ -31,9 +32,13 @@ class Basic(Rectangle):
         
         #check collisions au décor
         collider = self.rect.collidelist(objectsList[0])
-        print("aled")
-        if collider != -1 :
+        """if self.rect.collidelist(objectsList[0])!=-1:
+            print(self.rect.collidelist(objectsList[0]))"""
+        
+        print(self.lastCollid)
+        if collider != -1 and collider !=self.lastCollid:
             self.switchDir()
+            self.lastCollid = collider
 
         #check collisions entre ennemies
         collider = self.rect.collidelist(objectsList[1])
