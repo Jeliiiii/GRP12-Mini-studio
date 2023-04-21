@@ -6,6 +6,7 @@ from weapons import *
 from ennemies import *
 from rectangle import *
 from mainmenu import *
+from menu import *
 
 pygame.init()
 
@@ -56,6 +57,7 @@ shootCd = 0
 is_hit = False
 
 main_menu = MainMenu(window)
+menu = Menu(window)
 
 # Boucle du programme
 running = True
@@ -64,7 +66,9 @@ running = True
 play = False
 
 # Boucle du menu
-menu = True
+mainmenu = True
+
+pause = False
 
 # On entre dans la boucle du programme (Le programme se lance)
 while running:
@@ -73,7 +77,7 @@ while running:
     clock.tick(FPS)
     
     # On entre dans la boucle du menu
-    if menu == True:
+    if mainmenu == True:
         
         events = pygame.event.get()
         for event in events:
@@ -84,16 +88,35 @@ while running:
                 pygame.quit()
             if main_menu.handle_events(events):
                 print("Starting game...")
-                menu = False
+                mainmenu = False
                 play = True
             if main_menu.quit_game(events):
                 running = False
                 pygame.quit()
 
             main_menu.draw()
+    
+    if pause == True:
+        
+        events = pygame.event.get()
+        for event in events:
+            if event.type == pygame.MOUSEMOTION:
+                mouse_pos = event.pos
+            if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
+                pause = False
+                play = True
+            if menu.handle_events(events):
+                print("Reprise du jeu")
+                pause = False
+                play = True
+            if menu.quit_game(events):
+                running = False
+                pygame.quit()
+            
+            menu.draw()
             
     # On entre dans la boucle de jeu
-    if play == True:
+    if play == True and pause != True:
         
         # Blit the background image
         for i in range(0, tiles):
@@ -102,7 +125,7 @@ while running:
         # Gestion des événements pygame
         for event in pygame.event.get():
             if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-                running = False
+                pause = True
             elif event.type == pygame.KEYDOWN:
                 keys.append(event.key)
             elif event.type == pygame.KEYUP:
