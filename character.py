@@ -72,6 +72,7 @@ class Character:
                     self.rect.right = tile.rect.left
                 break
         
+        
     """def move_right(self):
     #Déplace le personnage vers la droite.
     self.rect.move_ip(self.speed, 0)

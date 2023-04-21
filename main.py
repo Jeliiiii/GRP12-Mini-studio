@@ -12,8 +12,6 @@ pygame.init()
 
 window = Window()
 
-
-
 clock = pygame.time.Clock()
 FPS = 60
 
@@ -77,7 +75,7 @@ while running:
         if event == pygame.MOUSEBUTTONDOWN == option:
             pygame.draw.rect(window.screen, (0, 0, 0), (0, 0, 100, 100))
 
-    # Déplacement continu avec collisions
+    # Déplacement continu avec collisions bordure
     if pygame.K_z in keys:
         rect.move_up()
     if pygame.K_s in keys:
@@ -138,17 +136,17 @@ while running:
         #Déplacement
         bullet.go_on()
         #Check des collisions avec les objets de objectsList
-        """for referencial in objectsList[0]:
-            if bullet.rect.colliderect(referencial):
-                objectsList[2].remove(bullet)
-                if referencial.destructible :
-                    objectsList[0].remove(object)
-                break
-        for referencial in objectsList[1]:
-            if bullet.rect.colliderect(referencial):
-                objectsList[2].remove(bullet)
-                objectsList[1].remove(referencial)
-                break"""
+        # for referencial in objectsList[0]:
+        #     if bullet.rect.colliderect(referencial):
+        #         objectsList[2].remove(bullet)
+        #         if referencial.destructible :
+        #             objectsList[0].remove(object)
+        #         break
+        # for referencial in objectsList[1]:
+        #     if bullet.rect.colliderect(referencial):
+        #         objectsList[2].remove(bullet)
+        #         objectsList[1].remove(referencial)
+        #         break
         #Destruction des balles une fois le field traversé sans avoir rien touché
         if bullet.getCoordinates()[0] == window.largeur+20 :
             objectsList[2].remove(bullet)
