@@ -3,6 +3,7 @@
 import pygame
 from character import *
 import math
+from time import sleep
 import os
 
 
@@ -51,34 +52,28 @@ pygame.mouse.set_visible(0)
 defaultFont = pygame.font.Font(size = 50)
 
 
-# Creating "window" class, an UI element of the spy's screen
+# "window" class, the main UI element of the spy's screen
 
 class PseudoWindow:
     # Stores every "window" to make them interactive in main loop
     loadedPseudoWindows = []
 
-    def __init__(self, coord=(0, 0), dim=(1, 1), closeCondition=0, color=(128, 128, 128, 1), borderSize=6, menuSize=13):
+    def __init__(self, coord=(0, 0), dim=(1, 1), color=(128, 128, 128, 1), borderSize=6, menuSize=26):
         # Saves the object caracteristics
         self.coord = coord
         self.dim = dim
-        self.closeCond = closeCondition
         self.color = color
-        self.borderSize = borderSize
-        self.menuSize = menuSize*2 if menuSize > 10 else 20
+        self.borderSize = 5
+        self.menuSize = 20
 
         # Creates the "window" components for future displaying. Calculus are present to size and position Surf correctly within the Rects
-        self.Content_Rect = pygame.Rect(self.coord, self.dim)
-        self.Band_Rect = pygame.Rect(self.coord, (self.dim[0], self.menuSize))
-        self.Content = pygame.Surface((self.dim[0] - 2*self.borderSize, self.dim[1] - self.borderSize - self.menuSize))
-        self.Content.fill(white)
-
-        # Determine needed coordinates to draw the line of the cross and create it's hitbox
-        self.dotUp = self.coord[0] + self.menuSize // 8
-        self.dotDown = self.dotUp + self.menuSize - self.menuSize // 4
-        self.dotRight = self.coord[0] + self.dim[0] - self.borderSize - self.menuSize // 8
-        self.dotLeft = self.dotRight - self.menuSize + self.menuSize // 8
-
-        self.Cross = pygame.Rect((self.dotLeft, self.dotUp), (self.dotRight - self.dotLeft, self.dotDown - self.dotUp))
+        self.rectBorder = pygame.Rect(self.coord, self.dim)
+        self.rectMenu = pygame.Rect(self.coord, (self.dim[0], self.menuSize))
+        self.surfContent = pygame.Surface((self.dim[0] - 2*self.borderSize, self.dim[1] - self.borderSize - self.menuSize))
+        self.rectContent = pygame.Surface.get_rect()
+        self.surfContent.fill(white)
+        self.Cross = pygame.Surface((16, 16))
+        # self.Cross.fill((255, 0, 0))
 
         PseudoWindow.loadedPseudoWindows.append(self)
 
@@ -89,14 +84,14 @@ class PseudoWindow:
         return f"coordinates: {self.coord}, dimensions: {self.dim}, close method: {self.closeCond}, color: {self.color}, border size: {self.borderSize}, menu size: {self.menuSize}"
 
     def show(self):
-        pygame.draw.rect(spyScreen, self.color, self.Content_Rect, self.borderSize)
-        pygame.draw.rect(spyScreen, self.color, self.Band_Rect)
-        spyScreen.blit(self.Content, (self.coord[0] + self.borderSize, self.coord[1] + self.menuSize))
-
-        pygame.draw.line(spyScreen, white, (self.dotRight, self.dotUp), (self.dotLeft, self.dotDown), 3)
-        pygame.draw.line(spyScreen, white, (self.dotRight, self.dotDown), (self.dotLeft, self.dotUp), 3)
+        pygame.draw.rect(spyScreen, self.color, self.rectBorder, self.borderSize)
+        pygame.draw.rect(spyScreen, self.color, self.rectMenu)
+        pygame.draw.rect(spyScreen, (255, 0, 0), self.Cross.get_rect())
+        spyScreen.blit(self.surfContent, (self.coord[0] + self.borderSize, self.coord[1] + self.menuSize))
+        # spyScreen.blit(self.Cross, (self.coord[0] + self.dim[0] - self.borderSize - 18, self.coord[1] + 2))
 
 PseudoWindow((100, 100), (300, 300), color = (45, 177, 88, 1), menuSize = 16, borderSize = 8)
+# PseudoWindow((200, 30), (300, 300), color = (45, 177, 88, 1), menuSize = 16, borderSize = 8)
     
 
 # Boucle de jeu
@@ -123,14 +118,15 @@ while running:
             if pygame.mouse.get_pressed(3)[0]:
                 print(PseudoWindow.loadedPseudoWindows)
                 for cur in range(len(PseudoWindow.loadedPseudoWindows)):
-                    if PseudoWindow.loadedPseudoWindows[cur].Cross.collidepoint(mouse_pos):
-                        print("Left Click on CROSS")
+                    if PseudoWindow.loadedPseudoWindows[cur].Cross.get_rect().collidepoint(mouse_pos):
+
                         del PseudoWindow.loadedPseudoWindows[cur]
                         print("element removed from list")
-                #     elif instance.Content.get_rect().collidepoint(mouse_pos):
-                #         print("Left Clikc on Content")
+                #     elif instance.surfContent.get_rect().collidepoint(mouse_pos):
+                #         print("Left Click on surfContent")
                 #     else:
                 #         print("Left Click somewhere else")
+                #         PseudoWindow.loadedPseudoWindows[cur].show()
 
 
     # Resets the screen
