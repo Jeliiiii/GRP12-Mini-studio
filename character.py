@@ -29,6 +29,12 @@ class Character:
         self.rect.move_ip(0, -self.speed)
         if self.rect.top < 0:
             self.rect.top = 0
+        #comprend la collision mais bug a cose du scrolling (ex: quand tu mantient d il se stop mais quand tu lache il traverse)
+        for tile in objectsList[0]:
+            if self.rect.colliderect(tile.rect):
+                if self.speed > 0:
+                    self.rect.top = tile.rect.left
+                break
 
     def move_down(self):
         #Déplace le personnage vers le bas.
@@ -36,17 +42,53 @@ class Character:
         if self.rect.bottom > self.screen.get_height():
             self.rect.bottom = self.screen.get_height()
 
+        for tile in objectsList[0]:
+            if self.rect.colliderect(tile.rect):
+                if self.speed > 0:
+                    self.rect.bottom = tile.rect.left
+                break
+
     def move_left(self):
         #Déplace le personnage vers la gauche.
         self.rect.move_ip(-self.speed, 0)
         if self.rect.left < 0:
             self.rect.left = 0
 
+        for tile in objectsList[0]:
+            if self.rect.colliderect(tile.rect):
+                if self.speed > 0:
+                    self.rect.left = tile.rect.left
+                break
+
     def move_right(self):
         #Déplace le personnage vers la droite.
         self.rect.move_ip(self.speed, 0)
         if self.rect.right > self.screen.get_width():
             self.rect.right = self.screen.get_width()
+        
+        for tile in objectsList[0]:
+            if self.rect.colliderect(tile.rect):
+                if self.speed > 0:
+                    self.rect.right = tile.rect.left
+                break
+        
+    """def move_right(self):
+    #Déplace le personnage vers la droite.
+    self.rect.move_ip(self.speed, 0)
+    if self.rect.right > self.screen.get_width():
+        self.rect.right = self.screen.get_width()
+    
+    for tile in objectsList[0]:
+        if self.rect.colliderect(tile.rect):
+            self.rect.left = tile.rect.right
+            break"""
+
+    def check_collisions(self, objectsList):
+        for tile in objectsList[0]:
+            if self.rect.colliderect(tile.rect):
+                self.show_loss_window()
+                break
+
 
     def draw(self):
         #dessine le personnage sur l'écran.
