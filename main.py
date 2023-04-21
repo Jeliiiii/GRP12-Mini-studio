@@ -116,7 +116,7 @@ while running:
             menu.draw()
             
     # On entre dans la boucle de jeu
-    if play == True and pause != True:
+    if play == True and pause == False:
         
         # Blit the background image
         for i in range(0, tiles):
