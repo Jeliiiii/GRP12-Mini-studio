@@ -8,6 +8,7 @@ level = 0
 class WorldActor:
 
     def __init__(self):
+        self.scrollSpeed = 1
         self.loadedChunks = []
         self.activeChunks = []
         self.archivedChunks = []

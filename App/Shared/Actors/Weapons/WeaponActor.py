@@ -1,8 +1,7 @@
 import pygame
 
 class WeaponActor:
-    def __init__(self, tear, bullet, shootCooldownRef):
-        self.tear = tear
+    def __init__(self, bullet, shootCooldownRef):
         self.bullet = bullet
         self.shootCooldownRef = shootCooldownRef
         self.shootCooldownRemaining = 0
