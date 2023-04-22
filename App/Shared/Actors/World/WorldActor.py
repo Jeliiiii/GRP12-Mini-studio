@@ -8,14 +8,9 @@ level = 0
 class WorldActor:
 
     def __init__(self):
-         #Height in tiles unit
-         #width in tiles unit - 16:9 sceen ratio round to the upper value
-        pass
-        
-
-
-
-
+        self.loadedChunks = []
+        self.activeChunks = []
+        self.archivedChunks = []
 
 
 

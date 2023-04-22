@@ -8,6 +8,7 @@ def mapWorldCSVData(self, worldCSVData):
         chunk = mapChunkCSVData(chunkCSVData)
         chunkList.append(chunk)
     world.chunkList = chunkList
+    return world
 
 def mapChunkCSVData(self, chunkCSVData):
     chunk = ChunkActor()
@@ -16,10 +17,8 @@ def mapChunkCSVData(self, chunkCSVData):
     for y, row in chunkCSVData:
         for x, tile in row:
             if tile != -1: # -1 = empty tile
-                if tile > -1 and tile < 9:
+                if tile > -1 and tile < 11:
                     obstacle = ObstacleActor(x, y, tile)
-                elif tile >= 9 and tile <= 10:
-                    pass #murs destructibles/ créables par l'opérateur
                 elif tile == 11 and tile <= 14:
                     pass # 11 : shield faibles -> Destructibles
                 elif tile == 12:

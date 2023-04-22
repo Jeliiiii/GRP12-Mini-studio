@@ -1,42 +1,44 @@
-from threading import Thread
-from Shared.Networking.Server import Server
-import socket
-from Shared.Actors.UI.ButtonActor import ButtonActor
-from .Menus.MenuScene import MenuScene
+from Shared.Actors.Characters.AgentCharacterActor import AgentCharacterActor
+from Shared.Actors.Characters.Ennemies.EnnemyActor import EnnemyActor
+from .Scene import Scene
 import pygame
 
-class GameAgentPovScene(MenuScene):
+class GameAgentPovScene(Scene):
     
     def __init__(self):
-        super().__init__("HostInterface")
-
+        super().__init__()
         (windowWidth, windowHeight) = pygame.display.get_window_size()
-        HOST = socket.gethostname()
-        PORT = 5000
 
-        self.menu.buttonsList=[ButtonActor("Host", lambda: Thread(target=Server().start, args=(HOST, PORT)).start()),
-                               ButtonActor("Back", self.switchMainMenuScene)
-                                ]
-        
-        
-        buttonsAmount = self.menu.getButtonsAmount()
-        buttonsFontSize = windowHeight/16
-        buttonsFont = pygame.freetype.Font("App\Shared\Assets\Graphics\Fonts\Square.ttf")
-        key=0
-        for button in self.menu.buttonsList:
-            button.renderDefaultSprite(buttonsFont, buttonsFontSize, "white")
-            button.moveSpriteOnCenter(windowWidth/2, (key+2)*windowHeight/(buttonsAmount*2))
-            key+=1
-
-
+        self.character = AgentCharacterActor(100,100, 30, 30, speed=70)
+        self.bulletList = []
+        self.ennemiesList = [EnnemyActor(600, 300, 20, 100, -5, 0), EnnemyActor(700, 400, 20, 100, -5, 0)]
 
     def updateScene(self, inputs, dt):
-        self.menu.handleMouse(inputs["MOUSE_POS"][0], inputs["MOUSE_POS"][1], inputs["MOUSE_BUTTONS"])
+        for bullet in self.bulletList:
+            bullet.onTick(dt)
+            #collision system - to split in CollisionSystem.testList(bulletList, ennemiesList)
+            collidedEnnemyId = bullet.rect.collidelist([ennemy.rect for ennemy in self.ennemiesList])
+            if collidedEnnemyId != -1:
+                self.ennemiesList[collidedEnnemyId].shot(bullet.damage)
+                if self.ennemiesList[collidedEnnemyId].health <= 0:
+                    self.ennemiesList.remove(self.ennemiesList[collidedEnnemyId])
+                self.bulletList.remove(bullet)
+
+
+        for ennemy in self.ennemiesList:
+            bulletList = ennemy.onTick(dt)
+            self.bulletList += bulletList
+        bulletList = self.character.onTick(inputs, dt)
+        self.bulletList += bulletList
 
 
     def drawScene(self, window):
         window.fill( "#111126" )
-        self.menu.draw(window)
+        self.character.draw(window)
+        for bullet in self.bulletList:
+            bullet.draw(window)
+        for ennemy in self.ennemiesList:
+            ennemy.draw(window)
 
 
     def switchMainMenuScene(self):

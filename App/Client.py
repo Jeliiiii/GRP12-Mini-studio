@@ -47,14 +47,13 @@ class Client:
         if self.currentScene.nextScene:
             self.currentScene = self.currentScene.nextScene
 
-
     def main(self):
         while self.currentScene != "QUIT_CLIENT":
-            dt = self.clock.tick(60)
+            dt = self.clock.tick(60)/1000 #time since last frame in seconds
 
             #Get Inputs
             self.updateInputsEvents()
-            
+
             #Scene Manager
             self.currentScene.updateScene(self.inputs,dt)
             self.currentScene.drawScene(self.window)

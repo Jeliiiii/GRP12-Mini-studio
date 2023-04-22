@@ -1,75 +1,48 @@
-from rectangle import *
+from ...Weapons.WeaponActor import WeaponActor
+from ...BulletActor import BulletActor
 from random import randint
-from weapons import *
+import pygame
+
+class EnnemyActor:
+    def __init__(self, x, y, width, height, velX, velY):
+        self.rect = pygame.Rect(x, y, width, height)
+        self.winHeight = 720
+        self.weapon = WeaponActor(25, BulletActor, 0.7)
+        self.side = "ennemy"
+        self.velocity = [velX, velY]
+        self.health = 10
+
+    def shot(self, damage):
+        self.health -= damage
+
+    def onTick(self, dt):
+        bulletList = []
+        self.rect.x += self.velocity[0] * dt * 10
+        self.rect.y += self.velocity[1] * dt * 10
+        
+        if self.rect.y <= 0 :
+            self.rect.y = 0
+            self.velocity[1] = -self.velocity[1]
+        elif self.rect.y >= self.winHeight :
+            self.rect.y = self.winHeight
+            self.velocity[1] = -self.velocity[1]
+
+        if self.weapon.shootCooldownRemaining == 0:
+            bulletList = self.weapon.fireDouble(self.rect.x, self.rect.y, -70, 40)
+        self.weapon.onTick(dt)
+        return bulletList
+
+    def draw(self, window):
+        #dessine le personnage sur l'écran.
+        pygame.draw.rect(window, "red", self.rect)
 
 
-class EnnemyBullet(Rectangle):
-    def __init__(self, screen, x, y, width, height, speed):
-        Rectangle.__init__(self, screen, x, y, width, height, speed)
+# class EnnemyBullet(Rectangle):
+#     def __init__(self, screen, x, y, width, height, speed):
+#         Rectangle.__init__(self, screen, x, y, width, height, speed)
             
-    def go_on(self):
-        self.move_right()
-        self.draw((255, 255, 255))
+#     def go_on(self):
+#         self.move_right()
+#         self.draw((255, 255, 255))
 
 
-class Basic(Rectangle):
-    def __init__(self, window, x, y, width, height, speed):
-        Rectangle.__init__(self, window.screen, x, y, width, height, speed)
-        self.height = window.hauteur
-        self.left = 0
-        self.doing = 0
-        self.bullet = Weapon(25, Bullet)
-        self.tearTimer = 20
-        self.tearRemaining = self.tearTimer
-        self.side = "ennemy"
-
-    def go_on(self):
-        self.move_left()
-        self.draw((0, 0, 0))
-
-        if self.left == 0:
-            if self.getCoordinates()[1]-20*self.speed < 0 :
-                self.doing = self.move_down
-            elif self.getCoordinates()[1]+20*self.speed > self.height :
-                self.doing = self.move_up
-            elif randint(1,2)==1:
-                self.doing = self.move_up
-            else:
-                self.doing = self.move_down
-            self.left = 20
-        else:
-            self.doing()
-            self.left-=1
-            if self.left == 0:
-                self.doing = 0
-
-        self.tearRemaining -= 1
-
-
-
-class Idle(Rectangle):
-    def __init__(self, window, x, y, width, height, speed):
-        Rectangle.__init__(self, window.screen, x, y, width, height, speed)
-        self.height = window.height
-        self.left = 40
-        self.doing = self.move_down
-        self.bullet = Weapon(25, VerticalBullet)
-        self.tearTimer = 20
-        self.tearRemaining = self.tearTimer
-        self.side = "ennemy"
-
-    def go_on(self):
-        self.move_left()
-        self.draw((0, 0, 0))
-
-        if self.left == 0:
-            if self.doing == self.move_up:
-                self.doing = self.move_down
-            else :
-                self.doing = self.move_up
-            self.left = 40
-        else:
-            self.doing()
-            self.left -=1
-
-        self.tearRemaining -= 1
