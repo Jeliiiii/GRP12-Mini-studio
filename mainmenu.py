@@ -33,7 +33,6 @@ class MainMenu:
         for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
-                quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 # Vérifie si le bouton "play" a été cliqué
                 if self.play_button.collidepoint(event.pos):
@@ -45,7 +44,6 @@ class MainMenu:
         for event in events:
             if event.type == pygame.QUIT:
                 pygame.quit()
-                quit()
             if event.type == pygame.MOUSEBUTTONDOWN:
                 if self.quit_button.collidepoint(event.pos):
                    return True

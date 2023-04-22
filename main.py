@@ -92,9 +92,8 @@ while running:
                 play = True
             if main_menu.quit_game(events):
                 running = False
-                pygame.quit()
-
-            main_menu.draw()
+                
+        main_menu.draw()
     
     if pause == True:
         
@@ -111,9 +110,8 @@ while running:
                 play = True
             if menu.quit_game(events):
                 running = False
-                pygame.quit()
             
-            menu.draw()
+        menu.draw()
             
     # On entre dans la boucle de jeu
     if play == True and pause == False:
@@ -128,7 +126,7 @@ while running:
                 pause = True
             elif event.type == pygame.KEYDOWN:
                 keys.append(event.key)
-            elif event.type == pygame.KEYUP:
+            elif event.type == pygame.KEYUP and event.key != pygame.K_ESCAPE:
                 keys.remove(event.key)
             if event.type == pygame.MOUSEMOTION:
                 mouse_pos = event.pos
