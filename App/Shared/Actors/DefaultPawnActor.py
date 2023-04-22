@@ -19,6 +19,9 @@ class DefaultPawnActor:
         self.hitBox.y += self.velocity[1] * dt * 10
         (self.sprite[1].x, self.sprite[1].y) = (self.hitBox.x, self.hitBox.y)
 
+    def onTick(self, dt):
+        self.move(dt)
+
     def draw(self, window):
         window.blit(self.sprite[0], self.sprite[1])
 

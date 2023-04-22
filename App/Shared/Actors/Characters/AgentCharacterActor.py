@@ -4,7 +4,7 @@ from ..Weapons.WeaponActor import WeaponActor
 from ..BulletActor import BulletActor
 
 class AgentCharacterActor(DefaultPawnActor):
-    def __init__(self, x, y, surface, speed=50, weapon=WeaponActor(BulletActor, 0.5)):
+    def __init__(self, x, y, surface, weapon, speed=50):
         super().__init__(x, y, surface)
         self.speed = speed
         self.weapon = weapon

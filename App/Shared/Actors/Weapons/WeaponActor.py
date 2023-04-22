@@ -1,18 +1,19 @@
 import pygame
 
 class WeaponActor:
-    def __init__(self, bullet, shootCooldownRef):
+    def __init__(self, bullet, bulletSurface, shootCooldownRef):
         self.bullet = bullet
+        self.bulletSurface = bulletSurface
         self.shootCooldownRef = shootCooldownRef
         self.shootCooldownRemaining = 0
 
     def fire(self, x, y, velX, velY):
-        bulletList = [self.bullet(x, y, velX, velY)]
+        bulletList = [self.bullet(x, y, self.bulletSurface, velX=velX, velY=velY)]
         self.shootCooldownRemaining = self.shootCooldownRef
         return bulletList
     
     def fireDouble(self, x, y, velX, velY):
-        bulletList = [self.bullet(x, y, velX, velY),self.bullet(x, y, velX, -velY),self.bullet(x, y, velX, 0)]
+        bulletList = [self.bullet(x, y, self.bulletSurface, velX=velX, velY=velY),self.bullet(x, y, self.bulletSurface, velX=velX, velY=-velY)]
         self.shootCooldownRemaining = self.shootCooldownRef
         return bulletList
     

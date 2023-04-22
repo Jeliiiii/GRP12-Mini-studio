@@ -5,20 +5,19 @@ from random import randint
 import pygame
 
 class EnnemyActor(DefaultPawnActor):
-    def __init__(self, x, y, surface, velX=0, velY=0):
+    def __init__(self, x, y, surface, weapon, velX=0, velY=0):
         super().__init__(x, y, surface, velX=velX, velY=velY)
         self.winHeight = 720
-        self.weapon = WeaponActor(BulletActor, 0.7)
+        self.weapon = weapon
         self.health = 10
 
     def shot(self, damage):
         self.health -= damage
-        print(self.health)
 
     def onTick(self, dt):
+        super().onTick(dt)
         bulletList = []
-        self.hitBox.x += self.velocity[0] * dt * 10
-        self.hitBox.y += self.velocity[1] * dt * 10
+        
         
         if self.hitBox.y <= 0 :
             self.hitBox.y = self.sprite[1].x = 0
