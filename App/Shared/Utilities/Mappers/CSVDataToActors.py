@@ -9,7 +9,7 @@ from ...Actors.BulletActor import BulletActor
 def mapWorldCSVData(world, worldCSVData):
     chunkList = []
     for chunkId, chunkCSVData in enumerate(worldCSVData):
-        chunk = mapChunkCSVData(world, chunkCSVData, chunkId+1)
+        chunk = mapChunkCSVData(world, chunkCSVData, chunkId)
         chunkList.append(chunk)
     return chunkList
 
@@ -22,7 +22,7 @@ def mapChunkCSVData(world, chunkCSVData, chunkId):
         for x, tile in enumerate(row):
             if tile != -1: # -1 = empty tile
                 if tile > -1 and tile < 11:
-                    obstaclesList.append(DefaultPawnActor(x*tileSize*chunkId, y*tileSize, world.spritesSurfaces["DEFAULT_WALL"], velX=world.scrollSpeedX))
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(chunkId*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["DEFAULT_WALL"], velX=world.scrollSpeedX))
                 elif tile == 11 and tile <= 14:
                     pass # 11 : shield faibles -> Destructibles
                 elif tile == 13 :
@@ -30,11 +30,11 @@ def mapChunkCSVData(world, chunkCSVData, chunkId):
                 elif tile == 14 :
                     pass #14 : non utilisé
                 elif tile == 15 : 
-                    ennemiesList.append(EnnemyActor(x*tileSize*chunkId, y*tileSize, world.spritesSurfaces["DEFAULT_ENNEMY"], WeaponActor(BulletActor, world.spritesSurfaces["KIWI_BULLET"], 0.5), velX=world.scrollSpeedX))
+                    ennemiesList.append(EnnemyActor(x*tileSize*chunkId+(chunkId*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["DEFAULT_ENNEMY"], WeaponActor(BulletActor, world.spritesSurfaces["KIWI_BULLET"], 0.5), velX=world.scrollSpeedX))
                     #enemy = Character(window.screen, x*TILE_SIZE, y*TILE_SIZE, 50, 100, 5) #15 : ennemi horizontal
                     pass
                 elif tile == 16 : 
-                    ennemiesList.append(EnnemyActor(x*tileSize*chunkId, y*tileSize, world.spritesSurfaces["DEFAULT_ENNEMY"], WeaponActor(BulletActor, world.spritesSurfaces["KIWI_BULLET"], 0.5), velX=world.scrollSpeedX, velY=world.scrollSpeedX)) #16 : ennemi vertical
+                    ennemiesList.append(EnnemyActor(x*tileSize*chunkId+(chunkId*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["DEFAULT_ENNEMY"], WeaponActor(BulletActor, world.spritesSurfaces["KIWI_BULLET"], 0.5), velX=world.scrollSpeedX, velY=world.scrollSpeedX)) #16 : ennemi vertical
                 elif tile == 17 :
                     pass # 17 : mur électrifié
                 elif tile >= 18 and tile <= 19 :

@@ -12,7 +12,7 @@ class WorldActor:
         self.scrollSpeedX = -3
         
         worldCSVData = loadWorldFromCSV(self, levelId)
-        self.tileSize = round(self.winHeight/self.tHeight)
+        self.tileSize = int(self.winHeight/self.tHeight)
         self.loadImages()
         self.agentCharacter = AgentCharacterActor(500, 300,self.spritesSurfaces["CHARACTER"], WeaponActor(BulletActor, self.spritesSurfaces["KIWI_BULLET"], 0.5), speed=self.tileSize/10)
         self.chunksList = mapWorldCSVData(self, worldCSVData)
@@ -29,7 +29,7 @@ class WorldActor:
         img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Tiles/Blocks/brick_wall.png"))
         wallSurface = pygame.transform.scale(img, (tileSize,tileSize))
         img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Miscs/kiwi_fruit_bullet.png"))
-        bulletSurface = pygame.transform.scale(img, (tileSize/3,tileSize/3))
+        bulletSurface = pygame.transform.scale(img, (tileSize/2,tileSize/2))
         self.spritesSurfaces = {"CHARACTER":characterSurface,
                                 "DEFAULT_ENNEMY":ennemySurface,
                                 "DEFAULT_WALL":wallSurface,
