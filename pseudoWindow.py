@@ -1,6 +1,5 @@
 from setup import *
-
-
+from time import sleep
 # Creating "window" class, an UI element of the spy's screen
 
 class PseudoWindow:
@@ -47,27 +46,42 @@ class PseudoWindow:
         PseudoWindow.loadedPseudoWindows.append(self)
 
     def __del__(self):
-        print("/!\\ Called destructor /!\\")
+        print("/!\\ Thank you for calling del ! Here is target priority : ", self.priority)
+        if PseudoWindow.loadedPseudoWindows:
+            for instance in PseudoWindow.loadedPseudoWindows:
+                if instance.priority > self.priority:
+                    instance.priority -= 1
 
     # def __str__(self):
     #     return f"coordinates: {self.coord}, dimensions: {self.dim}, close method: {self.closeCond}, color: {self.color}, border size: {self.borderSize}, menu size: {self.menuSize}"
 
+    # Essentially makes selected windows on number 1 priority, and shift the other windows accrodingly
+    def focusOn(self):
+        print("Thank you for calling focusOn() ! Here is target priority : ", self.priority)
+        if PseudoWindow.loadedPseudoWindows and self.priority != 1:
+            for instance in PseudoWindow.loadedPseudoWindows:
+                if instance.priority != self.priority and instance.priority + 1 <= self.priority:
+                    instance.priority += 1
+        self.priority = 1
+
     def show(self):
+
         # Draws the effective border to the window
         pygame.draw.rect(spyScreen, self.color, self.rectWhole)
 
         # Draw the top band to look like a menu
         pygame.draw.rect(spyScreen, self.color, self.rectMenu)
 
+        """ TEMPORARY DISPLAYING """
+        self.surfContent.fill(white)
+        self.surfContent.blit(defaultFont.render(f"{self.priority}", True, (160, 50, 200)), (10, 10))
+
         # Blit the Content of the window
-        # spyScreen.blit(self.surfContent, (self.coord[0] + self.borderSize, self.coord[1] + self.menuSize))
         spyScreen.blit(self.surfContent, (self.rectContent.x, self.rectContent.y))
 
         # Blit the Cross of the window
         spyScreen.blit(self.surfCross, (self.rectCross.x, self.rectCross.y))
 
-        """ TEMPORARY DISPLAYING """
-        self.surfContent.blit(defaultFont.render(f"{self.priority}", True, black), (self.rectContent.x + 10, self.rectContent.y + 10))
 
     def clicked(self, coords):
         print("coords : ", coords, ", self.rectCross : ", self.rectCross)

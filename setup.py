@@ -1,5 +1,6 @@
 import pygame
 import random
+random.seed()
 import time
 import os
 
