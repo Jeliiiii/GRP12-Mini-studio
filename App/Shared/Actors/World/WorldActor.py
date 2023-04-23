@@ -44,7 +44,6 @@ class WorldActor:
     def onTick(self, inputs, dt):
         self.background[1].x += self.scrollSpeedX * dt * 4 
         self.scrollXDistance += self.scrollSpeedX * dt * 10  
-        print(self.scrollXDistance, "; ", -self.tChunkWidth*self.tileSize)
         if self.scrollXDistance <= -self.tChunkWidth*self.tileSize:
             self.scrollXDistance += self.tChunkWidth*self.tileSize
             self.chunksList["ACTIVE"] = self.chunksList["ACTIVE"][1:] + self.chunksList["LOADED"][:1]
