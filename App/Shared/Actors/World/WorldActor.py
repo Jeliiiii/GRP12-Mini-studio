@@ -15,31 +15,37 @@ class WorldActor:
         self.tileSize = int(self.winHeight/self.tHeight)
         self.loadImages()
         self.background = (self.spritesSurfaces["BACKGROUND"], self.spritesSurfaces["BACKGROUND"].get_rect())
-        self.agentCharacter = AgentCharacterActor(500, 300,self.spritesSurfaces["CHARACTER"], WeaponActor(BulletActor, self.spritesSurfaces["KIWI_BULLET"], 0.5), speed=self.tileSize/10)
+        self.agentCharacter = AgentCharacterActor(500, 300,self.spritesSurfaces["CHARACTER"], WeaponActor(BulletActor, self.spritesSurfaces["KIWI_BULLET"], 0.5), speed=self.tileSize)
         self.chunksList = {"LOADED":[],"ACTIVE":[],"ARCHIVED":[]}
         self.chunksList["LOADED"] = mapWorldCSVData(self, worldCSVData)
-        self.chunksList["ACTIVE"] = self.chunksList["LOADED"][:2]
-        self.chunksList["LOADED"] = self.chunksList["LOADED"][2:]
+        self.scrollLoadedChunksToActive(2)
         self.bulletList = []
 
     def loadImages(self):
         tileSize = self.tileSize
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Characters/dodo_sideview.png"))
         characterSurface = pygame.transform.scale(img, (tileSize, tileSize))
+
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Characters/robot_bird.png"))
         ennemySurface = pygame.transform.scale(img, (tileSize,tileSize))
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Backgrounds/japanese_night_city.png"))
         backgroundSurface = pygame.transform.scale(img, (self.winWidth*img.get_height()/self.winHeight,self.winHeight))
         img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Tiles/Blocks/brick_wall.png"))
         wallSurface = pygame.transform.scale(img, (tileSize,tileSize))
+        
         img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Miscs/kiwi_fruit_bullet.png"))
         bulletSurface = pygame.transform.scale(img, (tileSize/2,tileSize/2))
+        
+
         self.spritesSurfaces = {"CHARACTER":characterSurface,
                                 "DEFAULT_ENNEMY":ennemySurface,
                                 "DEFAULT_WALL":wallSurface,
                                 "BACKGROUND":backgroundSurface,
                                 "KIWI_BULLET":bulletSurface}
 
+    def scrollLoadedChunksToActive(self, amountToScroll):
+        self.chunksList["ACTIVE"] = self.chunksList["ACTIVE"][amountToScroll:] + self.chunksList["LOADED"][:amountToScroll]
+        self.chunksList["LOADED"] = self.chunksList["LOADED"][amountToScroll:]
 
     def onTick(self, inputs, dt):
         self.background[1].x += self.scrollSpeedX * dt * 4 
@@ -48,29 +54,32 @@ class WorldActor:
             self.scrollXDistance += self.tChunkWidth*self.tileSize
             self.chunksList["ACTIVE"] = self.chunksList["ACTIVE"][1:] + self.chunksList["LOADED"][:1]
             self.chunksList["LOADED"] = self.chunksList["LOADED"][1:]
-            print("newChunkActive")
 
         for bullet in self.bulletList:
             bullet.onTick(dt)
-            #collision system - to split in CollisionSystem.testList(bulletList, ennemiesList)
-            for chunk in self.chunksList["ACTIVE"]:
-                collidedEnnemyId = bullet.hitBox.collidelist([ennemy.hitBox for ennemy in chunk.ennemiesList])
-                if collidedEnnemyId != -1:
-                    chunk.ennemiesList[collidedEnnemyId].shot(bullet.damage)
-                    if chunk.ennemiesList[collidedEnnemyId].health <= 0:
-                        chunk.ennemiesList.remove(chunk.ennemiesList[collidedEnnemyId])
-                        self.bulletList.remove(bullet)
-                        break
+            if bullet.isInWindow((self.winWidth, self.winHeight)):
+                #collision system - to split in CollisionSystem.testList(bulletList, ennemiesList)
+                for chunk in self.chunksList["ACTIVE"]:
+                    collidedEnnemyId = bullet.hitBox.collidelist([ennemy.hitBox for ennemy in chunk.ennemiesList])
+                    if collidedEnnemyId != -1:
+                        chunk.ennemiesList[collidedEnnemyId].shot(bullet.damage)
+                        if chunk.ennemiesList[collidedEnnemyId].health <= 0:
+                            chunk.ennemiesList.remove(chunk.ennemiesList[collidedEnnemyId])
+                            self.bulletList.remove(bullet)
+                            break
+            else:
+                self.bulletList.remove(bullet)
 
         for chunk in self.chunksList["ACTIVE"]:
             for ennemy in chunk.ennemiesList:
-                bulletList = ennemy.onTick(dt)
+                bulletList = ennemy.onTick(dt,(self.winWidth, self.winHeight))
                 self.bulletList += bulletList
-            bulletList = self.agentCharacter.onTick(inputs, dt)
-            self.bulletList += bulletList
 
             for obstacle in chunk.obstaclesList:
                 obstacle.onTick(dt)
+
+        bulletList = self.agentCharacter.onTick(inputs, dt)
+        self.bulletList += bulletList
 
     def draw(self, window):
         window.blit(self.background[0], self.background[1])

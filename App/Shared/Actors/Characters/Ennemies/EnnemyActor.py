@@ -14,7 +14,7 @@ class EnnemyActor(DefaultPawnActor):
     def shot(self, damage):
         self.health -= damage
 
-    def onTick(self, dt):
+    def onTick(self, dt, windowSize):
         super().onTick(dt)
         bulletList = []
         
@@ -26,7 +26,7 @@ class EnnemyActor(DefaultPawnActor):
             self.hitBox.y = self.sprite[1].y = self.winHeight
             self.velocity[1] = -self.velocity[1]
 
-        if self.weapon.shootCooldownRemaining == 0:
+        if self.weapon.shootCooldownRemaining == 0 and self.isInWindow(windowSize):
             bulletList = self.weapon.fireDouble(self.hitBox.x, self.hitBox.centery, -70, 40)
         self.weapon.onTick(dt)
         return bulletList

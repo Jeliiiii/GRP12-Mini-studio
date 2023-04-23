@@ -1,0 +1,2 @@
+def functionA():
+    print("imported")

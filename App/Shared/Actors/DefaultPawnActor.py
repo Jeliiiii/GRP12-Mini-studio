@@ -9,6 +9,9 @@ class DefaultPawnActor:
 
         self.velocity = [velX, velY]
         
+    def isInWindow(self, windowSize):
+        if self.hitBox.x > 0 and self.hitBox.x < windowSize[0] and self.hitBox.y > 0 and self.hitBox.y < windowSize[1]:
+            return True
 
     def shot(self, damage):
         self.health -= damage
