@@ -9,11 +9,12 @@ class WorldActor:
 
     def __init__(self, levelId):
         (self.winWidth, self.winHeight) = pygame.display.get_window_size()
-        self.scrollSpeedX = -3
+        self.scrollSpeedX = -20
         
         worldCSVData = loadWorldFromCSV(self, levelId)
         self.tileSize = int(self.winHeight/self.tHeight)
         self.loadImages()
+        self.background = (self.spritesSurfaces["BACKGROUND"], self.spritesSurfaces["BACKGROUND"].get_rect())
         self.agentCharacter = AgentCharacterActor(500, 300,self.spritesSurfaces["CHARACTER"], WeaponActor(BulletActor, self.spritesSurfaces["KIWI_BULLET"], 0.5), speed=self.tileSize/10)
         self.chunksList = mapWorldCSVData(self, worldCSVData)
         self.bulletList = []
@@ -25,7 +26,7 @@ class WorldActor:
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Characters/robot_bird.png"))
         ennemySurface = pygame.transform.scale(img, (tileSize,tileSize))
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Backgrounds/japanese_night_city.png"))
-        backgroundSurface = pygame.transform.scale(img, (tileSize,tileSize))
+        backgroundSurface = pygame.transform.scale(img, (self.winWidth*img.get_height()/self.winHeight,self.winHeight))
         img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Tiles/Blocks/brick_wall.png"))
         wallSurface = pygame.transform.scale(img, (tileSize,tileSize))
         img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Miscs/kiwi_fruit_bullet.png"))
@@ -38,6 +39,7 @@ class WorldActor:
 
 
     def onTick(self, inputs, dt):
+        self.background[1].x += self.scrollSpeedX * dt * 4 
         for bullet in self.bulletList:
             bullet.onTick(dt)
             #collision system - to split in CollisionSystem.testList(bulletList, ennemiesList)
@@ -61,6 +63,7 @@ class WorldActor:
                 obstacle.onTick(dt)
 
     def draw(self, window):
+        window.blit(self.background[0], self.background[1])
         self.agentCharacter.draw(window)
         for bullet in self.bulletList:
             bullet.draw(window)

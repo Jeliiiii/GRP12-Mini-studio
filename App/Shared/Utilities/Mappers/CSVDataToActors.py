@@ -9,7 +9,7 @@ from ...Actors.BulletActor import BulletActor
 def mapWorldCSVData(world, worldCSVData):
     chunkList = []
     for chunkId, chunkCSVData in enumerate(worldCSVData):
-        chunk = mapChunkCSVData(world, chunkCSVData, chunkId)
+        chunk = mapChunkCSVData(world, chunkCSVData, chunkId+1)
         chunkList.append(chunk)
     return chunkList
 
