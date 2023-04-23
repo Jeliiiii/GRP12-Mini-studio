@@ -54,3 +54,7 @@ class MainMenuScene(MenuScene):
     def switchJoinInterfaceScene(self):
         from .JoinInterfaceScene import JoinInterfaceScene
         self.nextScene = JoinInterfaceScene()
+
+    def switchGameOperatorPovScene(self):
+        from ..GameOperatorPovScene import GameOperatorPovScene
+        self.nextScene = GameOperatorPovScene()
