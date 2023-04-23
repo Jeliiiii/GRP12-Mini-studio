@@ -10,13 +10,16 @@ class WorldActor:
     def __init__(self, levelId):
         (self.winWidth, self.winHeight) = pygame.display.get_window_size()
         self.scrollSpeedX = -20
-        
+        self.scrollXDistance = 0
         worldCSVData = loadWorldFromCSV(self, levelId)
         self.tileSize = int(self.winHeight/self.tHeight)
         self.loadImages()
         self.background = (self.spritesSurfaces["BACKGROUND"], self.spritesSurfaces["BACKGROUND"].get_rect())
         self.agentCharacter = AgentCharacterActor(500, 300,self.spritesSurfaces["CHARACTER"], WeaponActor(BulletActor, self.spritesSurfaces["KIWI_BULLET"], 0.5), speed=self.tileSize/10)
-        self.chunksList = mapWorldCSVData(self, worldCSVData)
+        self.chunksList = {"LOADED":[],"ACTIVE":[],"ARCHIVED":[]}
+        self.chunksList["LOADED"] = mapWorldCSVData(self, worldCSVData)
+        self.chunksList["ACTIVE"] = self.chunksList["LOADED"][:2]
+        self.chunksList["LOADED"] = self.chunksList["LOADED"][2:]
         self.bulletList = []
 
     def loadImages(self):
@@ -40,10 +43,18 @@ class WorldActor:
 
     def onTick(self, inputs, dt):
         self.background[1].x += self.scrollSpeedX * dt * 4 
+        self.scrollXDistance += self.scrollSpeedX * dt * 10  
+        print(self.scrollXDistance, "; ", -self.tChunkWidth*self.tileSize)
+        if self.scrollXDistance <= -self.tChunkWidth*self.tileSize:
+            self.scrollXDistance += self.tChunkWidth*self.tileSize
+            self.chunksList["ACTIVE"] = self.chunksList["ACTIVE"][1:] + self.chunksList["LOADED"][:1]
+            self.chunksList["LOADED"] = self.chunksList["LOADED"][1:]
+            print("newChunkActive")
+
         for bullet in self.bulletList:
             bullet.onTick(dt)
             #collision system - to split in CollisionSystem.testList(bulletList, ennemiesList)
-            for chunk in self.chunksList:
+            for chunk in self.chunksList["ACTIVE"]:
                 collidedEnnemyId = bullet.hitBox.collidelist([ennemy.hitBox for ennemy in chunk.ennemiesList])
                 if collidedEnnemyId != -1:
                     chunk.ennemiesList[collidedEnnemyId].shot(bullet.damage)
@@ -52,7 +63,7 @@ class WorldActor:
                         self.bulletList.remove(bullet)
                         break
 
-        for chunk in self.chunksList:
+        for chunk in self.chunksList["ACTIVE"]:
             for ennemy in chunk.ennemiesList:
                 bulletList = ennemy.onTick(dt)
                 self.bulletList += bulletList
@@ -67,7 +78,7 @@ class WorldActor:
         self.agentCharacter.draw(window)
         for bullet in self.bulletList:
             bullet.draw(window)
-        for chunk in self.chunksList:
+        for chunk in self.chunksList["ACTIVE"]:
             for element in chunk.ennemiesList + chunk.obstaclesList:
                 element.draw(window)
 
