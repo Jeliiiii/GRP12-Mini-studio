@@ -1,42 +1,28 @@
-from threading import Thread
-from Shared.Networking.Server import Server
-import socket
-from Shared.Actors.UI.ButtonActor import ButtonActor
-from .Menus.MenuScene import MenuScene
+from Shared.Actors.Characters.AgentCharacterActor import AgentCharacterActor
+from Shared.Actors.Characters.Ennemies.EnnemyActor import EnnemyActor
+from .Scene import Scene
+from ..Actors.World.WorldActor import WorldActor
 import pygame
+import os 
 
-class GameAgentPovScene(MenuScene):
+class GameAgentPovScene(Scene):
     
     def __init__(self):
-        super().__init__("HostInterface")
-
-        (windowWidth, windowHeight) = pygame.display.get_window_size()
-        HOST = socket.gethostname()
-        PORT = 5000
-
-        self.menu.buttonsList=[ButtonActor("Host", lambda: Thread(target=Server().start, args=(HOST, PORT)).start()),
-                               ButtonActor("Back", self.switchMainMenuScene)
-                                ]
-        
-        
-        buttonsAmount = self.menu.getButtonsAmount()
-        buttonsFontSize = windowHeight/16
-        buttonsFont = pygame.freetype.Font("App\Shared\Assets\Graphics\Fonts\Square.ttf")
-        key=0
-        for button in self.menu.buttonsList:
-            button.renderDefaultSprite(buttonsFont, buttonsFontSize, "white")
-            button.moveSpriteOnCenter(windowWidth/2, (key+2)*windowHeight/(buttonsAmount*2))
-            key+=1
+        super().__init__()
+        self.world = WorldActor(1)
 
 
+        # self.character = AgentCharacterActor(100,100, characterSprite, speed=70)
+        # self.bulletList = []
+        # self.ennemiesList = [EnnemyActor(600, 500, ennemySprite, velX=-10, velY=0), EnnemyActor(600, 100, ennemySprite, velX=-20, velY=0)]
 
     def updateScene(self, inputs, dt):
-        self.menu.handleMouse(inputs["MOUSE_POS"][0], inputs["MOUSE_POS"][1], inputs["MOUSE_BUTTONS"])
+        self.world.onTick(inputs, dt)
 
 
     def drawScene(self, window):
         window.fill( "#111126" )
-        self.menu.draw(window)
+        self.world.draw(window)
 
 
     def switchMainMenuScene(self):

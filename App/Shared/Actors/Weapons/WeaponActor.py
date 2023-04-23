@@ -1,41 +1,26 @@
 import pygame
-from rectangle import *
 
-class Weapon:
-    def __init__(self, tear, bullet):
-        self.tear = tear
+class WeaponActor:
+    def __init__(self, bullet, bulletSurface, shootCooldownRef):
         self.bullet = bullet
+        self.bulletSurface = bulletSurface
+        self.shootCooldownRef = shootCooldownRef
+        self.shootCooldownRemaining = 0
 
-    def fire(self, position, direction):
-        if self.ammo_count > 0:
-            ammo = self.ammo_class(self.screen, position[0], position[1], 5, 5, 10)
-            ammo.direction = direction
-            self.ammo_count -= 1
-            return ammo
-
-
-
-class Bullet(Rectangle):
-    def __init__(self, screen, x, y, width, height, speed, side):
-        Rectangle.__init__(self, screen, x, y, width, height, speed)
-        self.side =side
-            
-    def go_on(self):
-        if self.side == "ally":
-            self.move_right()
-        else :
-            self.move_left()
-        self.draw((255, 255, 255))
-
-classic = Weapon(15, Bullet)
+    def fire(self, x, y, velX, velY):
+        bulletList = [self.bullet(x, y, self.bulletSurface, velX=velX, velY=velY)]
+        self.shootCooldownRemaining = self.shootCooldownRef
+        return bulletList
+    
+    def fireDouble(self, x, y, velX, velY):
+        bulletList = [self.bullet(x, y, self.bulletSurface, velX=velX, velY=velY),self.bullet(x, y, self.bulletSurface, velX=velX, velY=-velY)]
+        self.shootCooldownRemaining = self.shootCooldownRef
+        return bulletList
+    
+    def onTick(self, dt):
+        if self.shootCooldownRemaining != 0:
+            self.shootCooldownRemaining -= dt
+            if self.shootCooldownRemaining < 0:
+                self.shootCooldownRemaining = 0
 
 
-
-class VerticalBullet(Rectangle):
-    def __init__(self, screen, x, y, width, height, speed, side):
-        Rectangle.__init__(self, screen, x, y, width, height, speed)
-        self.side =side
-            
-    def go_on(self):
-        self.move_down()
-        self.draw((255, 255, 255))
