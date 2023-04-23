@@ -28,7 +28,6 @@ class QuadraWeaponActor(WeaponActor):
         super().__init__(bullet, bulletSurface, shootCooldownRef)
 
     def fire(self, x, y, velX, velY):
-        print('nik')
         bulletList = [self.bullet(x, y, self.bulletSurface, velX=velX, velY=60),
                     self.bullet(x, y, self.bulletSurface, velX=velX, velY=-60),
                     self.bullet(x, y, self.bulletSurface, velX=velX, velY=20),
