@@ -1,4 +1,3 @@
-import pygame
 
 class WeaponActor:
     def __init__(self, bullet, bulletSurface, shootCooldownRef):
@@ -24,3 +23,15 @@ class WeaponActor:
                 self.shootCooldownRemaining = 0
 
 
+class QuadraWeaponActor(WeaponActor):
+    def __init__(self, bullet, bulletSurface, shootCooldownRef):
+        super().__init__(bullet, bulletSurface, shootCooldownRef)
+
+    def fire(self, x, y, velX, velY):
+        print('nik')
+        bulletList = [self.bullet(x, y, self.bulletSurface, velX=velX, velY=60),
+                    self.bullet(x, y, self.bulletSurface, velX=velX, velY=-60),
+                    self.bullet(x, y, self.bulletSurface, velX=velX, velY=20),
+                    self.bullet(x, y, self.bulletSurface, velX=velX, velY=-20)]
+        self.shootCooldownRemaining = self.shootCooldownRef
+        return bulletList

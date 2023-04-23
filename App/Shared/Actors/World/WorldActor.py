@@ -2,8 +2,8 @@ import pygame
 import os
 from ...Utilities.Mappers.CSVDataToActors import mapWorldCSVData, loadWorldFromCSV
 from ...Actors.Characters.AgentCharacterActor import AgentCharacterActor
-from ...Actors.Weapons.WeaponActor import WeaponActor
-from ...Actors.BulletActor import BulletActor
+from ...Actors.Weapons.WeaponActor import *
+from ...Actors.BulletActor import *
 
 class WorldActor:
 
@@ -15,11 +15,15 @@ class WorldActor:
         self.tileSize = int(self.winHeight/self.tHeight)
         self.loadImages()
         self.background = (self.spritesSurfaces["BACKGROUND"], self.spritesSurfaces["BACKGROUND"].get_rect())
-        self.agentCharacter = AgentCharacterActor(500, 300,self.spritesSurfaces["CHARACTER"], WeaponActor(BulletActor, self.spritesSurfaces["KIWI_BULLET"], 0.5), speed=self.tileSize)
+        self.arsenal = {"CLASSIC": WeaponActor(ClassicBullet, self.spritesSurfaces["KIWI_BULLET"], 0.5),
+                        "TANK": WeaponActor(TankBullet, self.spritesSurfaces["CHICKEN"], 6),
+                        "QUADRA": QuadraWeaponActor(ClassicBullet, self.spritesSurfaces["BLUE_BULLET"], 2),}
+        self.agentCharacter = AgentCharacterActor(500, 300,self.spritesSurfaces["CHARACTER"], self.arsenal["QUADRA"], speed=self.tileSize)
         self.chunksList = {"LOADED":[],"ACTIVE":[],"ARCHIVED":[]}
         self.chunksList["LOADED"] = mapWorldCSVData(self, worldCSVData)
         self.scrollLoadedChunksToActive(2)
         self.bulletList = []
+        
 
     def loadImages(self):
         tileSize = self.tileSize
@@ -35,13 +39,17 @@ class WorldActor:
         
         img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Miscs/kiwi_fruit_bullet.png"))
         bulletSurface = pygame.transform.scale(img, (tileSize/2,tileSize/2))
-        
-
+        img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Miscs/chicken.png"))
+        chicken = pygame.transform.scale(img, (tileSize*8,tileSize*8))
+        img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Miscs/blueBullet.png"))
+        blueBullet = pygame.transform.scale(img, (tileSize,tileSize))
         self.spritesSurfaces = {"CHARACTER":characterSurface,
                                 "DEFAULT_ENNEMY":ennemySurface,
                                 "DEFAULT_WALL":wallSurface,
                                 "BACKGROUND":backgroundSurface,
-                                "KIWI_BULLET":bulletSurface}
+                                "KIWI_BULLET":bulletSurface,
+                                "CHICKEN":chicken,
+                                "BLUE_BULLET":blueBullet}
 
     def scrollLoadedChunksToActive(self, amountToScroll):
         self.chunksList["ACTIVE"] = self.chunksList["ACTIVE"][amountToScroll:] + self.chunksList["LOADED"][:amountToScroll]
