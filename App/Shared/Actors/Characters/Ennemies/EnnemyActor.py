@@ -1,5 +1,3 @@
-from ...Weapons.WeaponActor import WeaponActor
-from ...BulletActor import BulletActor
 from ...DefaultPawnActor import DefaultPawnActor
 from random import randint
 import pygame

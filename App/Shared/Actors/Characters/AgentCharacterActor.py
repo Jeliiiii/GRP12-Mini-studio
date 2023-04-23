@@ -1,7 +1,7 @@
 import pygame
 from ..DefaultPawnActor import DefaultPawnActor
 from ..Weapons.WeaponActor import WeaponActor
-from ..BulletActor import BulletActor
+
 
 class AgentCharacterActor(DefaultPawnActor):
     def __init__(self, x, y, surface, weapon, speed=50):
