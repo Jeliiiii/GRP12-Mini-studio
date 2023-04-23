@@ -76,8 +76,8 @@ class WorldActor:
                         self.bulletList.append(ArsenalUpdater(self.agentCharacter, self.arsenal,bullet.sprite[1].x, bullet.sprite[1].y, self.spritesSurfaces["RED_DROP"], self.scrollSpeedX))
                         bullet.onHit(self.bulletList)
                         break
-            if  bullet.hitBox.colliderect(self.agentCharacter.hitBox):
-                bullet.onHit(self.bulletList)
+            #if  bullet.hitBox.colliderect(self.agentCharacter.hitBox):
+                #bullet.onHit(self.bulletList)
 
         for chunk in self.chunksList["ACTIVE"]:
             for ennemy in chunk.ennemiesList:
