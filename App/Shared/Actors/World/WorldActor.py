@@ -4,6 +4,7 @@ from ...Utilities.Mappers.CSVDataToActors import mapWorldCSVData, loadWorldFromC
 from ...Actors.Characters.AgentCharacterActor import AgentCharacterActor
 from ...Actors.Weapons.WeaponActor import *
 from ...Actors.BulletActor import *
+from ..loots.ArsenalUpdater import ArsenalUpdater
 
 class WorldActor:
 
@@ -18,7 +19,7 @@ class WorldActor:
         self.arsenal = {"CLASSIC": WeaponActor(ClassicBullet, self.spritesSurfaces["KIWI_BULLET"], 0.5),
                         "TANK": WeaponActor(TankBullet, self.spritesSurfaces["CHICKEN"], 6),
                         "QUADRA": QuadraWeaponActor(ClassicBullet, self.spritesSurfaces["BLUE_BULLET"], 2),}
-        self.agentCharacter = AgentCharacterActor(500, 300,self.spritesSurfaces["CHARACTER"], self.arsenal["QUADRA"], speed=self.tileSize)
+        self.agentCharacter = AgentCharacterActor(500, 300,self.spritesSurfaces["CHARACTER"], self.arsenal["CLASSIC"], speed=self.tileSize)
         self.chunksList = {"LOADED":[],"ACTIVE":[],"ARCHIVED":[]}
         self.chunksList["LOADED"] = mapWorldCSVData(self, worldCSVData)
         self.chunksList["ACTIVE"] = self.chunksList["LOADED"][:2]
@@ -42,13 +43,16 @@ class WorldActor:
         chicken = pygame.transform.scale(img, (tileSize*8,tileSize*8))
         img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Miscs/blueBullet.png"))
         blueBullet = pygame.transform.scale(img, (tileSize,tileSize))
+        img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Miscs/drop.png"))
+        redDrop = pygame.transform.scale(img, (tileSize,tileSize))
         self.spritesSurfaces = {"CHARACTER":characterSurface,
                                 "DEFAULT_ENNEMY":ennemySurface,
                                 "DEFAULT_WALL":wallSurface,
                                 "BACKGROUND":backgroundSurface,
                                 "KIWI_BULLET":bulletSurface,
                                 "CHICKEN":chicken,
-                                "BLUE_BULLET":blueBullet}
+                                "BLUE_BULLET":blueBullet,
+                                "RED_DROP":redDrop}
 
 
     def onTick(self, inputs, dt):
@@ -69,8 +73,11 @@ class WorldActor:
                     chunk.ennemiesList[collidedEnnemyId].shot(bullet.damage)
                     if chunk.ennemiesList[collidedEnnemyId].health <= 0:
                         chunk.ennemiesList.remove(chunk.ennemiesList[collidedEnnemyId])
+                        self.bulletList.append(ArsenalUpdater(self.agentCharacter, self.arsenal,bullet.sprite[1].x, bullet.sprite[1].y, self.spritesSurfaces["RED_DROP"], self.scrollSpeedX))
                         bullet.onHit(self.bulletList)
                         break
+            if  bullet.hitBox.colliderect(self.agentCharacter.hitBox):
+                bullet.onHit(self.bulletList)
 
         for chunk in self.chunksList["ACTIVE"]:
             for ennemy in chunk.ennemiesList:
