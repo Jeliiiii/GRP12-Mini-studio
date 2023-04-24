@@ -56,6 +56,8 @@ shootCd = 0
 
 is_hit = False
 
+restart = True
+
 main_menu = MainMenu(window)
 menu = Menu(window)
 
