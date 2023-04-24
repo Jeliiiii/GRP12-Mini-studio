@@ -2,23 +2,35 @@ if(__name__ != "__main__"):
     import socket
     from threading import Thread, active_count
     from queue import Queue
-    from Shared.Networking import Socket
+    from Shared.Networking.Socket import Socket
 
-class Server(Socket.Socket):
+class Server(Socket):
+    """
+    In functions naming:
+        CT = ClientThread
+        ST = ServerThread
+    """
 
     def __init__(self):
         super().__init__()
         print("[SERVER] - Socket Initialized")
+        self.serverState = initLevel()
         
-    def handleConnections(self):
+    def handleConnections(self, clientsThreads):
         print("[SERVER] - Waiting for Connections...")
         while self.RUNNING:
             clientSocket, addr = self.socket.accept()
+            if len(clientsThreads) == 0:
+                clientRole = "OPERATOR"
+            elif len(clientsThreads) == 1:
+                clientRole = "AGENT"
+            else:
+                clientRole = "SPECTATOR"
             print(f'[SERVER] - Connection to {addr} Accepted')
-            Thread(target=self.onNewClient, args=(clientSocket,)).start()
+            newClient = Thread(target=self.onNewClient, args=(clientSocket, clientRole)).start()
+            clientsThreads.append(newClient)
 
-
-    def onNewClient(self, clientSocket):
+    def onNewClient(self, clientSocket, role):
         connected = True
         print("[SERVER] - New Client Thread Opened")
         while connected:
@@ -35,10 +47,16 @@ class Server(Socket.Socket):
         return
     
     def main(self):
+        clientsThreads = []
+        Thread(target= lambda : self.handleConnections(clientsThreads)).start()
         while self.RUNNING:
             if not self.eventsQueue.empty():
                 print("[SERVER] - Event Used : ", self.eventsQueue.get())
                 self.eventsQueue.task_done()
+
+    def initLevelST(self):
+        pass
+    
 
     def close(self):
         self.RUNNING = False
@@ -58,7 +76,6 @@ class Server(Socket.Socket):
         self.socket.bind((HOST, PORT))
         self.socket.listen()
         print("[SERVER] - Server Hosted on ", HOST, "; Port:", PORT)
-        Thread(target=self.handleConnections).start()
         self.main()
 
 
