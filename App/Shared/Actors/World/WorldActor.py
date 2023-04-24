@@ -5,11 +5,13 @@ from ...Actors.Characters.AgentCharacterActor import AgentCharacterActor
 from ...Actors.Weapons.WeaponActor import *
 from ...Actors.BulletActor import *
 from ..loots.ArsenalUpdater import ArsenalUpdater
+from ...Scenes.Menus.GameOverScene import GameOverScene
 
 class WorldActor:
 
     def __init__(self, levelId):
         (self.winWidth, self.winHeight) = pygame.display.get_window_size()
+        self.nextScene = None
         self.scrollSpeedX = -20
         self.scrollXDistance = 0
         worldCSVData = loadWorldFromCSV(self, levelId)
@@ -78,6 +80,7 @@ class WorldActor:
                         break
             if  bullet.hitBox.colliderect(self.agentCharacter.hitBox):
                 bullet.onHit(self.bulletList)
+        
 
         for chunk in self.chunksList["ACTIVE"]:
             for ennemy in chunk.ennemiesList:
@@ -88,6 +91,12 @@ class WorldActor:
 
             for obstacle in chunk.obstaclesList:
                 obstacle.onTick(dt)
+                #systeme collision dodo/obstacle
+                if  obstacle.hitBox.colliderect(self.agentCharacter.hitBox) == True:
+                    from ...Scenes.Menus.GameOverScene import GameOverScene
+                    self.nextScene = GameOverScene()
+
+            
 
     def draw(self, window):
         window.blit(self.background[0], self.background[1])
