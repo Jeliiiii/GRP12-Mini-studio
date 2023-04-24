@@ -1,21 +1,16 @@
-from .Scene import Scene
-from ..Actors.World.WorldActor import WorldActor
+from ..Scene import Scene
+from ...Actors.World.WorldActor import WorldActor
 
-class GameAgentPovScene(Scene):
+class GameAgentPovMPScene(Scene):
     
     def __init__(self):
         super().__init__()
-        self.world = WorldActor(1)
+        print("AgentPov Loaded")
 
     def updateScene(self, inputs, dt):
-        self.world.onTick(inputs, dt)
+        pass
 
 
     def drawScene(self, window):
-        window.fill( "#111126" )
-        self.world.draw(window)
+        pass
 
-
-    def switchMainMenuScene(self):
-        from .Menus.MainMenuScene import MainMenuScene
-        self.nextScene = MainMenuScene()
