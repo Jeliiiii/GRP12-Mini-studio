@@ -1,8 +1,11 @@
+from random import randint
 if(__name__ != "__main__"):
     import socket
     from threading import Thread, active_count
     from queue import Queue
     from Shared.Networking.Socket import Socket
+    
+lastGameState = {"MOUSE_POS":[], "MOUSE_BUTTONS":[], "ACTIVE_KEYS":[]}
 
 class Server(Socket):
     """
@@ -14,7 +17,7 @@ class Server(Socket):
     def __init__(self):
         super().__init__()
         print("[SERVER] - Socket Initialized")
-        self.serverState = initLevel()
+        self.gameState = "initLevel"
         
     def handleConnections(self, clientsThreads):
         print("[SERVER] - Waiting for Connections...")
@@ -31,6 +34,7 @@ class Server(Socket):
             clientsThreads.append(newClient)
 
     def onNewClient(self, clientSocket, role):
+        global lastGameState
         connected = True
         print("[SERVER] - New Client Thread Opened")
         while connected:
@@ -43,15 +47,18 @@ class Server(Socket):
                 else:
                     print("[SERVER] - Client Disconnecting Request / Closing Connection / Closing Thread")
                     break
+            self.send(clientSocket, len(lastGameState["ACTIVE_KEYS"]))
         clientSocket.close()
         return
     
     def main(self):
+        global lastGameState
         clientsThreads = []
         Thread(target= lambda : self.handleConnections(clientsThreads)).start()
         while self.RUNNING:
             if not self.eventsQueue.empty():
-                print("[SERVER] - Event Used : ", self.eventsQueue.get())
+                lastGameState = self.eventsQueue.get()
+                print("[SERVER] - Event Used : ", lastGameState)
                 self.eventsQueue.task_done()
 
     def initLevelST(self):

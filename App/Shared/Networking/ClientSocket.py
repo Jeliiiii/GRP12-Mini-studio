@@ -1,8 +1,8 @@
 
 import socket
-from Shared.Networking import Socket
+from Shared.Networking.Socket import Socket
 
-class ClientSocket(Socket.Socket):
+class ClientSocket(Socket):
 
     def __init__(self):
         super().__init__()

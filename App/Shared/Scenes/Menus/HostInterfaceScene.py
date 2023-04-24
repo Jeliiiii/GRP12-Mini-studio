@@ -4,6 +4,7 @@ from ...Networking.ClientSocket import ClientSocket
 import socket
 from ...Actors.UI.ButtonActor import ButtonActor
 from .MenuScene import MenuScene
+from ..Multiplayer.WaitingScreenMPScene import WaitingScreenMPScene
 import pygame
 from Shared.Actors.UI.FormsActors.TypingFieldActor import TypingFieldActor
 import time
@@ -54,6 +55,7 @@ class HostInterfaceScene(MenuScene):
         time.sleep(2)
         self.clientSocket = ClientSocket()
         self.clientSocket.joinServer(socket.gethostname(), self.HUD[1].value)
+        self.sceneSwitcher(WaitingScreenMPScene(clientSocket = self.clientSocket))
 
     def switchMainMenuScene(self):
         from .MainMenuScene import MainMenuScene
