@@ -11,8 +11,8 @@ class ArsenalUpdater(DefaultPawnActor):
     def onTick(self, dt):
         super().onTick(dt)
 
-    def onHit(self, bulletList):
+    def onHit(self, lootList):
         keys = list(self.arsenal.keys())
         print(type(keys))
         self.agent.weapon = self.arsenal[f"{keys[randint(0, len(keys)-1)]}"]
-        bulletList.remove(self)
+        lootList.remove(self)

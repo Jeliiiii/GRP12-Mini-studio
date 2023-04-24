@@ -27,12 +27,13 @@ class WorldActor:
         self.chunksList["ACTIVE"] = self.chunksList["LOADED"][:2]
         self.chunksList["LOADED"] = self.chunksList["LOADED"][2:]
         self.bulletList = []
+        self.lootList = []
         
 
     def loadImages(self):
         tileSize = self.tileSize
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Characters/dodo_sideview.png"))
-        characterSurface = pygame.transform.scale(img, (tileSize, tileSize))
+        characterSurface = pygame.transform.scale(img, (tileSize, img.get_height()*tileSize/img.get_width()))
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Characters/robot_bird.png"))
         ennemySurface = pygame.transform.scale(img, (tileSize,tileSize))
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Backgrounds/japanese_night_city.png"))
@@ -75,7 +76,8 @@ class WorldActor:
                     chunk.ennemiesList[collidedEnnemyId].shot(bullet.damage)
                     if chunk.ennemiesList[collidedEnnemyId].health <= 0:
                         chunk.ennemiesList.remove(chunk.ennemiesList[collidedEnnemyId])
-                        self.bulletList.append(ArsenalUpdater(self.agentCharacter, self.arsenal,bullet.sprite[1].x, bullet.sprite[1].y, self.spritesSurfaces["RED_DROP"], self.scrollSpeedX))
+                        if randint(1,3)==1:
+                            self.lootList.append(ArsenalUpdater(self.agentCharacter, self.arsenal,bullet.sprite[1].x, bullet.sprite[1].y, self.spritesSurfaces["RED_DROP"], self.scrollSpeedX))
                         bullet.onHit(self.bulletList)
                         break
             if  bullet.hitBox.colliderect(self.agentCharacter.hitBox):
@@ -106,6 +108,8 @@ class WorldActor:
         for chunk in self.chunksList["ACTIVE"]:
             for element in chunk.ennemiesList + chunk.obstaclesList:
                 element.draw(window)
+        for loot in self.lootList:
+            loot.draw(window)
 
 
 
