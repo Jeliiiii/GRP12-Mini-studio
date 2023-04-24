@@ -5,6 +5,7 @@ from ...Actors.Characters.AgentCharacterActor import AgentCharacterActor
 from ...Actors.Weapons.WeaponActor import *
 from ...Actors.BulletActor import *
 from ..loots.ArsenalUpdater import ArsenalUpdater
+from random import randint
 
 class WorldActor:
 
@@ -25,6 +26,7 @@ class WorldActor:
         self.chunksList["ACTIVE"] = self.chunksList["LOADED"][:2]
         self.chunksList["LOADED"] = self.chunksList["LOADED"][2:]
         self.bulletList = []
+        self.lootList = []
         
 
     def loadImages(self):
@@ -73,11 +75,15 @@ class WorldActor:
                     chunk.ennemiesList[collidedEnnemyId].shot(bullet.damage)
                     if chunk.ennemiesList[collidedEnnemyId].health <= 0:
                         chunk.ennemiesList.remove(chunk.ennemiesList[collidedEnnemyId])
-                        self.bulletList.append(ArsenalUpdater(self.agentCharacter, self.arsenal,bullet.sprite[1].x, bullet.sprite[1].y, self.spritesSurfaces["RED_DROP"], self.scrollSpeedX))
+                        if randint(1,3)==1:
+                            self.lootList.append(ArsenalUpdater(self.agentCharacter, self.arsenal,bullet.sprite[1].x, bullet.sprite[1].y, self.spritesSurfaces["RED_DROP"], self.scrollSpeedX))
                         bullet.onHit(self.bulletList)
                         break
-            if  bullet.hitBox.colliderect(self.agentCharacter.hitBox):
-                bullet.onHit(self.bulletList)
+        
+        for loot in self.lootList:
+            loot.onTick(dt)
+            if  loot.hitBox.colliderect(self.agentCharacter.hitBox):
+                loot.onHit(self.lootList)
 
         for chunk in self.chunksList["ACTIVE"]:
             for ennemy in chunk.ennemiesList:
@@ -97,6 +103,8 @@ class WorldActor:
         for chunk in self.chunksList["ACTIVE"]:
             for element in chunk.ennemiesList + chunk.obstaclesList:
                 element.draw(window)
+        for loot in self.lootList:
+            loot.draw(window)
 
 
 
