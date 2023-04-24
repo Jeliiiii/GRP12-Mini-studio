@@ -4,8 +4,7 @@ if(__name__ != "__main__"):
     from threading import Thread, active_count
     from queue import Queue
     from Shared.Networking.Socket import Socket
-    
-lastGameState = {"MOUSE_POS":[], "MOUSE_BUTTONS":[], "ACTIVE_KEYS":[]}
+
 
 class Server(Socket):
     """
@@ -34,8 +33,8 @@ class Server(Socket):
             clientsThreads.append(newClient)
 
     def onNewClient(self, clientSocket, role):
-        global lastGameState
         connected = True
+        data = DataPacket()
         print("[SERVER] - New Client Thread Opened")
         while connected:
             data = self.recv(clientSocket)
@@ -47,23 +46,19 @@ class Server(Socket):
                 else:
                     print("[SERVER] - Client Disconnecting Request / Closing Connection / Closing Thread")
                     break
-            self.send(clientSocket, len(lastGameState["ACTIVE_KEYS"]))
+            self.send(clientSocket, len(self.lastGameState["ACTIVE_KEYS"]))
         clientSocket.close()
         return
     
     def main(self):
-        global lastGameState
         clientsThreads = []
         Thread(target= lambda : self.handleConnections(clientsThreads)).start()
         while self.RUNNING:
             if not self.eventsQueue.empty():
-                lastGameState = self.eventsQueue.get()
-                print("[SERVER] - Event Used : ", lastGameState)
+                self.lastGameState = self.eventsQueue.get()
+                print("[SERVER] - Event Used : ", self.lastGameState)
                 self.eventsQueue.task_done()
 
-    def initLevelST(self):
-        pass
-    
 
     def close(self):
         self.RUNNING = False
@@ -79,7 +74,8 @@ class Server(Socket):
             return
         self.RUNNING = True
         self.eventsQueue = Queue()
-
+        self.lastGameState = {"MOUSE_POS":[], "MOUSE_BUTTONS":[], "ACTIVE_KEYS":[]}
+        self.lastGameState.startGame = 0
         self.socket.bind((HOST, PORT))
         self.socket.listen()
         print("[SERVER] - Server Hosted on ", HOST, "; Port:", PORT)

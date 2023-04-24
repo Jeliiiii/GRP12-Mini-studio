@@ -8,8 +8,7 @@ class GameAgentPovMPScene(Scene):
         print("AgentPov Loaded")
 
     def updateScene(self, inputs, dt):
-        pass
-
+        super().updateScene(inputs, dt)
 
     def drawScene(self, window):
         pass

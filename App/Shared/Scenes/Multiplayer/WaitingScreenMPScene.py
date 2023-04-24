@@ -1,16 +1,16 @@
-from ..Scene import Scene
-from ..Multiplayer.GameAgentPovMPScene import GameAgentPovMPScene
-from ..Multiplayer.GameOperatorPovMPScene import GameOperatorPovMPScene
+from .MPScene import MPScene
+from .GameAgentPovMPScene import GameAgentPovMPScene
+from .GameOperatorPovMPScene import GameOperatorPovMPScene
 
 
-class WaitingScreenMPScene(Scene):
+class WaitingScreenMPScene(MPScene):
     
     def __init__(self, clientSocket=None):
-        super().__init__()
-        self.clientSocket = clientSocket
-        self.data = None
+        super().__init__(clientSocket)
+        self.data.startGame = 0
 
     def updateScene(self, inputs, dt):
+        super().__init__()
         self.clientSocket.send(self.clientSocket.socket, inputs)
         self.data = self.clientSocket.recv(self.clientSocket.socket)
         if self.data.startGame:
