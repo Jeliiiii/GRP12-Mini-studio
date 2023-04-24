@@ -30,7 +30,7 @@ class WorldActor:
     def loadImages(self):
         tileSize = self.tileSize
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Characters/dodo_sideview.png"))
-        characterSurface = pygame.transform.scale(img, (tileSize, tileSize))
+        characterSurface = pygame.transform.scale(img, (tileSize, img.get_height()*tileSize/img.get_width()))
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Characters/robot_bird.png"))
         ennemySurface = pygame.transform.scale(img, (tileSize,tileSize))
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Backgrounds/japanese_night_city.png"))
