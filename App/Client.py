@@ -36,7 +36,7 @@ class Client:
             elif event.type == pygame.MOUSEMOTION:
                 (self.inputs["MOUSE_POS"][0],self.inputs["MOUSE_POS"][1]) = event.pos
             elif event.type == pygame.QUIT:
-                self.running = False
+                self.currentScene != "QUIT_CLIENT"
 
     def updateClient(self):
         #Inputs Events Control

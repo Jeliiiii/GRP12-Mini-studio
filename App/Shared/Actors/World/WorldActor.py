@@ -17,6 +17,8 @@ class WorldActor:
         self.tileSize = int(self.winHeight/self.tHeight)
         self.loadImages()
         self.background = (self.spritesSurfaces["BACKGROUND"], self.spritesSurfaces["BACKGROUND"].get_rect())
+        self.background2 = (self.spritesSurfaces["BACKGROUND"], self.spritesSurfaces["BACKGROUND"].get_rect())
+        self.background2[1].x = self.background2[1].width
         self.arsenal = {"CLASSIC": WeaponActor(ClassicBullet, self.spritesSurfaces["KIWI_BULLET"], 0.5),
                         "TANK": WeaponActor(TankBullet, self.spritesSurfaces["CHICKEN"], 6),
                         "QUADRA": QuadraWeaponActor(ClassicBullet, self.spritesSurfaces["BLUE_BULLET"], 2),}
@@ -61,7 +63,12 @@ class WorldActor:
         self.chunksList["LOADED"] = self.chunksList["LOADED"][amountToScroll:]
 
     def onTick(self, inputs, dt):
-        self.background[1].x += self.scrollSpeedX * dt * 4 
+        self.background[1].x += self.scrollSpeedX * dt * 4
+        self.background2[1].x += self.scrollSpeedX * dt * 4
+        if self.background[1].x <= -self.background[1].width:
+            self.background[1].x = self.background[1].width
+        elif self.background2[1].x <= -self.background[1].width:
+            self.background2[1].x = self.background[1].width
         self.scrollXDistance += self.scrollSpeedX * dt * 10  
         if self.scrollXDistance <= -self.tChunkWidth*self.tileSize:
             self.scrollXDistance += self.tChunkWidth*self.tileSize
@@ -77,19 +84,19 @@ class WorldActor:
                         chunk.ennemiesList[collidedEnnemyId].shot(bullet.damage)
                         if chunk.ennemiesList[collidedEnnemyId].health <= 0:
                             chunk.ennemiesList.remove(chunk.ennemiesList[collidedEnnemyId])
-                        if randint(1,3)==1:
-                            self.lootList.append(ArsenalUpdater(self.agentCharacter, self.arsenal,bullet.sprite[1].x, bullet.sprite[1].y, self.spritesSurfaces["RED_DROP"], self.scrollSpeedX))
-                            bullet.onHit(self.bulletList)
-                            break
+                            if randint(1,3)==1:
+                                self.lootList.append(ArsenalUpdater(self.agentCharacter, self.arsenal,bullet.sprite[1].x, bullet.sprite[1].y, self.spritesSurfaces["RED_DROP"], self.scrollSpeedX))
+                                bullet.onHit(self.bulletList)
+                                break
             
 
             else:
                 self.bulletList.remove(bullet)
 
-            for loot in self.lootList:
-                loot.onTick(dt)
-                if  loot.hitBox.colliderect(self.agentCharacter.hitBox):
-                    loot.onHit(self.lootList)
+        for loot in self.lootList:
+            loot.onTick(dt)
+            if loot.hitBox.colliderect(self.agentCharacter.hitBox):
+                loot.onHit(self.lootList)
 
         for chunk in self.chunksList["ACTIVE"]:
             for ennemy in chunk.ennemiesList:
@@ -104,6 +111,7 @@ class WorldActor:
 
     def draw(self, window):
         window.blit(self.background[0], self.background[1])
+        window.blit(self.background2[0], self.background2[1])
         self.agentCharacter.draw(window)
         for bullet in self.bulletList:
             bullet.draw(window)

@@ -14,7 +14,7 @@ class JoinInterfaceScene(MenuScene):
         HOST = socket.gethostname()
         PORT = 5000
 
-        self.menu.buttonsList=[ButtonActor("Join", lambda: ClientSocket().joinServer(socket.gethostname(), 65534)),
+        self.menu.buttonsList=[ButtonActor("Join", connectToServer),
                                ButtonActor("Back", self.switchMainMenuScene)
                                 ]
         
@@ -29,8 +29,10 @@ class JoinInterfaceScene(MenuScene):
             button.moveSpriteOnCenter(windowWidth/2, (key+2)*windowHeight/(buttonsAmount*2))
             key+=1
 
-        self.portTypingField = TypingFieldActor(windowWidth/2, windowHeight/3, buttonsFont, buttonsFontSize, "white", maxLength=5, active=True)
-        self.HUD = [self.menu, self.portTypingField]
+        
+        self.ipTypingField = TypingFieldActor(windowWidth/2, windowHeight/3+200, buttonsFont, buttonsFontSize, "white", active=True)
+        self.portTypingField = TypingFieldActor(windowWidth/2, windowHeight/3, buttonsFont, buttonsFontSize, "white", maxLength=5, active=False, value="4437")
+        self.HUD = [self.menu, self.ipTypingField, self.portTypingField]
 
 
     def updateScene(self, inputs, dt):
@@ -46,3 +48,6 @@ class JoinInterfaceScene(MenuScene):
     def switchMainMenuScene(self):
         from .MainMenuScene import MainMenuScene
         self.nextScene = MainMenuScene()
+
+    def connectToServer(self):
+        ClientSocket().joinServer( self.HUD[1].value, self.HUD[2].value)

@@ -17,7 +17,6 @@ class TypingFieldActor:
 
         charRefs = charactersReferencesList()
         self.allowedChar = charRefs.strNumbers + charRefs.smallCharAlphabet + ["."]
-        print(self.allowedChar)
         self.textSprite = self.font.render(self.value, fgcolor=self.fontColor, size=self.fontSize) # tuple : [0] = pygame.Surface, [1] = pygame.Rect
         if not self.active:
             self.textSprite[0].set_alpha(200)

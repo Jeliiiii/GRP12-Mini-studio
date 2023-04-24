@@ -1,11 +1,12 @@
 from threading import Thread
-from Shared.Networking.Server import Server
+from ...Networking.Server import Server
+from ...Networking.ClientSocket import ClientSocket
 import socket
-from Shared.Actors.UI.ButtonActor import ButtonActor
+from ...Actors.UI.ButtonActor import ButtonActor
 from .MenuScene import MenuScene
 import pygame
 from Shared.Actors.UI.FormsActors.TypingFieldActor import TypingFieldActor
-
+import time
 
 class HostInterfaceScene(MenuScene):
     
@@ -16,7 +17,7 @@ class HostInterfaceScene(MenuScene):
         HOST = socket.gethostname()
         PORT = 5000
 
-        self.menu.buttonsList=[ButtonActor("Host", lambda: Thread(target=Server().start, args=(HOST, PORT).start())),
+        self.menu.buttonsList=[ButtonActor("Host", lambda: self.hostAndJoinServer()),
                                ButtonActor("Back", self.switchMainMenuScene)
                                 ]
         
@@ -30,8 +31,8 @@ class HostInterfaceScene(MenuScene):
             button.renderDefaultSprite(buttonsFont, buttonsFontSize, "white")
             button.moveSpriteOnCenter(windowWidth/2, (key*4)*windowHeight/16)
             key+=2
-
-        self.portTypingField = TypingFieldActor(windowWidth/2, windowHeight/3+200, buttonsFont, buttonsFontSize, "white", active=True)
+            
+        self.portTypingField = TypingFieldActor(windowWidth/2, windowHeight/3, buttonsFont, buttonsFontSize, "white", maxLength=5, active=False, value="4437")
         self.HUD = [self.menu, self.portTypingField]
 
         self.fieldLabel = buttonsFont.render("IP Address :", fgcolor = "white", size=buttonsFontSize)
@@ -48,6 +49,11 @@ class HostInterfaceScene(MenuScene):
         for actor in self.HUD:
             actor.draw(window)
 
+    def hostAndJoinServer(self):
+        Thread(target=Server().start, args=(socket.gethostname(), self.HUD[1].value)).start()
+        time.sleep(2)
+        self.clientSocket = ClientSocket()
+        self.clientSocket.joinServer(socket.gethostname(), self.HUD[1].value)
 
     def switchMainMenuScene(self):
         from .MainMenuScene import MainMenuScene
