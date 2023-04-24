@@ -52,8 +52,7 @@ class WorldActor:
         self.scrollXDistance += self.scrollSpeedX * dt * 10  
         if self.scrollXDistance <= -self.tChunkWidth*self.tileSize:
             self.scrollXDistance += self.tChunkWidth*self.tileSize
-            self.chunksList["ACTIVE"] = self.chunksList["ACTIVE"][1:] + self.chunksList["LOADED"][:1]
-            self.chunksList["LOADED"] = self.chunksList["LOADED"][1:]
+            self.scrollLoadedChunksToActive(1)
 
         for bullet in self.bulletList:
             bullet.onTick(dt)
