@@ -6,6 +6,7 @@ from ...Actors.Weapons.WeaponActor import *
 from ...Actors.BulletActor import *
 from ..loots.ArsenalUpdater import ArsenalUpdater
 from random import randint
+from ...Actors.World.SpriteSheetCutting import SpriteSheetCutter
 
 class WorldActor:
 
@@ -15,12 +16,16 @@ class WorldActor:
         self.scrollXDistance = 0
         worldCSVData = loadWorldFromCSV(self, levelId)
         self.tileSize = int(self.winHeight/self.tHeight)
+        self.agentSprites = {"FORWARD":[],
+                             "UP":[],
+                             "DOWN":[],
+                             "BACK":[]}
         self.loadImages()
         self.background = (self.spritesSurfaces["BACKGROUND"], self.spritesSurfaces["BACKGROUND"].get_rect())
         self.arsenal = {"CLASSIC": WeaponActor(ClassicBullet, self.spritesSurfaces["KIWI_BULLET"], 0.5),
                         "TANK": WeaponActor(TankBullet, self.spritesSurfaces["CHICKEN"], 6),
                         "QUADRA": QuadraWeaponActor(ClassicBullet, self.spritesSurfaces["BLUE_BULLET"], 2),}
-        self.agentCharacter = AgentCharacterActor(500, 300,self.spritesSurfaces["CHARACTER"], self.arsenal["CLASSIC"], speed=self.tileSize)
+        self.agentCharacter = AgentCharacterActor(500, 300,self.agentSprites, self.arsenal["CLASSIC"], speed=self.tileSize)
         self.chunksList = {"LOADED":[],"ACTIVE":[],"ARCHIVED":[]}
         self.chunksList["LOADED"] = mapWorldCSVData(self, worldCSVData)
         self.chunksList["ACTIVE"] = self.chunksList["LOADED"][:2]
@@ -31,23 +36,74 @@ class WorldActor:
 
     def loadImages(self):
         tileSize = self.tileSize
-        img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Characters/dodo_sideview.png"))
-        characterSurface = pygame.transform.scale(img, (tileSize, tileSize))
+
+    
+        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
+        img = sheet.cut(830, 415, 415, 415)
+        dodoForwardSurface_k1 = pygame.transform.scale(img, (tileSize*10, tileSize*10))
+        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
+        img = sheet.cut(830, 415, 415, 415)
+        img = pygame.transform.scale(img, (tileSize*10,tileSize*10))
+        dodoForwardSurface_k2 = pygame.transform.scale(img, (tileSize, tileSize))
+        self.agentSprites["FORWARD"] = [dodoForwardSurface_k1, dodoForwardSurface_k2]
+        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
+        img = sheet.cut(2075, 415, 415, 415)
+        dodoUpSurface_K1 = pygame.transform.scale(img, (tileSize, tileSize))
+        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
+        img = sheet.cut(2490, 415, 415, 415)
+        dodoUpSurface_K2 = pygame.transform.scale(img, (tileSize, tileSize))
+        self.agentSprites["UP"] = [dodoUpSurface_K1, dodoUpSurface_K2]
+        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
+        img = sheet.cut(3320, 415, 415, 415)
+        img = pygame.transform.scale(img, (tileSize*10,tileSize*10))
+        dodoDownface_k1 = pygame.transform.scale(img, (tileSize, tileSize))
+        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
+        img = sheet.cut(3735, 415, 415, 415)
+        dodoDownSurface_k2 = pygame.transform.scale(img, (tileSize, tileSize))
+        self.agentSprites["DOWN"] = [dodoDownface_k1, dodoDownSurface_k2]
+        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
+        img = sheet.cut(4580, 415, 415, 415)
+        dodoBackSurface_K1 = pygame.transform.scale(img, (tileSize, tileSize))
+        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
+        img = sheet.cut(4995, 415, 415, 415)
+        dodoBackSurface_K2 = pygame.transform.scale(img, (tileSize, tileSize))
+        self.agentSprites["BACK"] = [dodoBackSurface_K1, dodoBackSurface_K2]
+
+
+        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
+        img = sheet.cut(830, 830, 415, 415)
+        bulletFireSureface_K1 = pygame.transform.scale(img, (tileSize, tileSize))
+        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
+        img = sheet.cut(1245, 830, 415, 415)
+        bulletFireSureface_K2 = pygame.transform.scale(img, (tileSize, tileSize))
+        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
+        img = sheet.cut(1660, 830, 415, 415)
+        bulletFireSureface_K3 = pygame.transform.scale(img, (tileSize, tileSize))
+        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
+        img = sheet.cut(2075, 830, 415, 415)
+        bulletSurface = pygame.transform.scale(img, (tileSize, tileSize))
+        self.fireAnimSurfaces = {"K1":bulletFireSureface_K1,
+                                 "K2":bulletFireSureface_K2,
+                                 "K3":bulletFireSureface_K3,}
+        
+        
+        
+        
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Characters/robot_bird.png"))
         ennemySurface = pygame.transform.scale(img, (tileSize,tileSize))
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Backgrounds/japanese_night_city.png"))
         backgroundSurface = pygame.transform.scale(img, (self.winWidth*img.get_height()/self.winHeight,self.winHeight))
         img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Tiles/Blocks/brick_wall.png"))
         wallSurface = pygame.transform.scale(img, (tileSize,tileSize))
-        img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Miscs/kiwi_fruit_bullet.png"))
-        bulletSurface = pygame.transform.scale(img, (tileSize/2,tileSize/2))
+        #img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Miscs/kiwi_fruit_bullet.png"))
+        #bulletSurface = pygame.transform.scale(img, (tileSize/2,tileSize/2))
         img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Miscs/chicken.png"))
         chicken = pygame.transform.scale(img, (tileSize*8,tileSize*8))
         img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Miscs/blueBullet.png"))
         blueBullet = pygame.transform.scale(img, (tileSize,tileSize))
         img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Miscs/drop.png"))
         redDrop = pygame.transform.scale(img, (tileSize,tileSize))
-        self.spritesSurfaces = {"CHARACTER":characterSurface,
+        self.spritesSurfaces = {#"DEFAULT_BULLET":bulletSurface,
                                 "DEFAULT_ENNEMY":ennemySurface,
                                 "DEFAULT_WALL":wallSurface,
                                 "BACKGROUND":backgroundSurface,
