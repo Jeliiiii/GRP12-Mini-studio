@@ -1,12 +1,9 @@
 class InitLevelState:
 
     def __init__(self):
-        pass
+        self.nextGameState = None
+        self.startGame = 0
 
-
-    def InitLevelClientThreadMain(self):
-        pass
-
-    def InitLevelServThreadMain(self, threadLength):
-        if threadLength > 2:
-            self.lastGameState.startGame = 1
+    def serverMain(self, event):
+        if self.clientsThreads > 2:
+            self.startGame = 1

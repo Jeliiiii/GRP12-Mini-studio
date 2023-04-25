@@ -25,7 +25,7 @@ class HostInterfaceScene(MenuScene):
         
         buttonsAmount = self.menu.getButtonsAmount()
         buttonsFontSize = windowHeight/16
-        buttonsFont = pygame.freetype.Font("App\Shared\Assets\Graphics\Fonts\Square.ttf")
+        buttonsFont = pygame.freetype.Font("App\Shared\Assets\Graphics\Fonts\ethnocentric rg.ttf")
         key=1
         for button in self.menu.buttonsList:
             

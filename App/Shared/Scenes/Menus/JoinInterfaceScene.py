@@ -14,7 +14,7 @@ class JoinInterfaceScene(MenuScene):
         HOST = socket.gethostname()
         PORT = 5000
 
-        self.menu.buttonsList=[ButtonActor("Join", connectToServer),
+        self.menu.buttonsList=[ButtonActor("Join", self.connectToServer),
                                ButtonActor("Back", self.switchMainMenuScene)
                                 ]
         
@@ -22,7 +22,7 @@ class JoinInterfaceScene(MenuScene):
         
         buttonsAmount = self.menu.getButtonsAmount()
         buttonsFontSize = windowHeight/16
-        buttonsFont = pygame.freetype.Font("App\Shared\Assets\Graphics\Fonts\Square.ttf")
+        buttonsFont = pygame.freetype.Font("App\Shared\Assets\Graphics\Fonts\ethnocentric rg.ttf")
         key=0
         for button in self.menu.buttonsList:
             button.renderDefaultSprite(buttonsFont, buttonsFontSize, "white")
