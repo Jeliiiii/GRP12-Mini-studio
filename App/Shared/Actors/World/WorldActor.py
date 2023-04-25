@@ -24,9 +24,9 @@ class WorldActor:
                              "BACK":[]}
         self.loadImages()
         self.background = (self.spritesSurfaces["BACKGROUND"], self.spritesSurfaces["BACKGROUND"].get_rect())
-        self.arsenal = {"CLASSIC": WeaponActor(ClassicBullet, self.spritesSurfaces["KIWI_BULLET"], 0.5, self.),
-                        "TANK": WeaponActor(TankBullet, self.spritesSurfaces["CHICKEN"], 6),
-                        "QUADRA": QuadraWeaponActor(ClassicBullet, self.spritesSurfaces["BLUE_BULLET"], 2),}
+        self.arsenal = {"CLASSIC": WeaponActor(ClassicBullet, self.spritesSurfaces["PURPLE_BULLET"], 0.5),
+                        "TANK": WeaponActor(TankBullet, self.spritesSurfaces["CHICKEN_BULLET"], 6),
+                        "QUADRA": QuadraWeaponActor(ClassicBullet, self.spritesSurfaces["RED_BULLET"], 2),}
         self.agentCharacter = AgentCharacterActor(500, 300,self.agentSprites, self.arsenal["CLASSIC"], speed=self.tileSize)
         self.chunksList = {"LOADED":[],"ACTIVE":[],"ARCHIVED":[]}
         self.chunksList["LOADED"] = mapWorldCSVData(self, worldCSVData)
@@ -45,86 +45,261 @@ class WorldActor:
 
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(841, 414, 419, 417))
+        surf.blit(sheet, (0, 0),(827, 414, 413, 413))
         dodoForwardSurface_K1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(3320, 415, 415, 415))
+        surf.blit(sheet, (0, 0),(1240, 414, 413, 413))
         dodoForwardSurface_K2 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         self.agentSprites["UP"] = [dodoForwardSurface_K1, dodoForwardSurface_K2]
 
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(3320, 415, 415, 415))
+        surf.blit(sheet, (0, 0),(1653, 414, 413, 413))
         dodoUpSurface_K1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(3320, 415, 415, 415))
+        surf.blit(sheet, (0, 0),(2066, 414, 413, 413))
         dodoUpSurface_K2 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         self.agentSprites["UP"] = [dodoUpSurface_K1, dodoUpSurface_K2]
         
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(3320, 415, 415, 415))
+        surf.blit(sheet, (0, 0),(2479, 414, 413, 413))
         dodoDownSurface_k1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(3320, 415, 415, 415))
+        surf.blit(sheet, (0, 0),(2892, 414, 413, 413))
         dodoDownSurface_k2 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         self.agentSprites["DOWN"] = [dodoDownSurface_k1, dodoDownSurface_k2]
         
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(3320, 415, 415, 415))
-        dodoBackSurface_K1 = pygame.transform.scale(img, (tileSize*3, tileSize*3))
+        surf.blit(sheet, (0, 0),(3305, 414, 413, 413))
+        dodoBackSurface_K1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(3320, 415, 415, 415))
-        dodoBackSurface_K2 = pygame.transform.scale(img, (tileSize*3, tileSize*3))
+        surf.blit(sheet, (0, 0),(3718, 414, 413, 413))
+        dodoBackSurface_K2 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         self.agentSprites["BACK"] = [dodoBackSurface_K1, dodoBackSurface_K2]
 
+#purple
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(827, 827, 413, 413))
+        bulletPurpleSureface_PK1 = pygame.transform.scale(surf, (tileSize, tileSize))
 
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(827, 1240, 413, 413))
+        bulletPurpleSureface_PK2 = pygame.transform.scale(surf, (tileSize, tileSize))
+
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(827, 1653, 413, 413))
+        bulletPurpleSureface_PK3 = pygame.transform.scale(surf, (tileSize, tileSize))
+
+        bulletSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+        self.firePurpleSurface_1 = {"K1":bulletPurpleSureface_PK1,
+                                 "K2":bulletPurpleSureface_PK2,
+                                 "K3":bulletPurpleSureface_PK3,}
         
-        bulletFireSureface_K1 = pygame.transform.scale(img, (tileSize, tileSize))
+#purple explosion
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(827, 2066, 413, 413))
+        purpleBulletSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         
-        bulletFireSureface_K2 = pygame.transform.scale(img, (tileSize, tileSize))
+
+#red
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(1240, 827, 413, 413))
+        bulletRedSurface_PK1 = pygame.transform.scale(surf, (tileSize, tileSize))
+
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(1240, 1240, 413, 413))
+        bulletRedSurface_PK2 = pygame.transform.scale(surf, (tileSize, tileSize))
+
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(1240, 1653, 413, 413))
+        bulletRedSurface_PK3 = pygame.transform.scale(surf, (tileSize, tileSize))
+
+        bulletSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+        self.fireRedSurface_1 = {"K1":bulletRedSurface_PK1,
+                                 "K2":bulletRedSurface_PK2,
+                                 "K3":bulletRedSurface_PK3,}
         
-        img = sheet.cut(1660, 830, 415, 415)
-        bulletFireSureface_K3 = pygame.transform.scale(img, (tileSize, tileSize))
+#red explosion
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(1240, 2066, 413, 413))
+        redBulletSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         
-        bulletSurface = pygame.transform.scale(img, (tileSize, tileSize))
-        self.fireAnimSurfaces = {"K1":bulletFireSureface_K1,
-                                 "K2":bulletFireSureface_K2,
-                                 "K3":bulletFireSureface_K3,}
+#Chicken bullet
+        surf = pygame.surface.Surface((1500, 1000))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(827, 2479, 1239, 826))
+        chickenBulletSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+
+
+        #static Ennemy
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(827, 3718, 413, 413))
+        staticEnnemySurface_PK1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(827, 4131, 413, 413))
+        staticEnnemySurface_PK2 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(827, 4544, 413, 413))
+        staticEnnemySurface_PK3 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        bulletSurface = pygame.transform.scale(surf, (tileSize, tileSize))
+        self.staticEnnemySurface_1 = {"K1":staticEnnemySurface_PK1,
+                                 "K2":staticEnnemySurface_PK2,
+                                 "K3":staticEnnemySurface_PK3,}
+
+        surf = pygame.surface.Surface((500, 1000))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(1240, 3718, 413, 826))
+        MovingEnnemySurface_PK1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        surf = pygame.surface.Surface((500, 1000))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(1240, 4131, 413, 826))
+        MovingEnnemySurface_PK2 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        surf = pygame.surface.Surface((500, 1000))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(1240, 4544, 413, 826))
+        MovingEnnemySurface_PK3 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        bulletSurface = pygame.transform.scale(surf, (tileSize, tileSize))
+        self.movingEnnemySurface_1 = {"K1":MovingEnnemySurface_PK1,
+                                 "K2":MovingEnnemySurface_PK2,
+                                 "K3":MovingEnnemySurface_PK3,}
         
+        surf = pygame.surface.Surface((1000, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(2066, 3305, 826, 413))
+        idleEnnemySurface_PK1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        surf = pygame.surface.Surface((1000, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(2066, 4131, 826, 413))
+        idleEnnemySurface_PK2 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        bulletSurface = pygame.transform.scale(surf, (tileSize, tileSize))
+        self.idleEnnemySurface_1 = {"K1":idleEnnemySurface_PK1,
+                                 "K2":idleEnnemySurface_PK2}
+
+        #Brick Wall
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(1, 2479, 413, 413))
+        wallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         
+        #Left Brick Wall
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(414, 2892, 413, 413))
+        leftWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        #Left Corner Brick Wall
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(414, 2479, 413, 413))
+        leftCornerWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        #Middle Brick Wall
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(827, 2479, 413, 413))
+        middleWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        #Right Corner Brick Wall
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(1240, 2479, 413, 413))
+        rightCornerWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+
+        #Right Brick Wall
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(1240, 2892, 413, 413))
+        rightWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        #Right Laser Top Corner Wall
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(414, 3718, 413, 413))
+        rightLaserTopCornerWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        #Right Laser Brick Wall
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(414, 4131, 413, 413))
+        rightLaserWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        #Right Laser Bot Corner Brick Wall
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(414, 4544, 413, 413))
+        rightLaserBotCornerWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        #Left Laser Top Corner Brick Wall
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(827, 3718, 413, 413))
+        leftLaserTopCornerWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        #Left Laser Brick Wall
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(827, 4131, 413, 413))
+        leftLaserWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        #Left Laser Bot Corner Brick Wall
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(827, 4544, 413, 413))
+        leftLaserBotCornerWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         
-        
-        img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Characters/robot_bird.png"))
-        ennemySurface = pygame.transform.scale(img, (tileSize,tileSize))
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Backgrounds/japanese_night_city.png"))
         backgroundSurface = pygame.transform.scale(img, (self.winWidth*img.get_height()/self.winHeight,self.winHeight))
-        img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Tiles/Blocks/brick_wall.png"))
-        wallSurface = pygame.transform.scale(img, (tileSize,tileSize))
-        #img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Miscs/kiwi_fruit_bullet.png"))
-        #bulletSurface = pygame.transform.scale(img, (tileSize/2,tileSize/2))
-        img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Miscs/chicken.png"))
-        chicken = pygame.transform.scale(img, (tileSize*8,tileSize*8))
-        img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Miscs/blueBullet.png"))
-        blueBullet = pygame.transform.scale(img, (tileSize,tileSize))
+
         img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Miscs/drop.png"))
         redDrop = pygame.transform.scale(img, (tileSize,tileSize))
-        self.spritesSurfaces = {#"DEFAULT_BULLET":bulletSurface,
-                                "DEFAULT_ENNEMY":ennemySurface,
-                                "DEFAULT_WALL":wallSurface,
+
+        self.spritesSurfaces = {"DEFAULT_WALL":wallSurface,
+                                "LEFT_WALL":leftWallSurface,
+                                "LEFT_CORNER_WALL":leftCornerWallSurface,
+                                "LEFT_LASER_TOP_CORNER_WALL":leftLaserTopCornerWallSurface,
+                                "LEFT_LASER_WALL":leftLaserWallSurface,
+                                "LEFT_LASER_BOT_CORNER_WALL":leftLaserBotCornerWallSurface,
+                                "MIDDLE_WALL":middleWallSurface,
+                                "RIGHT_WALL" :rightWallSurface,
+                                "RIGHT_CORNER_WALL":rightCornerWallSurface,
+                                "RIGHT_LASER_TOP_CORNER_WALL":rightLaserTopCornerWallSurface,
+                                "RIGHT_LASER_WALL":rightLaserWallSurface,
+                                "RIGHT_LASER_BOT_CORNER_WALL":rightLaserBotCornerWallSurface,
+                                "PURPLE_BULLET" :purpleBulletSurface,
+                                "RED_BULLET" :redBulletSurface,
+                                "CHICKEN_BULLET" :chickenBulletSurface,
                                 "BACKGROUND":backgroundSurface,
-                                "KIWI_BULLET":bulletSurface,
-                                "CHICKEN":chicken,
-                                "BLUE_BULLET":blueBullet,
                                 "RED_DROP":redDrop,}
 
 
