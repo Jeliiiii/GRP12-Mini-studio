@@ -24,7 +24,7 @@ class WorldActor:
                              "BACK":[]}
         self.loadImages()
         self.background = (self.spritesSurfaces["BACKGROUND"], self.spritesSurfaces["BACKGROUND"].get_rect())
-        self.arsenal = {"CLASSIC": WeaponActor(ClassicBullet, self.spritesSurfaces["KIWI_BULLET"], 0.5),
+        self.arsenal = {"CLASSIC": WeaponActor(ClassicBullet, self.spritesSurfaces["KIWI_BULLET"], 0.5, self.),
                         "TANK": WeaponActor(TankBullet, self.spritesSurfaces["CHICKEN"], 6),
                         "QUADRA": QuadraWeaponActor(ClassicBullet, self.spritesSurfaces["BLUE_BULLET"], 2),}
         self.agentCharacter = AgentCharacterActor(500, 300,self.agentSprites, self.arsenal["CLASSIC"], speed=self.tileSize)
@@ -180,6 +180,7 @@ class WorldActor:
                 element.draw(window)
         for loot in self.lootList:
             loot.draw(window)
+        self.agentCharacter.weapon.draw(window, (self.agentCharacter.sprite[1][0]+self.tileSize, self.agentCharacter.sprite[1][1]))
 
 
 
