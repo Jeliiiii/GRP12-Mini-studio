@@ -36,7 +36,6 @@ class Server(Socket):
 
         self.serverState = InitLevelState()
         self.eventsQueue = Queue()
-        self.serverState.clientsThreads = []
         self.serverClock = time.Clock()
         self.main()
 
@@ -48,19 +47,18 @@ class Server(Socket):
         while self.RUNNING:
             clientSocket, addr = self.socket.accept()
             if len(self.serverState.clientsThreads) == 0:
-                clientRole = "OPERATOR"
+                roleDataAlias = self.serverState.agentData
             elif len(self.serverState.clientsThreads) == 1:
-                clientRole = "AGENT"
+                roleDataAlias = self.serverState.operatorData
             else:
-                clientRole = "SPECTATOR"
+                roleDataAlias = self.serverState.operatorData
             print(f'[SERVER] - Connection to {addr} Accepted')
-            newClient = Thread(target=self.onNewClient, args=(clientSocket, clientRole)).start()
+            newClient = Thread(target=self.onNewClient, args=(clientSocket, roleDataAlias)).start()
             self.serverState.clientsThreads.append(newClient)
 
-    def onNewClient(self, clientSocket, role):
+    def onNewClient(self, clientSocket, roleDataAlias):
         connected = True
         print("[SERVER] - New Client Thread Opened")
-        role = self.serverState.clientsThreads()
         while connected:
             data = self.recv(clientSocket)
             if data:
@@ -71,22 +69,28 @@ class Server(Socket):
                 else:
                     print("[SERVER] - Client Disconnecting Request / Closing Connection / Closing Thread")
                     break
-            self.send(clientSocket, (role, self.serverState.globalData))
+            self.send(clientSocket, (self.serverState.globalData, roleDataAlias))
         clientSocket.close()
         return
-    
+
+    def serverUpdate(self):
+        if self.serverState.nextGameState:
+            self.serverState = self.serverState.nextGameState
+
     def main(self):
         Thread(target= self.handleConnections).start()
         
         while self.RUNNING:
             dt = self.serverClock.tick() / 1000
+            event = None
             if not self.eventsQueue.empty():
                 event = self.eventsQueue.get()
-                print("[SERVER] - Event Used : ", self.lastGameState)
+                print("[SERVER] - Event Used : ", event)
                 self.eventsQueue.task_done()
 
-            self.serverState.serverUpdate(event)
-            event = None
+            self.serverState.stateUpdate(event)
+            self.serverUpdate()
+            
 
 if __name__ == "__main__":
     server = Server()
