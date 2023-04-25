@@ -242,6 +242,41 @@ class WorldActor:
         surf.blit(sheet, (0, 0),(1240, 2892, 413, 413))
         rightWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
 
+        #Right Laser Top Corner Wall
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(414, 3718, 413, 413))
+        rightLaserTopCornerWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        #Right Laser Brick Wall
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(414, 4131, 413, 413))
+        rightLaserWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        #Right Laser Bot Corner Brick Wall
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(414, 4544, 413, 413))
+        rightLaserBotCornerWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        #Left Laser Top Corner Brick Wall
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(827, 3718, 413, 413))
+        leftLaserTopCornerWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        #Left Laser Brick Wall
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(827, 4131, 413, 413))
+        leftLaserWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        #Left Laser Bot Corner Brick Wall
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(827, 4544, 413, 413))
+        leftLaserBotCornerWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Backgrounds/japanese_night_city.png"))
         backgroundSurface = pygame.transform.scale(img, (self.winWidth*img.get_height()/self.winHeight,self.winHeight))
@@ -252,9 +287,15 @@ class WorldActor:
         self.spritesSurfaces = {"DEFAULT_WALL":wallSurface,
                                 "LEFT_WALL":leftWallSurface,
                                 "LEFT_CORNER_WALL":leftCornerWallSurface,
+                                "LEFT_LASER_TOP_CORNER_WALL":leftLaserTopCornerWallSurface,
+                                "LEFT_LASER_WALL":leftLaserWallSurface,
+                                "LEFT_LASER_BOT_CORNER_WALL":leftLaserBotCornerWallSurface,
                                 "MIDDLE_WALL":middleWallSurface,
                                 "RIGHT_WALL" :rightWallSurface,
                                 "RIGHT_CORNER_WALL":rightCornerWallSurface,
+                                "RIGHT_LASER_TOP_CORNER_WALL":rightLaserTopCornerWallSurface,
+                                "RIGHT_LASER_WALL":rightLaserWallSurface,
+                                "RIGHT_LASER_BOT_CORNER_WALL":rightLaserBotCornerWallSurface,
                                 "PURPLE_BULLET" :purpleBulletSurface,
                                 "RED_BULLET" :redBulletSurface,
                                 "CHICKEN_BULLET" :chickenBulletSurface,
