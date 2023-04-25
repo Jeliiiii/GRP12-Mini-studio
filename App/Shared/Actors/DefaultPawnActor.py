@@ -2,9 +2,10 @@
 
 class DefaultPawnActor:
 
-    def __init__(self, x, y, surface, velX=0, velY=0):
+    def __init__(self, x, y, surface=None, velX=0, velY=0):
 
-        self.sprite = [surface, surface.get_rect(topleft=(x, y))]
+        if surface :
+            self.sprite = [surface, surface.get_rect(topleft=(x, y))]
         self.hitBox = self.sprite[1]
 
         self.velocity = [velX, velY]

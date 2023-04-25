@@ -41,34 +41,33 @@ class WorldActor:
 
     
         sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
-        img = sheet.cut(830, 415, 415, 415)
-        dodoForwardSurface_k1 = pygame.transform.scale(img, (tileSize*10, tileSize*10))
+        img = sheet.cut(800, 400, 400, 400)
+        dodoForwardSurface_k1 = pygame.transform.scale(img, (tileSize*3, tileSize*3))
         sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
-        img = sheet.cut(830, 415, 415, 415)
-        img = pygame.transform.scale(img, (tileSize*10,tileSize*10))
-        dodoForwardSurface_k2 = pygame.transform.scale(img, (tileSize, tileSize))
+        img = sheet.cut(1200, 400, 400, 400)
+        dodoForwardSurface_k2 = pygame.transform.scale(img, (tileSize*3, tileSize*3))
         self.agentSprites["FORWARD"] = [dodoForwardSurface_k1, dodoForwardSurface_k2]
         sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
         img = sheet.cut(2075, 415, 415, 415)
-        dodoUpSurface_K1 = pygame.transform.scale(img, (tileSize, tileSize))
+        dodoUpSurface_K1 = pygame.transform.scale(img, (tileSize*3, tileSize*3))
         sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
         img = sheet.cut(2490, 415, 415, 415)
-        dodoUpSurface_K2 = pygame.transform.scale(img, (tileSize, tileSize))
+        dodoUpSurface_K2 = pygame.transform.scale(img, (tileSize*3, tileSize*3))
         self.agentSprites["UP"] = [dodoUpSurface_K1, dodoUpSurface_K2]
         sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
         img = sheet.cut(3320, 415, 415, 415)
         img = pygame.transform.scale(img, (tileSize*10,tileSize*10))
-        dodoDownface_k1 = pygame.transform.scale(img, (tileSize, tileSize))
+        dodoDownface_k1 = pygame.transform.scale(img, (tileSize*3, tileSize*3))
         sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
         img = sheet.cut(3735, 415, 415, 415)
-        dodoDownSurface_k2 = pygame.transform.scale(img, (tileSize, tileSize))
+        dodoDownSurface_k2 = pygame.transform.scale(img, (tileSize*3, tileSize*3))
         self.agentSprites["DOWN"] = [dodoDownface_k1, dodoDownSurface_k2]
         sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
         img = sheet.cut(4580, 415, 415, 415)
-        dodoBackSurface_K1 = pygame.transform.scale(img, (tileSize, tileSize))
+        dodoBackSurface_K1 = pygame.transform.scale(img, (tileSize*3, tileSize*3))
         sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
         img = sheet.cut(4995, 415, 415, 415)
-        dodoBackSurface_K2 = pygame.transform.scale(img, (tileSize, tileSize))
+        dodoBackSurface_K2 = pygame.transform.scale(img, (tileSize*3, tileSize*3))
         self.agentSprites["BACK"] = [dodoBackSurface_K1, dodoBackSurface_K2]
 
 
@@ -151,9 +150,9 @@ class WorldActor:
             for obstacle in chunk.obstaclesList:
                 obstacle.onTick(dt)
                 #systeme collision dodo/obstacle
-                if  obstacle.hitBox.colliderect(self.agentCharacter.hitBox) == True:
+                """if  obstacle.hitBox.colliderect(self.agentCharacter.hitBox) == True:
                     from ...Scenes.Menus.GameOverScene import GameOverScene
-                    self.nextScene = GameOverScene()
+                    self.nextScene = GameOverScene()"""
 
             
 

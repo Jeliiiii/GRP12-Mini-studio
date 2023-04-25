@@ -10,7 +10,10 @@ class ClassicBullet(DefaultPawnActor):
         super().onTick(dt)
 
     def onHit(self, bulletList):
-        bulletList.remove(self)
+        try: 
+            bulletList.remove(self)
+        except: 
+            pass
 
 
 class TankBullet(DefaultPawnActor):
