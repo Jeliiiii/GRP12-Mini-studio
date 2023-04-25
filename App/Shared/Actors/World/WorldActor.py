@@ -40,48 +40,62 @@ class WorldActor:
         tileSize = self.tileSize
 
     
-        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
-        img = sheet.cut(800, 400, 400, 400)
-        dodoForwardSurface_k1 = pygame.transform.scale(img, (tileSize*3, tileSize*3))
-        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
-        img = sheet.cut(1200, 400, 400, 400)
-        dodoForwardSurface_k2 = pygame.transform.scale(img, (tileSize*3, tileSize*3))
-        self.agentSprites["FORWARD"] = [dodoForwardSurface_k1, dodoForwardSurface_k2]
-        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
-        img = sheet.cut(2075, 415, 415, 415)
-        dodoUpSurface_K1 = pygame.transform.scale(img, (tileSize*3, tileSize*3))
-        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
-        img = sheet.cut(2490, 415, 415, 415)
-        dodoUpSurface_K2 = pygame.transform.scale(img, (tileSize*3, tileSize*3))
+        sheet = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
+
+
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(841, 414, 419, 417))
+        dodoForwardSurface_K1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+        
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(3320, 415, 415, 415))
+        dodoForwardSurface_K2 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+        self.agentSprites["UP"] = [dodoForwardSurface_K1, dodoForwardSurface_K2]
+
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(3320, 415, 415, 415))
+        dodoUpSurface_K1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+        
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(3320, 415, 415, 415))
+        dodoUpSurface_K2 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         self.agentSprites["UP"] = [dodoUpSurface_K1, dodoUpSurface_K2]
-        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
-        img = sheet.cut(3320, 415, 415, 415)
-        img = pygame.transform.scale(img, (tileSize*10,tileSize*10))
-        dodoDownface_k1 = pygame.transform.scale(img, (tileSize*3, tileSize*3))
-        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
-        img = sheet.cut(3735, 415, 415, 415)
-        dodoDownSurface_k2 = pygame.transform.scale(img, (tileSize*3, tileSize*3))
-        self.agentSprites["DOWN"] = [dodoDownface_k1, dodoDownSurface_k2]
-        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
-        img = sheet.cut(4580, 415, 415, 415)
+        
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(3320, 415, 415, 415))
+        dodoDownSurface_k1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+        
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(3320, 415, 415, 415))
+        dodoDownSurface_k2 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+        self.agentSprites["DOWN"] = [dodoDownSurface_k1, dodoDownSurface_k2]
+        
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(3320, 415, 415, 415))
         dodoBackSurface_K1 = pygame.transform.scale(img, (tileSize*3, tileSize*3))
-        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
-        img = sheet.cut(4995, 415, 415, 415)
+        
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(3320, 415, 415, 415))
         dodoBackSurface_K2 = pygame.transform.scale(img, (tileSize*3, tileSize*3))
         self.agentSprites["BACK"] = [dodoBackSurface_K1, dodoBackSurface_K2]
 
 
-        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
-        img = sheet.cut(830, 830, 415, 415)
+        
         bulletFireSureface_K1 = pygame.transform.scale(img, (tileSize, tileSize))
-        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
-        img = sheet.cut(1245, 830, 415, 415)
+        
         bulletFireSureface_K2 = pygame.transform.scale(img, (tileSize, tileSize))
-        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
+        
         img = sheet.cut(1660, 830, 415, 415)
         bulletFireSureface_K3 = pygame.transform.scale(img, (tileSize, tileSize))
-        sheet = SpriteSheetCutter(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
-        img = sheet.cut(2075, 830, 415, 415)
+        
         bulletSurface = pygame.transform.scale(img, (tileSize, tileSize))
         self.fireAnimSurfaces = {"K1":bulletFireSureface_K1,
                                  "K2":bulletFireSureface_K2,
@@ -111,7 +125,7 @@ class WorldActor:
                                 "KIWI_BULLET":bulletSurface,
                                 "CHICKEN":chicken,
                                 "BLUE_BULLET":blueBullet,
-                                "RED_DROP":redDrop}
+                                "RED_DROP":redDrop,}
 
 
     def onTick(self, inputs, dt):
