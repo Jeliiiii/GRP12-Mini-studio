@@ -21,28 +21,31 @@ def mapChunkCSVData(world, chunkCSVData, offsetChunk):
     for y, row in enumerate(chunkCSVData):
         for x, tile in enumerate(row):
             if tile != -1: # -1 = empty tile
-                if tile > -1 and tile < 11:
+                if tile == 0:
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["MIDDLE_WALL"], velX=world.scrollSpeedX))
+                elif tile == 1:
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["LEFT_CORNER_WALL"], velX=world.scrollSpeedX))
+                elif tile == 2:
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["RIGHT_CORNER_WALL"], velX=world.scrollSpeedX))
+                elif tile == 3:
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["LEFT_WALL"], velX=world.scrollSpeedX))
+                elif tile == 4:
                     obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["DEFAULT_WALL"], velX=world.scrollSpeedX))
-                elif tile == 11 and tile <= 14:
-                    pass # 11 : shield faibles -> Destructibles
-                elif tile == 13 :
-                    pass #13 : shield fort -> indestructible
-                elif tile == 14 :
-                    pass #14 : non utilisé
-                elif tile == 15 : 
-                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["DEFAULT_ENNEMY"], WeaponActor(ClassicBullet, world.spritesSurfaces["KIWI_BULLET"], 0.5), velX=world.scrollSpeedX))
-                    #enemy = Character(window.screen, x*TILE_SIZE, y*TILE_SIZE, 50, 100, 5) #15 : ennemi horizontal
-                    pass
-                elif tile == 16 : 
-                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["DEFAULT_ENNEMY"], WeaponActor(ClassicBullet, world.spritesSurfaces["KIWI_BULLET"], 0.5), velX=world.scrollSpeedX, velY=world.scrollSpeedX)) #16 : ennemi vertical
-                elif tile == 17 :
-                    pass # 17 : mur électrifié
-                elif tile >= 18 and tile <= 19 :
-                    pass # inutilisé
-                elif tile == 12:
-                    pass
-                elif tile == 20 :
-                    pass #Création de fin de niveau
+                elif tile == 5:
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["RIGHT_WALL"], velX=world.scrollSpeedX))
+                elif tile == 14 : #static enemy shooting left (wall)
+                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["IDLE_ENNEMY"], WeaponActor(ClassicBullet, world.spritesSurfaces["PURPLE_BULLET"], 0.5), velX=world.scrollSpeedX))
+                elif tile == 15 : # enemy shooting left
+                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["MOVING_ENNEMY"], WeaponActor(ClassicBullet, world.spritesSurfaces["PURPLE_BULLET"], 0.5), velX=world.scrollSpeedX))
+                elif tile == 16 : #Enemy shooting under
+                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["STATIC_ENNEMY"], WeaponActor(ClassicBullet, world.spritesSurfaces["PURPLE_BULLET"], 0.5), velX=world.scrollSpeedX, velY=world.scrollSpeedX)) 
+                elif tile == 17 : # electric wall 
+                    pass 
+                elif tile == 20 : # level end
+                    pass 
+                elif tile >= 6 and tile <= 9 or tile >= 11 and tile <= 13 or tile >= 18 and tile <= 19 :
+                    pass # not attributed
+
     chunk.obstaclesList = obstaclesList
     chunk.ennemiesList = ennemiesList
     return chunk           
