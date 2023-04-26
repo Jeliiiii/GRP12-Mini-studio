@@ -27,7 +27,7 @@ class EnnemyActor(DefaultPawnActor):
             self.velocity[1] = -self.velocity[1]
 
         if self.weapon.shootCooldownRemaining == 0:
-            bulletList = self.weapon.fireDouble(self.hitBox.x, self.hitBox.centery, -70, 40)
+            bulletList = self.weapon.fire(self.hitBox.x, self.hitBox.centery, -70, 40)
         self.weapon.onTick(dt)
         return bulletList
     
