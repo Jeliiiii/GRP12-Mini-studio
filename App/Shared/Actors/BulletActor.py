@@ -10,12 +10,16 @@ class ClassicBullet(DefaultPawnActor):
         super().onTick(dt)
 
     def onHit(self, bulletList):
-        bulletList.remove(self)
+        try: 
+            bulletList.remove(self)
+        except: 
+            pass
 
 
 class TankBullet(DefaultPawnActor):
     def __init__(self, x, y, surface, velX=0, velY=0):
         super().__init__(x, y, surface, velX=velX, velY=velY)
+        self.hitBox.centery = y
         self.damage = 50
         self.durability = 5
 

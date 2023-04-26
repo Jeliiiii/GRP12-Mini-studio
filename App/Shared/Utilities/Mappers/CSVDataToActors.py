@@ -3,7 +3,7 @@ from ...Actors.World.ChunkActor import ChunkActor
 from ...Actors.DefaultPawnActor import DefaultPawnActor
 from ...Actors.Characters.Ennemies.EnnemyActor import EnnemyActor
 from ...Actors.Characters.AgentCharacterActor import AgentCharacterActor
-from ...Actors.Weapons.WeaponActor import WeaponActor
+from ...Actors.Weapons.WeaponActor import WeaponActor, DoubleWeaponActor
 from ...Actors.BulletActor import ClassicBullet
 
 def mapWorldCSVData(world, worldCSVData):
@@ -21,28 +21,50 @@ def mapChunkCSVData(world, chunkCSVData, offsetChunk):
     for y, row in enumerate(chunkCSVData):
         for x, tile in enumerate(row):
             if tile != -1: # -1 = empty tile
-                if tile > -1 and tile < 11:
+                if tile == 0:
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["MIDDLE_WALL"], velX=world.scrollSpeedX))
+                elif tile == 1:
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["LEFT_CORNER_WALL"], velX=world.scrollSpeedX))
+                elif tile == 2:
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["RIGHT_CORNER_WALL"], velX=world.scrollSpeedX))
+                elif tile == 3:
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["LEFT_WALL"], velX=world.scrollSpeedX))
+                elif tile == 4:
                     obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["DEFAULT_WALL"], velX=world.scrollSpeedX))
-                elif tile == 11 and tile <= 14:
-                    pass # 11 : shield faibles -> Destructibles
-                elif tile == 13 :
-                    pass #13 : shield fort -> indestructible
-                elif tile == 14 :
-                    pass #14 : non utilisé
-                elif tile == 15 : 
-                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["DEFAULT_ENNEMY"], WeaponActor(ClassicBullet, world.spritesSurfaces["KIWI_BULLET"], 0.5), velX=world.scrollSpeedX))
-                    #enemy = Character(window.screen, x*TILE_SIZE, y*TILE_SIZE, 50, 100, 5) #15 : ennemi horizontal
-                    pass
-                elif tile == 16 : 
-                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["DEFAULT_ENNEMY"], WeaponActor(ClassicBullet, world.spritesSurfaces["KIWI_BULLET"], 0.5), velX=world.scrollSpeedX, velY=world.scrollSpeedX)) #16 : ennemi vertical
-                elif tile == 17 :
-                    pass # 17 : mur électrifié
-                elif tile >= 18 and tile <= 19 :
-                    pass # inutilisé
+                elif tile == 5:
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["RIGHT_WALL"], velX=world.scrollSpeedX))
+                elif tile == 6:
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["LEFT_LASER_TOP_CORNER_WALL"], velX=world.scrollSpeedX))
+                elif tile == 7:
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["LEFT_LASER_WALL"], velX=world.scrollSpeedX))
+                elif tile == 8:
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["LEFT_LASER_BOT_CORNER_WALL"], velX=world.scrollSpeedX))
+                elif tile == 9:
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["RIGHT_LASER_TOP_CORNER_WALL"], velX=world.scrollSpeedX))
+                elif tile == 10:
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["RIGHT_LASER_WALL"], velX=world.scrollSpeedX))
+                elif tile == 11:
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["RIGHT_LASER_BOT_CORNER_WALL"], velX=world.scrollSpeedX))
                 elif tile == 12:
-                    pass
-                elif tile == 20 :
-                    pass #Création de fin de niveau
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["TOP_GLASS_WALL"], velX=world.scrollSpeedX))
+                elif tile == 13:
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["GLASS_WALL"], velX=world.scrollSpeedX))
+                elif tile == 14:
+                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["BOT_GLASS_WALL"], velX=world.scrollSpeedX))
+                elif tile == 15 : #static enemy shooting left (wall)
+                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.idleEnnemySurface_1, DoubleWeaponActor(ClassicBullet, world.spritesSurfaces["PURPLE_BULLET"], 0.5, world.firePurpleSurface_1), velX=world.scrollSpeedX))
+                elif tile == 16 : # enemy shooting left
+                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.movingEnnemySurface_1, WeaponActor(ClassicBullet, world.spritesSurfaces["PURPLE_BULLET"], 0.5, world.firePurpleSurface_1), velX=world.scrollSpeedX))
+                elif tile == 17 : #Enemy shooting under
+                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.staticEnnemySurface_1, WeaponActor(ClassicBullet, world.spritesSurfaces["PURPLE_BULLET"], 0.5, world.firePurpleSurface_1), velX=0, velY=world.scrollSpeedX)) 
+                elif tile == 18  : # player spawn, unused actually
+                    pass 
+                elif tile == 19 : # Operator Wall 
+                    pass 
+                elif tile == 20 : # level end
+                    pass 
+
+
     chunk.obstaclesList = obstaclesList
     chunk.ennemiesList = ennemiesList
     return chunk           
@@ -52,6 +74,7 @@ def mapChunkCSVData(world, chunkCSVData, offsetChunk):
 
 
 def loadWorldFromCSV(world, levelId):
+    print("seh")
     import os
     csv_file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), f"../../Assets/Levels/level{levelId}_data.csv"))
     with open(csv_file_path, newline="") as csvfile:

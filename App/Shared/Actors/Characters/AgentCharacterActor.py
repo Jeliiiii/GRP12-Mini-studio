@@ -4,10 +4,13 @@ from ..Weapons.WeaponActor import WeaponActor
 
 
 class AgentCharacterActor(DefaultPawnActor):
-    def __init__(self, x, y, surface, weapon, speed=50):
-        super().__init__(x, y, surface)
+    def __init__(self, x, y, surfaceList, weapon, speed=50):
+        self.surfaceList = surfaceList
+        self.sprite =  [surfaceList["FORWARD"][0], surfaceList["FORWARD"][0].get_rect(topleft=(x, y))]
+        super().__init__(x, y)
         self.speed = speed
         self.weapon = weapon
+        self.animCooldown = 1000
 
     def onTick(self, inputs, dt):
         bulletList = []
@@ -23,8 +26,44 @@ class AgentCharacterActor(DefaultPawnActor):
         if pygame.K_SPACE in inputs["ACTIVE_KEYS"]:
             if self.weapon.shootCooldownRemaining <= 0:
                 bulletList = self.weapon.fire(self.hitBox.x, self.hitBox.y, 100, 0)
-
+        
+        self.animation()
         self.weapon.onTick(dt)
         self.move(dt)
 
         return bulletList
+
+    def animation(self):
+        self.animCooldown -=1
+
+        if self.velocity[1] < 0:
+            if 500 <= self.animCooldown <=1000:
+                self.sprite[0] = self.surfaceList["UP"][0]
+            elif 1<= self.animCooldown <= 499:
+                self.sprite[0] = self.surfaceList["UP"][1]
+            else:
+                self.animCooldown = 1000
+
+        elif self.velocity[1] > 0:
+            if 500 <= self.animCooldown <=1000:
+                self.sprite[0] = self.surfaceList["DOWN"][0]
+            elif 1<= self.animCooldown <= 499:
+                self.sprite[0] = self.surfaceList["DOWN"][1]
+            else:
+                self.animCooldown = 1000
+
+        elif self.velocity[0] < 0:
+            if 500 <= self.animCooldown <=1000:
+                self.sprite[0] = self.surfaceList["BACK"][0]
+            elif 1<= self.animCooldown <= 499:
+                self.sprite[0] = self.surfaceList["BACK"][1]
+            else:
+                self.animCooldown = 1000
+
+        else :
+            if 500 <= self.animCooldown <=1000:
+                self.sprite[0] = self.surfaceList["FORWARD"][0]
+            elif 1<= self.animCooldown <= 499:
+                self.sprite[0] = self.surfaceList["FORWARD"][1]
+            elif self.animCooldown == 1:
+                self.animCooldown = 1000
