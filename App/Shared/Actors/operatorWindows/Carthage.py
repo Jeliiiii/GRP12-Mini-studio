@@ -1,6 +1,6 @@
 import pygame
 from Shared.Utilities.charactersReferencesList import charactersReferencesList
-from Shared.Components.operatorWindows.PseudoWindow import *
+from Shared.Actors.operatorWindows.PseudoWindow import *
 
 
 class TypingFieldActor:
@@ -36,7 +36,7 @@ class TypingFieldActor:
                 self.textSprite[0].set_alpha(200)
                 self.active = False
                 return'''
-            print(inputs)
+
             if inputs["ACTIVE_KEYS"]:
                 for key in inputs["ACTIVE_KEYS"]:
                     if key == pygame.K_BACKSPACE:
@@ -51,31 +51,39 @@ class TypingFieldActor:
                             inputs["ACTIVE_KEYS"].remove(key)
                             print(self.value)
                 self.textSprite = self.font.render(self.value, fgcolor=(self.fontColor), size=self.fontSize)
-                (self.textSprite[1].x,self.textSprite[1].y) = (self.textPos[0], self.textPos[1])
+                (self.textSprite[1].x, self.textSprite[1].y) = (self.textPos[0], self.textPos[1])
         '''elif self.isHovering(inputs["MOUSE_POS"][0],inputs["MOUSE_POS"][1]) and (1 in inputs["MOUSE_BUTTONS"]):
             self.textSprite[0].set_alpha(255)
             self.active = True
             inputs["MOUSE_BUTTONS"].remove(1)
             print(self.active)'''
 
-    def draw(self, window):
-        pygame.draw.rect(window, "red", self.hitBox)
+    def draw(self, window, color):
+        pygame.draw.rect(window, color, self.hitBox)
         window.blit(self.textSprite[0], self.textSprite[1])
 
 
 class Carthage(PseudoWindow):
-    def __init__(self, coord=(0, 0), dim=(1, 1), closeCondition=0, color=(128, 128, 128, 1), password = "carthage"):
-        PseudoWindow.__init__(self, coord, dim, closeCondition, color)
+    def __init__(self, coord=(0, 0), dim=(1, 1), password = "carthage"):
+        PseudoWindow.__init__(self, coord, dim, closeCond = False)
         self.typeField = TypingFieldActor(10, 10, testFont, 40, (3, 53, 252), maxLength=8, active=True)
         self.password = password
 
     def draw(self):
         super().draw()
 
-        self.typeField.draw(self.surfContent)
-        if self.typeField.value == self.password :
-            print("acces au 5e territoire")
-            PseudoWindow.loadedPseudoWindows.remove(self)
+        if self.typeField.value == self.password:
+            self.typeField.draw(self.surfContent, "green")
+        else:
+            self.typeField.draw(self.surfContent, "red")
+
 
     def onTick(self, inputs, dt):
-        self.typeField.onTick(inputs, dt)
+        super().onTick(inputs, dt)
+
+        # Upon victory, grants the right to close the window, and prevents writing inside of it
+        if self.typeField.value == self.password :
+            if not self.closeCond:
+                self.closeCond = True
+        else:
+            self.typeField.onTick(inputs, dt)

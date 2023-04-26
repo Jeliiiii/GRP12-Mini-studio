@@ -1,4 +1,4 @@
-from ...Components.operatorWindows.setup import *
+from ...Actors.operatorWindows.setup import *
 from time import sleep
 # Creating "window" class, an UI element of the spy's screen
 
@@ -6,7 +6,7 @@ class PseudoWindow:
     # Stores every "window" to make them interactive in main loop
     loadedPseudoWindows = []
 
-    def __init__(self, coord = (0, 0), dim = (1, 1), color = (128, 128, 128, 1), closeCond = True):
+    def __init__(self, coord = (0, 0), dim = (330, 300), color = (128, 128, 128, 1), closeCond = True):
         # Saves the object caracteristics
         self.coord = coord
         self.dim = dim
@@ -33,10 +33,6 @@ class PseudoWindow:
 
         # Hitbox and surface for the cross to close the window
         self.surfCross = pygame.Surface((16, 16))
-        if self.closeCond:
-            self.surfCross.fill((255, 0, 0))
-        else:
-            self.surfCross.fill((70, 70, 70))
         self.rectCross = self.surfCross.get_rect(topright = (self.coord[0] + self.dim[0] - self.borderSize, self.coord[1] + (self.menuSize - self.surfCross.get_height()) // 2))
 
         # Adding the new instance to the list and updates priority of the other
@@ -46,18 +42,16 @@ class PseudoWindow:
         PseudoWindow.loadedPseudoWindows.append(self)
 
     def __del__(self):
-        print("/!\\ Thank you for calling del ! Here is target priority : ", self.priority)
+        # print("/!\\ Thank you for calling del ! Here is target priority : ", self.priority)
         if PseudoWindow.loadedPseudoWindows:
             for instance in PseudoWindow.loadedPseudoWindows:
                 if instance.priority > self.priority:
                     instance.priority -= 1
 
-    # def __str__(self):
-    #     return f"coordinates: {self.coord}, dimensions: {self.dim}, close method: {self.closeCond}, color: {self.color}, border size: {self.borderSize}, menu size: {self.menuSize}"
-
+    
     # Essentially makes selected windows on number 1 priority, and shift the other windows accrodingly
     def focusOn(self):
-        print("Thank you for calling focusOn() ! Here is target priority : ", self.priority)
+        # print("Thank you for calling focusOn() ! Here is target priority : ", self.priority)
         if PseudoWindow.loadedPseudoWindows and self.priority != 1:
             for instance in PseudoWindow.loadedPseudoWindows:
                 if instance.priority != self.priority and instance.priority + 1 <= self.priority:
@@ -73,22 +67,61 @@ class PseudoWindow:
         pygame.draw.rect(spyScreen, self.color, self.rectMenu)
 
         """ TEMPORARY DISPLAYING """
-        '''self.surfContent.fill(white)
-        self.surfContent.blit(defaultFont.render(f"{self.priority}", True, (160, 50, 200)), (10, 10))'''
+        # self.surfContent.fill(white)
+        # self.surfContent.blit(defaultFont.render(f"{self.priority}", True, (160, 50, 200)), (10, 10))
 
         # Blit the Content of the window
         spyScreen.blit(self.surfContent, (self.rectContent.x, self.rectContent.y))
 
         # Blit the Cross of the window
+        if self.closeCond:
+            self.surfCross.fill((255, 0, 0))
+        else:
+            self.surfCross.fill((70, 70, 70))
         spyScreen.blit(self.surfCross, (self.rectCross.x, self.rectCross.y))
 
 
-    def clicked(self, coords):
-        print("coords : ", coords, ", self.rectCross : ", self.rectCross)
-        if self.rectCross.collidepoint(coords):
-            print("Left Click on CROSS")
-            del self
-            print("element removed from list")
-
+    # Update a window. Called every frame and for every window
     def onTick(self, inputs, dt):
-        pass
+        mouse_pos = (inputs["MOUSE_POS"][0], inputs["MOUSE_POS"][1])
+
+        # Test if the click append within the window region
+        if 1 in inputs["MOUSE_BUTTONS"] and self.rectWhole.collidepoint(mouse_pos):
+            inputs["MOUSE_BUTTONS"].remove(1)
+
+            print("====> Click detected !")
+
+            
+            # Necessary loop to get the index of object within list of loaded objects
+            for cur in range(len(PseudoWindow.loadedPseudoWindows)):
+
+                # Filter to only act on targeted object via it's index
+                if PseudoWindow.loadedPseudoWindows[cur] == self:
+
+                    # print("====> Testing click on ", self.priority, ", ", self.__class__.__name__, " of index ", cur)
+
+                    # Manages priorities
+                    if self.rectWhole.collidepoint(mouse_pos):
+                        # print("====> Rearraging priorities...")
+                        for instance in PseudoWindow.loadedPseudoWindows:
+                            if instance.priority != self.priority and instance.priority + 1 <= self.priority:
+                                instance.priority += 1
+                        self.priority = 1
+
+                    # Another filter to make sure actions are tested on a single window every time
+                    if self.priority == 1:
+
+                        # Closes the window if the Cross region was clicked
+                        if self.rectCross.collidepoint(mouse_pos) and self.closeCond:
+                            for target in range(len(PseudoWindow.loadedPseudoWindows)):
+                                print(len(PseudoWindow.loadedPseudoWindows) ,target)
+                                if PseudoWindow.loadedPseudoWindows[target] == self:
+                                    del PseudoWindow.loadedPseudoWindows[target]
+                                    return
+
+                    else:
+                        # print("====> No cillision found...")
+                        inputs["MOUSE_BUTTONS"].append(1)
+        else:
+            # print("====> Passing...")
+            pass
