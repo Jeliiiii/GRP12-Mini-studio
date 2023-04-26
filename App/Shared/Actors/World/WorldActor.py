@@ -43,6 +43,7 @@ class WorldActor:
 
     
         sheet = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
+        sheet2 = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteBase.png"))
 
 
         surf = pygame.surface.Surface((500, 500))
@@ -242,12 +243,6 @@ class WorldActor:
                                  "K3":ExplosionSurface_PK3,
                                  "K4":ExplosionSurface_PK4,}
 
-
-
-
-
-
-
         #Brick Wall
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
@@ -321,6 +316,32 @@ class WorldActor:
         surf.blit(sheet, (0, 0),(827, 4544, 413, 413))
         leftLaserBotCornerWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         
+#Sprites UI
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet2, (0, 0),(32, 32, 607, 188))
+        UI3LivesSurface= pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet2, (0, 0),(639, 32, 607, 188))
+        UI2LivesSurface= pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet2, (0, 0),(32, 220, 607, 188))
+        UI1LivesSurface= pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet2, (0, 0),(639, 220, 607, 188))
+        UI0LivesSurface= pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        self.UILivesList = {"K1":UI3LivesSurface,
+                                 "K2":UI2LivesSurface,
+                                 "K3":UI1LivesSurface,
+                                 "K4":UI0LivesSurface,}
+
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Backgrounds/japanese_night_city.png"))
         backgroundSurface = pygame.transform.scale(img, (self.winWidth*img.get_height()/self.winHeight,self.winHeight))
 
