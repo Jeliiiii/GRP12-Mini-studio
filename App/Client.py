@@ -1,5 +1,7 @@
 import pygame
 from Shared.Scenes.Menus.MainMenuScene import MainMenuScene
+from Shared.Scenes.Menus.MenuScene import MenuScene
+from Shared.Systems.LifeSystem import LifeSystem
 
 class Client:
 
@@ -9,13 +11,14 @@ class Client:
         self.server = None
         self.clientSocket = None
         self.initWindow()
+        self.life_system = LifeSystem()
 
     def initWindow(self):
         pygame.init()
         desktopSize = pygame.display.get_desktop_sizes()
         pygame.display.set_caption("Birds of Chaos")
         self.window = pygame.display.set_mode(desktopSize[0],
-                                               pygame.FULLSCREEN)
+                                               pygame.NOFRAME)
         self.clock = pygame.time.Clock()
         self.currentScene = MainMenuScene()
 

@@ -354,7 +354,8 @@ class WorldActor:
                             pass
                 #systeme collision dodo/obstacle
                 if  obstacle.hitBox.colliderect(self.agentCharacter.hitBox) == True:
-                    self.onTick = self.gameOver
+                    if self.agentCharacter.lose_life() == 0:
+                        self.onTick = self.gameOver
                 
             for loot in self.lootList:
                 loot.onTick(dt)
