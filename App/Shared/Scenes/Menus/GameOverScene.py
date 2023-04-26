@@ -29,6 +29,7 @@ class GameOverScene(MenuScene):
 
 
     def drawScene(self, window):
+        window.fill( "#111126" )
         window.blit(self.backGround, self.screenSize)
         self.menu.draw(window)
 
