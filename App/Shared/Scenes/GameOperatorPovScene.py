@@ -20,22 +20,22 @@ class GameOperatorPovScene(Scene):
 
 
         # Creates special windows for spying on the Actor's view, and it's control panel
-        self.SpyScreen = SpyWindow()
+        self.SpyingScreen = SpyWindow()
         self.ToolBelt = ToolWindow()
 
         # PseudoWindow((300, 300), (90, 90), color = (45, 177, 88, 1))
         # PseudoWindow((105, 105), (90, 90), color = (45, 177, 88, 1))
 
-        Simon((300, 100), (300, 300))
-        Carthage((100, 600), (300, 300))
+        # Simon((300, 100), (300, 300))
+        # Carthage((100, 600), (300, 300))
 
 
     def updateScene(self, inputs, dt):
         
         windowsUpdated = []
 
-        # Updates windows with priority of 0. Hard coded specifically for the SpyScreen and ToolBelt
-        self.SpyScreen.onTick(inputs, dt)
+        # Updates windows with priority of 0. Hard coded specifically for the SpyingScreen and ToolBelt
+        self.SpyingScreen.onTick(inputs, dt)
         self.ToolBelt.onTick(inputs, dt)
 
         # Calls onTick() on every windows exactly once (despite changing priorities around)
@@ -68,8 +68,8 @@ class GameOperatorPovScene(Scene):
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../Assets/Graphics/Backgrounds/spy_background.jpg"))
         window.blit(img, (0, 0))
 
-        # Draws special windows of priority 0. Hard coded specifically for the SpyScreen and ToolBelt
-        self.SpyScreen.draw()
+        # Draws special windows of priority 0. Hard coded specifically for the SpyingScreen and ToolBelt
+        self.SpyingScreen.draw()
         self.ToolBelt.draw()
 
         # Draws every windows that are loaded, by order if priority

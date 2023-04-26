@@ -18,11 +18,11 @@ class Client:
         desktopSize = pygame.display.get_desktop_sizes()
         print(desktopSize)
         pygame.display.set_caption("Birds of Chaos")
-        # self.window = pygame.display.set_mode(desktopSize[0], pygame.FULLSCREEN)
-        x = 0
-        y = 0
-        os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x,y)
-        self.window = pygame.display.set_mode((1000, 900))
+        self.window = pygame.display.set_mode(desktopSize[0], pygame.FULLSCREEN)
+        # x = 0
+        # y = 0
+        # os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x,y)
+        # self.window = pygame.display.set_mode((1000, 900))
         self.clock = pygame.time.Clock()
         self.currentScene = MainMenuScene()
 

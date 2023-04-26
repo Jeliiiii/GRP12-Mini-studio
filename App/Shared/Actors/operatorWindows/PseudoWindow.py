@@ -78,7 +78,7 @@ class PseudoWindow:
             self.surfCross.fill((255, 0, 0))
         else:
             self.surfCross.fill((70, 70, 70))
-        spyScreen.blit(self.surfCross, (self.rectCross.x, self.rectCross.y))
+        spyScreen.blit(self.surfCross, self.rectCross.topleft)
 
 
     # Update a window. Called every frame and for every window

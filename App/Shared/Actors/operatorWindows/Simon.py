@@ -114,4 +114,4 @@ class Simon(PseudoWindow):
                             square.clickedOn = [20, 0]
                             self.replayCountDown = 20
 
-            self.clickCooldown = 10
+            self.clickCooldown = 5
