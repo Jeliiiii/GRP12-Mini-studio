@@ -37,7 +37,7 @@ class AgentCharacterActor(DefaultPawnActor):
         return bulletList
     
     def lose_life(self):
-        self.remaining_lives -= 1
+        self.remaining_life -= 1
         return self.remaining_life
     
     
