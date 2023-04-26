@@ -219,25 +219,25 @@ class WorldActor:
 #Explosion
         surf = pygame.surface.Surface((1000, 1000))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(1, 1653, 413, 826))
+        surf.blit(sheet, (0, 0),(1, 1653, 826, 826))
         ExplosionSurface_PK1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
 
         surf = pygame.surface.Surface((1000, 1000))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(414, 1653, 413, 826))
+        surf.blit(sheet, (0, 0),(827, 1653, 826, 826))
         ExplosionSurface_PK2 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
 
         surf = pygame.surface.Surface((1000, 1000))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(827, 1653, 413, 826))
+        surf.blit(sheet, (0, 0),(1653, 1653, 826, 826))
         ExplosionSurface_PK3 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
 
         surf = pygame.surface.Surface((1000, 1000))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(1240, 1653, 413, 826))
+        surf.blit(sheet, (0, 0),(2479, 1653, 826, 826))
         ExplosionSurface_PK4 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
 
-        self.ExplosionSurface_1 = {"K1":ExplosionSurface_PK1,
+        self.explosionList = {"K1":ExplosionSurface_PK1,
                                  "K2":ExplosionSurface_PK2,
                                  "K3":ExplosionSurface_PK3,
                                  "K4":ExplosionSurface_PK4,}
@@ -426,24 +426,24 @@ class WorldActor:
         for loot in self.lootList:
             loot.draw(window)
         self.agentCharacter.weapon.draw(window, (self.agentCharacter.sprite[1][0]+self.tileSize*2, self.agentCharacter.sprite[1][1]+0.39*self.tileSize))
-        if self.gameOverSprite :
-            window.blit(self.gameOverSprite)
+
 
 
 
     def gameOver(self, input, dt):
         self.gameOverTimer -= 1
         if 30<= self.gameOverTimer < 40:
-            self.gameOverSprite = (self.explosionList["K1"], self.explosionList["K1"].get_rect(topleft=AgentCharacterActor.sprite[1]))
+            self.gameOverSprite = (self.explosionList["K1"])
         elif 20<= self.gameOverTimer < 30:
-            self.gameOverSprite[1] = (self.explosionList["K2"])
+            self.gameOverSprite = (self.explosionList["K2"])
         elif 10<= self.gameOverTimer < 20:
-            self.gameOverSprite[1] = (self.explosionList["K3"])
+            self.gameOverSprite = (self.explosionList["K3"])
         elif 0<= self.gameOverTimer < 10:
-            self.gameOverSprite[1] = (self.explosionList["K4"])
+            self.gameOverSprite = (self.explosionList["K4"])
         else:
             from ...Scenes.Menus.GameOverScene import GameOverScene
             self.nextScene = GameOverScene()
+        self.agentCharacter.sprite[0] = self.gameOverSprite
             
 
 

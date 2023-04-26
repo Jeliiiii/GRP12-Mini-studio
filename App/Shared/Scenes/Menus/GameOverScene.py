@@ -9,9 +9,10 @@ class GameOverScene(MenuScene):
         super().__init__("GameOver")
 
         (windowWidth, windowHeight) = pygame.display.get_window_size()
+        self.screenSize = (windowWidth, windowHeight)
 
         img= pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Backgrounds/GameOver.png"))
-        self.backGround = pygame.transform.scale(img, (windowWidth, windowHeight))
+        self.backGround = pygame.transform.scale(img, self.screenSize)
 
         self.menu.buttonsList=[ButtonActor("Back to menu", self.switchMainMenuScene)]
 
@@ -28,7 +29,7 @@ class GameOverScene(MenuScene):
 
 
     def drawScene(self, window):
-        window.blit()
+        window.blit(self.backGround, self.screenSize)
         self.menu.draw(window)
 
 
