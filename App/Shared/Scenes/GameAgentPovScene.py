@@ -11,12 +11,17 @@ class GameAgentPovScene(Scene):
         super().__init__()
         self.world = WorldActor(1)
 
-
-        # self.character = AgentCharacterActor(100,100, characterSprite, speed=70)
-        # self.bulletList = []
-        # self.ennemiesList = [EnnemyActor(600, 500, ennemySprite, velX=-10, velY=0), EnnemyActor(600, 100, ennemySprite, velX=-20, velY=0)]
+        
 
     def updateScene(self, inputs, dt):
+
+        #
+        #
+        #receive
+        #
+        #
+        
+
         self.world.onTick(inputs, dt)
         
             
