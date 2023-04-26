@@ -3,9 +3,9 @@ from Shared.Scenes.Menus.MainMenuScene import MainMenuScene
 from Shared.Scenes.Menus.MenuScene import MenuScene
 from Shared.Systems.LifeSystem import LifeSystem
 
-import os
-print("!!!!!!\n!!!!!!\nWORKING DIRECTORY MANUALLY CHANGED\n!!!!!!\n!!!!!!")
-os.chdir("C:\\Users\\BAPTISTE\\Desktop\\GRP12-Mini-studio")
+# import os
+# print("!!!!!!\n!!!!!!\nWORKING DIRECTORY MANUALLY CHANGED\n!!!!!!\n!!!!!!")
+# os.chdir("C:\\Users\\BAPTISTE\\Desktop\\GRP12-Mini-studio")
 
 class Client:
 
@@ -54,7 +54,7 @@ class Client:
             pygame.display.toggle_fullscreen()
             self.inputs["ACTIVE_KEYS"].remove(pygame.K_F11)
         #Scenes Switch Management
-        if self.currentScene.nextScene:
+        if self.currentScene.nextScene: 
             self.currentScene = self.currentScene.nextScene
 
     def main(self):
