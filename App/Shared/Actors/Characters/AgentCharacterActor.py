@@ -6,13 +6,11 @@ from ..Weapons.WeaponActor import WeaponActor
 class AgentCharacterActor(DefaultPawnActor):
     def __init__(self, x, y, surfaceList, weapon, speed=50):
         self.surfaceList = surfaceList
-        #self.sprite =  [surfaceList["FORWARD"][0], surfaceList["FORWARD"][0].get_rect()]
-        self.sprite = [0,0]
+        self.sprite =  [surfaceList["FORWARD"][0], surfaceList["FORWARD"][0].get_rect()]
         super().__init__(x, y)
         self.speed = speed
         self.weapon = weapon
         self.animCooldown = 1000
-        print("init")
 
     def onTick(self, inputs, dt):
         bulletList = []
@@ -40,44 +38,32 @@ class AgentCharacterActor(DefaultPawnActor):
 
         if self.velocity[1] < 0:
             if 500 <= self.animCooldown <=1000:
-                print(10)
                 self.sprite[0] = self.surfaceList["UP"][0]
             elif 1<= self.animCooldown <= 499:
-                print(5)
                 self.sprite[0] = self.surfaceList["UP"][1]
             else:
-                print(0)
                 self.animCooldown = 1000
 
         elif self.velocity[1] > 0:
             if 500 <= self.animCooldown <=1000:
-                print(10)
                 self.sprite[0] = self.surfaceList["DOWN"][0]
             elif 1<= self.animCooldown <= 499:
-                print(5)
                 self.sprite[0] = self.surfaceList["DOWN"][1]
             else:
-                print(0)
                 self.animCooldown = 1000
 
         elif self.velocity[0] < 0:
             if 500 <= self.animCooldown <=1000:
-                print(10)
                 self.sprite[0] = self.surfaceList["BACK"][0]
             elif 1<= self.animCooldown <= 499:
-                print(5)
                 self.sprite[0] = self.surfaceList["BACK"][1]
             else:
-                print(0)
                 self.animCooldown = 1000
 
         else :
-            if self.animCooldown == 999:
-                print(10)
+            if 500 <= self.animCooldown <=1000:
                 self.sprite[0] = self.surfaceList["FORWARD"][0]
-            elif self.animCooldown == 500:
-                print(5)
+            elif 1<= self.animCooldown <= 499:
                 self.sprite[0] = self.surfaceList["FORWARD"][1]
             elif self.animCooldown == 1:
-                print(0)
                 self.animCooldown = 1000

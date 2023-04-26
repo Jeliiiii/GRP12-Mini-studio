@@ -7,7 +7,6 @@ from ...Actors.Weapons.WeaponActor import *
 from ...Actors.BulletActor import *
 from ..loots.ArsenalUpdater import ArsenalUpdater
 from random import randint
-from ...Actors.World.SpriteSheetCutting import SpriteSheetCutter
 
 class WorldActor:
 
@@ -24,15 +23,16 @@ class WorldActor:
                              "BACK":[]}
         self.loadImages()
         self.background = (self.spritesSurfaces["BACKGROUND"], self.spritesSurfaces["BACKGROUND"].get_rect())
-        self.arsenal = {"CLASSIC": WeaponActor(ClassicBullet, self.spritesSurfaces["PURPLE_BULLET"], 0.5),
-                        "TANK": WeaponActor(TankBullet, self.spritesSurfaces["CHICKEN_BULLET"], 6),
-                        "QUADRA": QuadraWeaponActor(ClassicBullet, self.spritesSurfaces["RED_BULLET"], 2),}
+        self.arsenal = {"CLASSIC": WeaponActor(ClassicBullet, self.spritesSurfaces["PURPLE_BULLET"], 0.5, self.firePurpleSurface_1),
+                        "TANK": WeaponActor(TankBullet, self.spritesSurfaces["CHICKEN_BULLET"], 6, self.fireRedSurface_1),
+                        "QUADRA": QuadraWeaponActor(ClassicBullet, self.spritesSurfaces["RED_BULLET"], 2, self.firePurpleSurface_1),}
         self.agentCharacter = AgentCharacterActor(500, 300,self.agentSprites, self.arsenal["CLASSIC"], speed=self.tileSize)
         self.chunksList = {"LOADED":[],"ACTIVE":[],"ARCHIVED":[]}
         self.chunksList["LOADED"] = mapWorldCSVData(self, worldCSVData)
         self.chunksList["ACTIVE"] = self.chunksList["LOADED"][:2]
         self.chunksList["LOADED"] = self.chunksList["LOADED"][2:]
-        self.bulletList = []
+        self.bulletListAlly = []
+        self.bulletListEnnemy = []
         self.lootList = []
         
 
@@ -52,7 +52,7 @@ class WorldActor:
         surf.set_colorkey((0,0,0))
         surf.blit(sheet, (0, 0),(1240, 414, 413, 413))
         dodoForwardSurface_K2 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
-        self.agentSprites["UP"] = [dodoForwardSurface_K1, dodoForwardSurface_K2]
+        self.agentSprites["FORWARD"] = [dodoForwardSurface_K1, dodoForwardSurface_K2]
 
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
@@ -91,19 +91,18 @@ class WorldActor:
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
         surf.blit(sheet, (0, 0),(827, 827, 413, 413))
-        bulletPurpleSureface_PK1 = pygame.transform.scale(surf, (tileSize, tileSize))
+        bulletPurpleSureface_PK1 = pygame.transform.scale(surf, (tileSize*2, tileSize*2))
 
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
         surf.blit(sheet, (0, 0),(827, 1240, 413, 413))
-        bulletPurpleSureface_PK2 = pygame.transform.scale(surf, (tileSize, tileSize))
+        bulletPurpleSureface_PK2 = pygame.transform.scale(surf, (tileSize*2, tileSize*2))
 
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
         surf.blit(sheet, (0, 0),(827, 1653, 413, 413))
-        bulletPurpleSureface_PK3 = pygame.transform.scale(surf, (tileSize, tileSize))
+        bulletPurpleSureface_PK3 = pygame.transform.scale(surf, (tileSize*2, tileSize*2))
 
-        bulletSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         self.firePurpleSurface_1 = {"K1":bulletPurpleSureface_PK1,
                                  "K2":bulletPurpleSureface_PK2,
                                  "K3":bulletPurpleSureface_PK3,}
@@ -131,7 +130,6 @@ class WorldActor:
         surf.blit(sheet, (0, 0),(1240, 1653, 413, 413))
         bulletRedSurface_PK3 = pygame.transform.scale(surf, (tileSize, tileSize))
 
-        bulletSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         self.fireRedSurface_1 = {"K1":bulletRedSurface_PK1,
                                  "K2":bulletRedSurface_PK2,
                                  "K3":bulletRedSurface_PK3,}
@@ -166,7 +164,6 @@ class WorldActor:
         surf.blit(sheet, (0, 0),(827, 4544, 413, 413))
         staticEnnemySurface_PK3 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
 
-        bulletSurface = pygame.transform.scale(surf, (tileSize, tileSize))
         self.staticEnnemySurface_1 = {"K1":staticEnnemySurface_PK1,
                                  "K2":staticEnnemySurface_PK2,
                                  "K3":staticEnnemySurface_PK3,}
@@ -186,7 +183,6 @@ class WorldActor:
         surf.blit(sheet, (0, 0),(1240, 4544, 413, 826))
         MovingEnnemySurface_PK3 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
 
-        bulletSurface = pygame.transform.scale(surf, (tileSize, tileSize))
         self.movingEnnemySurface_1 = {"K1":MovingEnnemySurface_PK1,
                                  "K2":MovingEnnemySurface_PK2,
                                  "K3":MovingEnnemySurface_PK3,}
@@ -201,7 +197,6 @@ class WorldActor:
         surf.blit(sheet, (0, 0),(2066, 4131, 826, 413))
         idleEnnemySurface_PK2 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
 
-        bulletSurface = pygame.transform.scale(surf, (tileSize, tileSize))
         self.idleEnnemySurface_1 = {"K1":idleEnnemySurface_PK1,
                                  "K2":idleEnnemySurface_PK2}
 
@@ -312,7 +307,7 @@ class WorldActor:
             self.chunksList["LOADED"] = self.chunksList["LOADED"][1:]
             print("newChunkActive")
 
-        for bullet in self.bulletList:
+        for bullet in self.bulletListAlly:
             bullet.onTick(dt)
             #collision system - to split in CollisionSystem.testList(bulletList, ennemiesList)
             for chunk in self.chunksList["ACTIVE"]:
@@ -323,21 +318,38 @@ class WorldActor:
                         chunk.ennemiesList.remove(chunk.ennemiesList[collidedEnnemyId])
                         if randint(1,3)==1:
                             self.lootList.append(ArsenalUpdater(self.agentCharacter, self.arsenal,bullet.sprite[1].x, bullet.sprite[1].y, self.spritesSurfaces["RED_DROP"], self.scrollSpeedX))
-                        bullet.onHit(self.bulletList)
+                        bullet.onHit(self.bulletListAlly)
                         break
+                
+            
+        for bullet in self.bulletListEnnemy:
+            bullet.onTick(dt)
             if  bullet.hitBox.colliderect(self.agentCharacter.hitBox):
-                bullet.onHit(self.bulletList)
+                bullet.onHit(self.bulletListEnnemy)
+
         
 
         for chunk in self.chunksList["ACTIVE"]:
             for ennemy in chunk.ennemiesList:
                 bulletList = ennemy.onTick(dt)
-                self.bulletList += bulletList
+                self.bulletListEnnemy += bulletList
             bulletList = self.agentCharacter.onTick(inputs, dt)
-            self.bulletList += bulletList
+            self.bulletListAlly += bulletList
 
             for obstacle in chunk.obstaclesList:
                 obstacle.onTick(dt)
+                for bullet in self.bulletListAlly:
+                    if obstacle.hitBox.colliderect(bullet.hitBox):
+                        try :
+                            self.bulletListAlly.remove(bullet)
+                        except :
+                            pass
+                for bullet in self.bulletListEnnemy:
+                    if obstacle.hitBox.colliderect(bullet.hitBox):
+                        try :
+                            self.bulletListEnnemy.remove(bullet)
+                        except :
+                            pass
                 #systeme collision dodo/obstacle
                 """if  obstacle.hitBox.colliderect(self.agentCharacter.hitBox) == True:
                     from ...Scenes.Menus.GameOverScene import GameOverScene
@@ -348,17 +360,19 @@ class WorldActor:
     def draw(self, window):
         window.blit(self.background[0], self.background[1])
         self.agentCharacter.draw(window)
-        for bullet in self.bulletList:
+        for bullet in self.bulletListAlly:
+            bullet.draw(window)
+        for bullet in self.bulletListEnnemy:
             bullet.draw(window)
         for chunk in self.chunksList["ACTIVE"]:
             for element in chunk.ennemiesList + chunk.obstaclesList:
                 element.draw(window)
         for loot in self.lootList:
             loot.draw(window)
-        self.agentCharacter.weapon.draw(window, (self.agentCharacter.sprite[1][0]+self.tileSize, self.agentCharacter.sprite[1][1]))
+        self.agentCharacter.weapon.draw(window, (self.agentCharacter.sprite[1][0]+self.tileSize*2, self.agentCharacter.sprite[1][1]+0.39*self.tileSize))
 
 
 
 if __name__ == "__main__":
     world = WorldActor()
-    world.loadLevelFromCSV(0)
+    world.loadLevelFromCSV(1)

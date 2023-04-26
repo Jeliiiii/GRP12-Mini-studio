@@ -9,7 +9,7 @@ class WeaponActor:
         self.shooting = 0
 
     def fire(self, x, y, velX, velY):
-        self.shooting = 6
+        self.shooting = 12
         bulletList = [self.bullet(x, y, self.bulletSurface, velX=velX, velY=velY)]
         self.shootCooldownRemaining = self.shootCooldownRef
         return bulletList
@@ -24,20 +24,22 @@ class WeaponActor:
             self.shootCooldownRemaining -= dt
             if self.shootCooldownRemaining < 0:
                 self.shootCooldownRemaining = 0
+        if self.shooting!=0:
+            self.shooting -=1
 
     def draw(self, window, coords):
-        if self.shooting == 5 or self.shooting == 6:
+        if 12 >= self.shooting > 8:
             window.blit(self.fireKeys["K1"], coords)
-        elif self.shooting == 4 or self.shooting == 3:
+        elif 8 >= self.shooting > 4:
             window.blit(self.fireKeys["K2"], coords)
-        elif self.shooting == 2 or self.shooting == 1:
+        elif 4 >= self.shooting > 0:
             window.blit(self.fireKeys["K3"], coords)
 
 
 
 class QuadraWeaponActor(WeaponActor):
-    def __init__(self, bullet, bulletSurface, shootCooldownRef):
-        super().__init__(bullet, bulletSurface, shootCooldownRef)
+    def __init__(self, bullet, bulletSurface, shootCooldownRef, fireKeys):
+        super().__init__(bullet, bulletSurface, shootCooldownRef, fireKeys)
 
     def fire(self, x, y, velX, velY):
         bulletList = [self.bullet(x, y, self.bulletSurface, velX=velX, velY=60),
