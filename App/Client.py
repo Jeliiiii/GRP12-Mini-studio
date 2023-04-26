@@ -3,10 +3,13 @@ from Shared.Scenes.Menus.MainMenuScene import MainMenuScene
 from Shared.Scenes.Menus.MenuScene import MenuScene
 from Shared.Systems.LifeSystem import LifeSystem
 
+import os
+print("!!!!!!\n!!!!!!\nWORKING DIRECTORY MANUALLY CHANGED\n!!!!!!\n!!!!!!")
+os.chdir("C:\\Users\\BAPTISTE\\Desktop\\GRP12-Mini-studio")
+
 class Client:
 
     def __init__(self):
-        
         self.inputs = {"MOUSE_POS":[0,0], "MOUSE_BUTTONS":[], "ACTIVE_KEYS":[]}
         self.server = None
         self.clientSocket = None
@@ -16,9 +19,13 @@ class Client:
     def initWindow(self):
         pygame.init()
         desktopSize = pygame.display.get_desktop_sizes()
+        print(desktopSize)
         pygame.display.set_caption("Birds of Chaos")
-        self.window = pygame.display.set_mode(desktopSize[0],
-                                               pygame.NOFRAME)
+        # x = 0
+        # y = 0
+        # os.environ['SDL_VIDEO_WINDOW_POS'] = "%d,%d" % (x,y)
+        # self.window = pygame.display.set_mode((1000, 900))
+        self.window = pygame.display.set_mode(desktopSize[0], pygame.NOFRAME)
         self.clock = pygame.time.Clock()
         self.currentScene = MainMenuScene()
 

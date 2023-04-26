@@ -14,6 +14,7 @@ class MainMenuScene(MenuScene):
         (windowWidth, windowHeight) = pygame.display.get_window_size()
 
         self.menu.buttonsList=[ButtonActor("Play", self.switchGameAgentPovScene),
+                               ButtonActor("Spy", self.switchGameOperatorPovScene),
                                ButtonActor("Host", self.switchHostInterfaceScene),
                                ButtonActor("Join", self.switchJoinInterfaceScene),
                                ButtonActor("Quit", self.quit)
