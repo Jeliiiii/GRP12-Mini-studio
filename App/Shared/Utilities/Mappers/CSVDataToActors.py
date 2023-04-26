@@ -74,6 +74,7 @@ def mapChunkCSVData(world, chunkCSVData, offsetChunk):
 
 
 def loadWorldFromCSV(world, levelId):
+    print("seh")
     import os
     csv_file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), f"../../Assets/Levels/level{levelId}_data.csv"))
     with open(csv_file_path, newline="") as csvfile:

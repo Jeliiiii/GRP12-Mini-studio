@@ -335,6 +335,8 @@ class WorldActor:
             for ennemy in chunk.ennemiesList:
                 bulletList = ennemy.onTick(dt)
                 self.bulletListEnnemy += bulletList
+                if ennemy.hitBox.x <=0 :
+                    chunk.ennemiesList.remove(ennemy)
             bulletList = self.agentCharacter.onTick(inputs, dt)
             self.bulletListAlly += bulletList
 
