@@ -26,7 +26,7 @@ class WorldActor:
         self.arsenal = {"CLASSIC": WeaponActor(ClassicBullet, self.spritesSurfaces["PURPLE_BULLET"], 0.5, self.firePurpleSurface_1),
                         "TANK": WeaponActor(TankBullet, self.spritesSurfaces["CHICKEN_BULLET"], 6, self.firePurpleSurface_1),
                         "QUADRA": QuadraWeaponActor(ClassicBullet, self.spritesSurfaces["RED_BULLET"], 2, self.fireRedSurface_1),}
-        self.agentCharacter = AgentCharacterActor(500, 300,self.agentSprites, self.arsenal["CLASSIC"], speed=self.tileSize)
+        self.agentCharacter = AgentCharacterActor(200, 300,self.agentSprites, self.arsenal["CLASSIC"], speed=self.tileSize)
         self.chunksList = {"LOADED":[],"ACTIVE":[],"ARCHIVED":[]}
         self.chunksList["LOADED"] = mapWorldCSVData(self, worldCSVData)
         self.chunksList["ACTIVE"] = self.chunksList["LOADED"][:2]
@@ -43,6 +43,7 @@ class WorldActor:
 
     
         sheet = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteSheet.png"))
+        sheet2 = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/SpriteBase.png"))
 
 
         surf = pygame.surface.Surface((500, 500))
@@ -146,7 +147,7 @@ class WorldActor:
         surf = pygame.surface.Surface((1500, 1000))
         surf.set_colorkey((0,0,0))
         surf.blit(sheet, (0, 0),(2479, 827, 1239, 826))
-        chickenBulletSurface_1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+        chickenBulletSurface_1 = pygame.transform.scale(surf, (tileSize*9, tileSize*3))
 
 #Ennemy bullet Idle
         surf = pygame.surface.Surface((500, 500))
@@ -242,12 +243,6 @@ class WorldActor:
                                  "K3":ExplosionSurface_PK3,
                                  "K4":ExplosionSurface_PK4,}
 
-
-
-
-
-
-
         #Brick Wall
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
@@ -321,6 +316,32 @@ class WorldActor:
         surf.blit(sheet, (0, 0),(827, 4544, 413, 413))
         leftLaserBotCornerWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         
+#Sprites UI
+        surf = pygame.surface.Surface((1000, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet2, (0, 0),(32, 32, 605, 188))
+        UI3LivesSurface= pygame.transform.scale(surf, (tileSize*18, tileSize*9))
+
+        surf = pygame.surface.Surface((1000, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet2, (0, 0),(639, 32, 605, 188))
+        UI2LivesSurface= pygame.transform.scale(surf, (tileSize*18, tileSize*9))
+
+        surf = pygame.surface.Surface((1000, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet2, (0, 0),(32, 220, 605, 188))
+        UI1LivesSurface= pygame.transform.scale(surf, (tileSize*18, tileSize*9))
+
+        surf = pygame.surface.Surface((1000, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet2, (0, 0),(639, 220, 605, 188))
+        UI0LivesSurface= pygame.transform.scale(surf, (tileSize*18, tileSize*9))
+
+        self.UILivesList = {0:UI0LivesSurface,
+                            1:UI1LivesSurface,
+                            2:UI2LivesSurface,
+                            3:UI3LivesSurface,}
+
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Backgrounds/japanese_night_city.png"))
         backgroundSurface = pygame.transform.scale(img, (self.winWidth*img.get_height()/self.winHeight,self.winHeight))
 
@@ -375,6 +396,7 @@ class WorldActor:
         for bullet in self.bulletListEnnemy:
             bullet.onTick(dt)
             if  bullet.hitBox.colliderect(self.agentCharacter.hitBox):
+                self.agentCharacter.lose_life()
                 bullet.onHit(self.bulletListEnnemy)
 
         
@@ -404,13 +426,15 @@ class WorldActor:
                             pass
                 #systeme collision dodo/obstacle
                 if  obstacle.hitBox.colliderect(self.agentCharacter.hitBox) == True:
-                    if self.agentCharacter.lose_life() == 0:
-                        self.onTick = self.gameOver
+                    self.agentCharacter.lose_life()
                 
             for loot in self.lootList:
                 loot.onTick(dt)
                 if loot.hitBox.colliderect(self.agentCharacter.hitBox):
                     loot.onHit(self.lootList)
+            if self.agentCharacter.remaining_life == 0:
+                self.onTick = self.gameOver
+    
 
             
 
@@ -426,6 +450,7 @@ class WorldActor:
                 element.draw(window)
         for loot in self.lootList:
             loot.draw(window)
+        window.blit(self.UILivesList[self.agentCharacter.remaining_life] , (15, 15))
         self.agentCharacter.weapon.draw(window, (self.agentCharacter.sprite[1][0]+self.tileSize*2, self.agentCharacter.sprite[1][1]+0.39*self.tileSize))
 
 
@@ -450,4 +475,3 @@ class WorldActor:
 
 if __name__ == "__main__":
     world = WorldActor()
-    world.loadLevelFromCSV(1)

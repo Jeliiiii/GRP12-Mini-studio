@@ -9,7 +9,7 @@ class GameAgentPovScene(Scene):
     
     def __init__(self):
         super().__init__()
-        self.world = WorldActor(1)
+        self.world = WorldActor(0)
 
         
 

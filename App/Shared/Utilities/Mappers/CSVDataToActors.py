@@ -4,7 +4,7 @@ from ...Actors.DefaultPawnActor import DefaultPawnActor
 from ...Actors.Characters.Ennemies.EnnemyActor import EnnemyActor
 from ...Actors.Characters.AgentCharacterActor import AgentCharacterActor
 from ...Actors.Weapons.WeaponActor import WeaponActor, DoubleWeaponActor
-from ...Actors.BulletActor import ClassicBullet
+from ...Actors.BulletActor import ClassicBullet, TankBullet
 
 def mapWorldCSVData(world, worldCSVData):
     chunkList = []
@@ -52,11 +52,11 @@ def mapChunkCSVData(world, chunkCSVData, offsetChunk):
                 elif tile == 14:
                     pass#obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["BOT_GLASS_WALL"], velX=world.scrollSpeedX))
                 elif tile == 15 : #static enemy shooting left (wall)
-                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.idleEnnemySurface_1, DoubleWeaponActor(ClassicBullet, world.spritesSurfaces["ENNEMY_BULLET"], 0.5, world.firePurpleSurface_1), velX=world.scrollSpeedX))
+                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.staticEnnemySurface_1, DoubleWeaponActor(ClassicBullet, world.spritesSurfaces["ENNEMY_BULLET"], 0.5, world.firePurpleSurface_1), velX=world.scrollSpeedX))
                 elif tile == 16 : # enemy shooting left
                     ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.movingEnnemySurface_1, WeaponActor(ClassicBullet, world.spritesSurfaces["ENNEMY_BULLET"], 0.5, world.firePurpleSurface_1), velX=world.scrollSpeedX))
                 elif tile == 17 : #Enemy shooting under
-                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.staticEnnemySurface_1, WeaponActor(ClassicBullet, world.spritesSurfaces["IDLE_BULLET"], 0.5, world.firePurpleSurface_1), velX=0, velY=world.scrollSpeedX)) 
+                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.idleEnnemySurface_1, WeaponActor(TankBullet, world.spritesSurfaces["IDLE_BULLET"], 0.5, world.firePurpleSurface_1), velX=0, velY=world.scrollSpeedX)) 
                 elif tile == 18  : # player spawn, unused actually
                     pass 
                 elif tile == 19 : # Operator Wall 
@@ -84,7 +84,7 @@ def loadWorldFromCSV(world, levelId):
         """As a later improvement, we should turn this as a tool to create a header for each level_data.csv, 
         such as the first line of the file giving the total tWidth and tHeight of the level."""
         chunkData = [[None for _ in range (tChunkWidth)] for _ in range (tHeight)]
-        worldChunkData = [chunkData for _ in range (int(tWidth/tChunkWidth) + (tWidth % tChunkWidth > 0))] # a list of empty lists representing each chunks
+        worldChunkData = [[[None for _ in range (tChunkWidth)] for _ in range (tHeight)] for _ in range (int(tWidth/tChunkWidth) + (tWidth % tChunkWidth > 0))] # a list of empty lists representing each chunks
         
         for y, row in enumerate(reader):
             chunkId = -1

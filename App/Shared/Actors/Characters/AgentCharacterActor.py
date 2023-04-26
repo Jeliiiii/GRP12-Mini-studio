@@ -38,6 +38,8 @@ class AgentCharacterActor(DefaultPawnActor):
     
     def lose_life(self):
         self.remaining_life -= 1
+        if self.remaining_life> 0:
+            self.remaining_life -= 1
         return self.remaining_life
     
     
