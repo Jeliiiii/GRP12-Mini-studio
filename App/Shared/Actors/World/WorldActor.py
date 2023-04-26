@@ -34,6 +34,8 @@ class WorldActor:
         self.bulletListAlly = []
         self.bulletListEnnemy = []
         self.lootList = []
+        self.gameOverTimer = 40
+        self.gameOverSprite = None
         
 
     def loadImages(self):
@@ -305,7 +307,6 @@ class WorldActor:
             self.scrollXDistance += self.tChunkWidth*self.tileSize
             self.chunksList["ACTIVE"] = self.chunksList["ACTIVE"][1:] + self.chunksList["LOADED"][:1]
             self.chunksList["LOADED"] = self.chunksList["LOADED"][1:]
-            print("newChunkActive")
 
         for bullet in self.bulletListAlly:
             bullet.onTick(dt)
@@ -352,9 +353,8 @@ class WorldActor:
                         except :
                             pass
                 #systeme collision dodo/obstacle
-                """if  obstacle.hitBox.colliderect(self.agentCharacter.hitBox) == True:
-                    from ...Scenes.Menus.GameOverScene import GameOverScene
-                    self.nextScene = GameOverScene()"""
+                if  obstacle.hitBox.colliderect(self.agentCharacter.hitBox) == True:
+                    self.onTick = self.gameOver
                 
             for loot in self.lootList:
                 loot.onTick(dt)
@@ -376,7 +376,25 @@ class WorldActor:
         for loot in self.lootList:
             loot.draw(window)
         self.agentCharacter.weapon.draw(window, (self.agentCharacter.sprite[1][0]+self.tileSize*2, self.agentCharacter.sprite[1][1]+0.39*self.tileSize))
+        if self.gameOverSprite :
+            window.blit(self.gameOverSprite)
 
+
+
+    def gameOver(self, input, dt):
+        self.gameOverTimer -= 1
+        if 30<= self.gameOverTimer < 40:
+            self.gameOverSprite = (self.explosionList["K1"])
+        elif 20<= self.gameOverTimer < 30:
+            self.gameOverSprite = (self.explosionList["K2"])
+        elif 10<= self.gameOverTimer < 20:
+            self.gameOverSprite = (self.explosionList["K3"])
+        elif 0<= self.gameOverTimer < 10:
+            self.gameOverSprite = (self.explosionList["K4"])
+        else:
+            from ...Scenes.Menus.GameOverScene import GameOverScene
+            self.nextScene = GameOverScene()
+            
 
 
 if __name__ == "__main__":

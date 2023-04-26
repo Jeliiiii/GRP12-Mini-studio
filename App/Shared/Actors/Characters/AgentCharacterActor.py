@@ -6,7 +6,7 @@ from ..Weapons.WeaponActor import WeaponActor
 class AgentCharacterActor(DefaultPawnActor):
     def __init__(self, x, y, surfaceList, weapon, speed=50):
         self.surfaceList = surfaceList
-        self.sprite =  [surfaceList["FORWARD"][0], surfaceList["FORWARD"][0].get_rect()]
+        self.sprite =  [surfaceList["FORWARD"][0], surfaceList["FORWARD"][0].get_rect(topleft=(x, y))]
         super().__init__(x, y)
         self.speed = speed
         self.weapon = weapon
