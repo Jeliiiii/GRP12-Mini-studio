@@ -3,7 +3,7 @@ from random import randint
 import pygame
 
 class EnnemyActor(DefaultPawnActor):
-    def __init__(self, x, y, surfaceList, weapon, velX=0, velY=0):
+    def __init__(self, x, y, surfaceList, weapon, velX=0, velY=0, bulletVelX = -70, bulletVelY = 0):
         self.surfaceList = surfaceList
         self.sprite =  [surfaceList["K1"], surfaceList["K1"].get_rect(topleft=(x, y))]
         super().__init__(x, y, None, velX=velX, velY=velY)
@@ -11,6 +11,8 @@ class EnnemyActor(DefaultPawnActor):
         self.weapon = weapon
         self.health = 10
         self.animCooldown = 12
+        self.bulletVelX = bulletVelX
+        self.bulletVelY = bulletVelY
 
     def shot(self, damage):
         self.health -= damage
@@ -27,7 +29,7 @@ class EnnemyActor(DefaultPawnActor):
             self.velocity[1] = -self.velocity[1]
 
         if self.weapon.shootCooldownRemaining == 0:
-            bulletList = self.weapon.fire(self.hitBox.x, self.hitBox.centery, -70, 40)
+            bulletList = self.weapon.fire(self.hitBox.x, self.hitBox.centery, self.bulletVelX, self.bulletVelY)
         self.weapon.onTick(dt)
         return bulletList
     
