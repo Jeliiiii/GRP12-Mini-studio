@@ -355,8 +355,8 @@ class WorldActor:
                         except :
                             pass
                 #systeme collision dodo/obstacle
-                """if  obstacle.hitBox.colliderect(self.agentCharacter.hitBox) == True:
-                    self.onTick = self.gameOver"""
+                if  obstacle.hitBox.colliderect(self.agentCharacter.hitBox) == True:
+                    self.onTick = self.gameOver
                 
             for loot in self.lootList:
                 loot.onTick(dt)
@@ -383,7 +383,7 @@ class WorldActor:
 
 
 
-    """def gameOver(self, input, dt):
+    def gameOver(self, input, dt):
         self.gameOverTimer -= 1
         if 30<= self.gameOverTimer < 40:
             self.gameOverSprite = (self.explosionList["K1"], self.explosionList["K1"].get_rect(topleft=AgentCharacterActor.sprite[1]))
@@ -395,7 +395,7 @@ class WorldActor:
             self.gameOverSprite[1] = (self.explosionList["K4"])
         else:
             from ...Scenes.Menus.GameOverScene import GameOverScene
-            self.nextScene = GameOverScene()"""
+            self.nextScene = GameOverScene()
             
 
 
