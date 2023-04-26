@@ -147,7 +147,7 @@ class WorldActor:
         surf = pygame.surface.Surface((1500, 1000))
         surf.set_colorkey((0,0,0))
         surf.blit(sheet, (0, 0),(2479, 827, 1239, 826))
-        chickenBulletSurface_1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+        chickenBulletSurface_1 = pygame.transform.scale(surf, (tileSize*9, tileSize*3))
 
 #Ennemy bullet Idle
         surf = pygame.surface.Surface((500, 500))
@@ -396,6 +396,7 @@ class WorldActor:
         for bullet in self.bulletListEnnemy:
             bullet.onTick(dt)
             if  bullet.hitBox.colliderect(self.agentCharacter.hitBox):
+                self.agentCharacter.lose_life()
                 bullet.onHit(self.bulletListEnnemy)
 
         
@@ -412,13 +413,7 @@ class WorldActor:
             for obstacle in chunk.obstaclesList:
                 obstacle.onTick(dt)
                 for bullet in self.bulletListAlly:
-                    if bullet.hitBox.pygame.sprite.collide_rect(self.agentCharacter.hitBox):
-                        self.agentCharacter.lose_life()
-                        try :
-                                self.bulletListAlly.remove(bullet)
-                        except :
-                            pass
-                    elif obstacle.hitBox.colliderect(bullet.hitBox):
+                    if obstacle.hitBox.colliderect(bullet.hitBox):
                         try :
                             self.bulletListAlly.remove(bullet)
                         except :
@@ -455,7 +450,6 @@ class WorldActor:
                 element.draw(window)
         for loot in self.lootList:
             loot.draw(window)
-        print(self.agentCharacter.remaining_life)
         window.blit(self.UILivesList[self.agentCharacter.remaining_life] , (15, 15))
         self.agentCharacter.weapon.draw(window, (self.agentCharacter.sprite[1][0]+self.tileSize*2, self.agentCharacter.sprite[1][1]+0.39*self.tileSize))
 
