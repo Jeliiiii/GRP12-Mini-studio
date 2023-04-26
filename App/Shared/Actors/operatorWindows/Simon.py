@@ -14,19 +14,21 @@ class SimPart:
 
 
 class Simon(PseudoWindow):
-    def __init__(self, coord=(0, 0), dim=(1, 1), gridSize=4, difficulty=5):
+    def __init__(self, coord=(0, 0), gridSize=4, difficulty=5):
         self.size = 50 #ask Baptiste | ma réponse : poirte
         PseudoWindow.__init__(self, coord, (gridSize * self.size +10, gridSize * self.size +25), closeCond = False)
         self.squares = []
         self.replayCountDown = -1
+
         for i in range(gridSize):
             buffer = []
             for j in range(gridSize):
+                squareColor = (54, 54, 54) if (i+j)%2 else (188, 188, 188)
                 buffer.append(SimPart(self.surfContent,
                                     i * self.size,
                                     j * self.size, 
                                     self.size,
-                                    (i*20 + 50* j, i*20 + 50* j, i*20 + 50* j)
+                                    (squareColor)
                                     ))
             self.squares.append(buffer)
         self.play(difficulty)

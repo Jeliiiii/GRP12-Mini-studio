@@ -64,7 +64,7 @@ class TypingFieldActor:
 
 
 class Carthage(PseudoWindow):
-    def __init__(self, coord=(0, 0), dim=(1, 1), password = "carthage"):
+    def __init__(self, coord=(0, 0), dim=(300, 300), password = "carthage"):
         PseudoWindow.__init__(self, coord, dim, closeCond = False)
         self.typeField = TypingFieldActor(10, 10, testFont, 40, (3, 53, 252), maxLength=8, active=True)
         self.password = password

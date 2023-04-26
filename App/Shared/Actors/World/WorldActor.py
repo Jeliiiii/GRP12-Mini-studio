@@ -24,8 +24,8 @@ class WorldActor:
         self.loadImages()
         self.background = (self.spritesSurfaces["BACKGROUND"], self.spritesSurfaces["BACKGROUND"].get_rect())
         self.arsenal = {"CLASSIC": WeaponActor(ClassicBullet, self.spritesSurfaces["PURPLE_BULLET"], 0.5, self.firePurpleSurface_1),
-                        "TANK": WeaponActor(TankBullet, self.spritesSurfaces["CHICKEN_BULLET"], 6, self.fireRedSurface_1),
-                        "QUADRA": QuadraWeaponActor(ClassicBullet, self.spritesSurfaces["RED_BULLET"], 2, self.firePurpleSurface_1),}
+                        "TANK": WeaponActor(TankBullet, self.spritesSurfaces["CHICKEN_BULLET"], 6, self.firePurpleSurface_1),
+                        "QUADRA": QuadraWeaponActor(ClassicBullet, self.spritesSurfaces["RED_BULLET"], 2, self.fireRedSurface_1),}
         self.agentCharacter = AgentCharacterActor(500, 300,self.agentSprites, self.arsenal["CLASSIC"], speed=self.tileSize)
         self.chunksList = {"LOADED":[],"ACTIVE":[],"ARCHIVED":[]}
         self.chunksList["LOADED"] = mapWorldCSVData(self, worldCSVData)
@@ -97,12 +97,12 @@ class WorldActor:
 
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(827, 1240, 413, 413))
+        surf.blit(sheet, (0, 0),(1240, 827, 413, 413))
         bulletPurpleSureface_PK2 = pygame.transform.scale(surf, (tileSize*2, tileSize*2))
 
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(827, 1653, 413, 413))
+        surf.blit(sheet, (0, 0),(1653, 827, 413, 413))
         bulletPurpleSureface_PK3 = pygame.transform.scale(surf, (tileSize*2, tileSize*2))
 
         self.firePurpleSurface_1 = {"K1":bulletPurpleSureface_PK1,
@@ -112,14 +112,14 @@ class WorldActor:
 #purple explosion
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(827, 2066, 413, 413))
+        surf.blit(sheet, (0, 0),(2066, 827, 413, 413))
         purpleBulletSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         
 
 #red
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(1240, 827, 413, 413))
+        surf.blit(sheet, (0, 0),(827, 1240, 413, 413))
         bulletRedSurface_PK1 = pygame.transform.scale(surf, (tileSize, tileSize))
 
         surf = pygame.surface.Surface((500, 500))
@@ -129,7 +129,7 @@ class WorldActor:
 
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(1240, 1653, 413, 413))
+        surf.blit(sheet, (0, 0),(1653, 1240, 413, 413))
         bulletRedSurface_PK3 = pygame.transform.scale(surf, (tileSize, tileSize))
 
         self.fireRedSurface_1 = {"K1":bulletRedSurface_PK1,
@@ -139,68 +139,114 @@ class WorldActor:
 #red explosion
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(1240, 2066, 413, 413))
+        surf.blit(sheet, (0, 0),(2066, 1240, 413, 413))
         redBulletSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         
 #Chicken bullet
         surf = pygame.surface.Surface((1500, 1000))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(827, 2479, 1239, 826))
-        chickenBulletSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+        surf.blit(sheet, (0, 0),(2479, 827, 1239, 826))
+        chickenBulletSurface_1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+#Ennemy bullet Idle
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(2066, 2479, 1239, 826))
+        IdleBulletSurface_1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+#Ennemy Bullet
+        surf = pygame.surface.Surface((500, 500))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(2066, 2892, 1239, 826))
+        EnnemyBulletSurface_1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
 
 
 
         #static Ennemy
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(827, 3718, 413, 413))
+        surf.blit(sheet, (0, 0),(3718, 827, 413, 413))
         staticEnnemySurface_PK1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
 
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(827, 4131, 413, 413))
+        surf.blit(sheet, (0, 0),(4131, 827, 413, 413))
         staticEnnemySurface_PK2 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
 
         surf = pygame.surface.Surface((500, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(827, 4544, 413, 413))
+        surf.blit(sheet, (0, 0),(4544, 827, 413, 413))
         staticEnnemySurface_PK3 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
 
         self.staticEnnemySurface_1 = {"K1":staticEnnemySurface_PK1,
                                  "K2":staticEnnemySurface_PK2,
                                  "K3":staticEnnemySurface_PK3,}
 
+        #Moving Ennemy
         surf = pygame.surface.Surface((500, 1000))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(1240, 3718, 413, 826))
+        surf.blit(sheet, (0, 0),(3718, 1240, 413, 826))
         MovingEnnemySurface_PK1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
 
         surf = pygame.surface.Surface((500, 1000))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(1240, 4131, 413, 826))
+        surf.blit(sheet, (0, 0),(4131, 1240, 413, 826))
         MovingEnnemySurface_PK2 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
 
         surf = pygame.surface.Surface((500, 1000))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(1240, 4544, 413, 826))
+        surf.blit(sheet, (0, 0),(4544, 1240, 413, 826))
         MovingEnnemySurface_PK3 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
 
         self.movingEnnemySurface_1 = {"K1":MovingEnnemySurface_PK1,
                                  "K2":MovingEnnemySurface_PK2,
                                  "K3":MovingEnnemySurface_PK3,}
         
+        #Idle Ennemy
         surf = pygame.surface.Surface((1000, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(2066, 3305, 826, 413))
+        surf.blit(sheet, (0, 0),(3305, 2066, 826, 413))
         idleEnnemySurface_PK1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
 
         surf = pygame.surface.Surface((1000, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet, (0, 0),(2066, 4131, 826, 413))
+        surf.blit(sheet, (0, 0),(4131, 2066, 826, 413))
         idleEnnemySurface_PK2 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
 
         self.idleEnnemySurface_1 = {"K1":idleEnnemySurface_PK1,
                                  "K2":idleEnnemySurface_PK2}
+
+#Explosion
+        surf = pygame.surface.Surface((1000, 1000))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(1, 1653, 826, 826))
+        ExplosionSurface_PK1 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        surf = pygame.surface.Surface((1000, 1000))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(827, 1653, 826, 826))
+        ExplosionSurface_PK2 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        surf = pygame.surface.Surface((1000, 1000))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(1653, 1653, 826, 826))
+        ExplosionSurface_PK3 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        surf = pygame.surface.Surface((1000, 1000))
+        surf.set_colorkey((0,0,0))
+        surf.blit(sheet, (0, 0),(2479, 1653, 826, 826))
+        ExplosionSurface_PK4 = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+
+        self.explosionList = {"K1":ExplosionSurface_PK1,
+                                 "K2":ExplosionSurface_PK2,
+                                 "K3":ExplosionSurface_PK3,
+                                 "K4":ExplosionSurface_PK4,}
+
+
+
+
+
+
 
         #Brick Wall
         surf = pygame.surface.Surface((500, 500))
@@ -295,7 +341,9 @@ class WorldActor:
                                 "RIGHT_LASER_BOT_CORNER_WALL":rightLaserBotCornerWallSurface,
                                 "PURPLE_BULLET" :purpleBulletSurface,
                                 "RED_BULLET" :redBulletSurface,
-                                "CHICKEN_BULLET" :chickenBulletSurface,
+                                "IDLE_BULLET" :IdleBulletSurface_1,
+                                "ENNEMY_BULLET" :EnnemyBulletSurface_1,
+                                "CHICKEN_BULLET" :chickenBulletSurface_1,
                                 "BACKGROUND":backgroundSurface,
                                 "RED_DROP":redDrop,}
 
@@ -355,8 +403,9 @@ class WorldActor:
                         except :
                             pass
                 #systeme collision dodo/obstacle
-                """if  obstacle.hitBox.colliderect(self.agentCharacter.hitBox) == True:
-                    self.onTick = self.gameOver"""
+                if  obstacle.hitBox.colliderect(self.agentCharacter.hitBox) == True:
+                    if self.agentCharacter.lose_life() == 0:
+                        self.onTick = self.gameOver
                 
             for loot in self.lootList:
                 loot.onTick(dt)
@@ -378,24 +427,24 @@ class WorldActor:
         for loot in self.lootList:
             loot.draw(window)
         self.agentCharacter.weapon.draw(window, (self.agentCharacter.sprite[1][0]+self.tileSize*2, self.agentCharacter.sprite[1][1]+0.39*self.tileSize))
-        if self.gameOverSprite :
-            window.blit(self.gameOverSprite)
 
 
 
-    """def gameOver(self, input, dt):
+
+    def gameOver(self, input, dt):
         self.gameOverTimer -= 1
         if 30<= self.gameOverTimer < 40:
-            self.gameOverSprite = (self.explosionList["K1"], self.explosionList["K1"].get_rect(topleft=AgentCharacterActor.sprite[1]))
+            self.gameOverSprite = (self.explosionList["K1"])
         elif 20<= self.gameOverTimer < 30:
-            self.gameOverSprite[1] = (self.explosionList["K2"])
+            self.gameOverSprite = (self.explosionList["K2"])
         elif 10<= self.gameOverTimer < 20:
-            self.gameOverSprite[1] = (self.explosionList["K3"])
+            self.gameOverSprite = (self.explosionList["K3"])
         elif 0<= self.gameOverTimer < 10:
-            self.gameOverSprite[1] = (self.explosionList["K4"])
+            self.gameOverSprite = (self.explosionList["K4"])
         else:
             from ...Scenes.Menus.GameOverScene import GameOverScene
-            self.nextScene = GameOverScene()"""
+            self.nextScene = GameOverScene()
+        self.agentCharacter.sprite[0] = self.gameOverSprite
             
 
 

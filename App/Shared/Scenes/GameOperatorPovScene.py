@@ -9,13 +9,16 @@ from Shared.Actors.operatorWindows.Simon import Simon
 from Shared.Actors.operatorWindows.SpyWindow import *
 from Shared.Actors.operatorWindows.ToolWindow import *
 
+screenSize = pygame.display.get_desktop_sizes()
+screenSize = (screenSize[0][0], screenSize[0][1])
+
 class GameOperatorPovScene(Scene):
     
     def __init__(self):
         # random.seed(time.time())
         super().__init__()
         self.world = WorldActor(1)
-        self.timer = random.randint(20000, 30000)
+        self.timer = random.randint(50, 70)
 
 
 
@@ -33,6 +36,19 @@ class GameOperatorPovScene(Scene):
     def updateScene(self, inputs, dt):
         
         windowsUpdated = []
+
+        self.timer -= 1
+
+        print(self.timer)
+
+        if self.timer == 0:
+            self.timer = randint(50, 70)
+            if self.timer % 2:
+                Carthage((randint(0, screenSize[0] - 300), randint(0, screenSize[1] - 300)))
+            else:
+                simonGrid = randint(3, 6)
+                simonDiff = randint(3, 6)
+                Simon((randint(0, screenSize[0] - simonGrid * 50), randint(0, screenSize[1] - simonGrid * 50)), simonGrid, simonDiff)
 
         # Updates windows with priority of 0. Hard coded specifically for the SpyingScreen and ToolBelt
         self.SpyingScreen.onTick(inputs, dt)

@@ -4,13 +4,16 @@ from ..Weapons.WeaponActor import WeaponActor
 
 
 class AgentCharacterActor(DefaultPawnActor):
-    def __init__(self, x, y, surfaceList, weapon, speed=50):
+    def __init__(self, x, y, surfaceList, weapon, speed=50, max_life = 3):
         self.surfaceList = surfaceList
         self.sprite =  [surfaceList["FORWARD"][0], surfaceList["FORWARD"][0].get_rect(topleft=(x, y))]
         super().__init__(x, y)
         self.speed = speed
         self.weapon = weapon
         self.animCooldown = 1000
+        self.max_life = max_life
+        self.remaining_life = max_life 
+
 
     def onTick(self, inputs, dt):
         bulletList = []
@@ -28,11 +31,16 @@ class AgentCharacterActor(DefaultPawnActor):
                 bulletList = self.weapon.fire(self.hitBox.x, self.hitBox.y, 100, 0)
         
         self.animation()
-        self.weapon.onTick(dt)
+        self.weapon.onTick(dt)  
         self.move(dt)
 
         return bulletList
-
+    
+    def lose_life(self):
+        self.remaining_life -= 1
+        return self.remaining_life
+    
+    
     def animation(self):
         self.animCooldown -=1
 

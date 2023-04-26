@@ -46,17 +46,17 @@ def mapChunkCSVData(world, chunkCSVData, offsetChunk):
                 elif tile == 11:
                     obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["RIGHT_LASER_BOT_CORNER_WALL"], velX=world.scrollSpeedX))
                 elif tile == 12:
-                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["TOP_GLASS_WALL"], velX=world.scrollSpeedX))
+                    pass#obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["TOP_GLASS_WALL"], velX=world.scrollSpeedX))
                 elif tile == 13:
-                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["GLASS_WALL"], velX=world.scrollSpeedX))
+                    pass#obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["GLASS_WALL"], velX=world.scrollSpeedX))
                 elif tile == 14:
-                    obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["BOT_GLASS_WALL"], velX=world.scrollSpeedX))
+                    pass#obstaclesList.append(DefaultPawnActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.spritesSurfaces["BOT_GLASS_WALL"], velX=world.scrollSpeedX))
                 elif tile == 15 : #static enemy shooting left (wall)
-                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.idleEnnemySurface_1, DoubleWeaponActor(ClassicBullet, world.spritesSurfaces["PURPLE_BULLET"], 0.5, world.firePurpleSurface_1), velX=world.scrollSpeedX))
+                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.idleEnnemySurface_1, DoubleWeaponActor(ClassicBullet, world.spritesSurfaces["ENNEMY_BULLET"], 0.5, world.firePurpleSurface_1), velX=world.scrollSpeedX))
                 elif tile == 16 : # enemy shooting left
-                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.movingEnnemySurface_1, WeaponActor(ClassicBullet, world.spritesSurfaces["PURPLE_BULLET"], 0.5, world.firePurpleSurface_1), velX=world.scrollSpeedX))
+                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.movingEnnemySurface_1, WeaponActor(ClassicBullet, world.spritesSurfaces["ENNEMY_BULLET"], 0.5, world.firePurpleSurface_1), velX=world.scrollSpeedX))
                 elif tile == 17 : #Enemy shooting under
-                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.staticEnnemySurface_1, WeaponActor(ClassicBullet, world.spritesSurfaces["PURPLE_BULLET"], 0.5, world.firePurpleSurface_1), velX=0, velY=world.scrollSpeedX)) 
+                    ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.staticEnnemySurface_1, WeaponActor(ClassicBullet, world.spritesSurfaces["IDLE_BULLET"], 0.5, world.firePurpleSurface_1), velX=0, velY=world.scrollSpeedX)) 
                 elif tile == 18  : # player spawn, unused actually
                     pass 
                 elif tile == 19 : # Operator Wall 
@@ -74,7 +74,6 @@ def mapChunkCSVData(world, chunkCSVData, offsetChunk):
 
 
 def loadWorldFromCSV(world, levelId):
-    print("seh")
     import os
     csv_file_path = os.path.abspath(os.path.join(os.path.dirname(__file__), f"../../Assets/Levels/level{levelId}_data.csv"))
     with open(csv_file_path, newline="") as csvfile:

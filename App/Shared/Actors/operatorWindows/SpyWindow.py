@@ -17,9 +17,10 @@ class SpyWindow(PseudoWindow):
         super().draw()
         temp = pygame.Surface(screenSize)
         self.worldSpectated.draw(temp)
-        temp = pygame.transform.scale(temp, self.surfContent.get_size())
-        self.surfContent.blit(temp, (0, 0))
-        # spyScreen.blit(temp, (0, 0))
+        temp = pygame.transform.scale(temp, (self.surfContent.get_width(), screenSize[0] * 0.8 * (9/16)))
+        # self.surfContent.blit(temp, (0, 0))
+        spyScreen.blit(temp, (0, 0))
 
     def onTick(self, inputs, dt):
         self.worldSpectated.onTick(inputs, dt)
+        pass
