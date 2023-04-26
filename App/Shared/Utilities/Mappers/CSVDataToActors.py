@@ -84,7 +84,7 @@ def loadWorldFromCSV(world, levelId):
         """As a later improvement, we should turn this as a tool to create a header for each level_data.csv, 
         such as the first line of the file giving the total tWidth and tHeight of the level."""
         chunkData = [[None for _ in range (tChunkWidth)] for _ in range (tHeight)]
-        worldChunkData = [chunkData for _ in range (int(tWidth/tChunkWidth) + (tWidth % tChunkWidth > 0))] # a list of empty lists representing each chunks
+        worldChunkData = [[[None for _ in range (tChunkWidth)] for _ in range (tHeight)] for _ in range (int(tWidth/tChunkWidth) + (tWidth % tChunkWidth > 0))] # a list of empty lists representing each chunks
         
         for y, row in enumerate(reader):
             chunkId = -1

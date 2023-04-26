@@ -317,30 +317,30 @@ class WorldActor:
         leftLaserBotCornerWallSurface = pygame.transform.scale(surf, (tileSize*3, tileSize*3))
         
 #Sprites UI
-        surf = pygame.surface.Surface((500, 500))
+        surf = pygame.surface.Surface((1000, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet2, (0, 0),(32, 32, 607, 188))
-        UI3LivesSurface= pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+        surf.blit(sheet2, (0, 0),(32, 32, 605, 188))
+        UI3LivesSurface= pygame.transform.scale(surf, (tileSize*18, tileSize*9))
 
-        surf = pygame.surface.Surface((500, 500))
+        surf = pygame.surface.Surface((1000, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet2, (0, 0),(639, 32, 607, 188))
-        UI2LivesSurface= pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+        surf.blit(sheet2, (0, 0),(639, 32, 605, 188))
+        UI2LivesSurface= pygame.transform.scale(surf, (tileSize*18, tileSize*9))
 
-        surf = pygame.surface.Surface((500, 500))
+        surf = pygame.surface.Surface((1000, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet2, (0, 0),(32, 220, 607, 188))
-        UI1LivesSurface= pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+        surf.blit(sheet2, (0, 0),(32, 220, 605, 188))
+        UI1LivesSurface= pygame.transform.scale(surf, (tileSize*18, tileSize*9))
 
-        surf = pygame.surface.Surface((500, 500))
+        surf = pygame.surface.Surface((1000, 500))
         surf.set_colorkey((0,0,0))
-        surf.blit(sheet2, (0, 0),(639, 220, 607, 188))
-        UI0LivesSurface= pygame.transform.scale(surf, (tileSize*3, tileSize*3))
+        surf.blit(sheet2, (0, 0),(639, 220, 605, 188))
+        UI0LivesSurface= pygame.transform.scale(surf, (tileSize*18, tileSize*9))
 
-        self.UILivesList = {"K1":UI3LivesSurface,
-                                 "K2":UI2LivesSurface,
-                                 "K3":UI1LivesSurface,
-                                 "K4":UI0LivesSurface,}
+        self.UILivesList = {0:UI0LivesSurface,
+                            1:UI1LivesSurface,
+                            2:UI2LivesSurface,
+                            3:UI3LivesSurface,}
 
         img = pygame.image.load(os.path.join(os.path.dirname(__file__),"../../Assets/Graphics/Backgrounds/japanese_night_city.png"))
         backgroundSurface = pygame.transform.scale(img, (self.winWidth*img.get_height()/self.winHeight,self.winHeight))
@@ -412,7 +412,13 @@ class WorldActor:
             for obstacle in chunk.obstaclesList:
                 obstacle.onTick(dt)
                 for bullet in self.bulletListAlly:
-                    if obstacle.hitBox.colliderect(bullet.hitBox):
+                    if bullet.hitBox.pygame.sprite.collide_rect(self.agentCharacter.hitBox):
+                        self.agentCharacter.lose_life()
+                        try :
+                                self.bulletListAlly.remove(bullet)
+                        except :
+                            pass
+                    elif obstacle.hitBox.colliderect(bullet.hitBox):
                         try :
                             self.bulletListAlly.remove(bullet)
                         except :
@@ -425,13 +431,15 @@ class WorldActor:
                             pass
                 #systeme collision dodo/obstacle
                 if  obstacle.hitBox.colliderect(self.agentCharacter.hitBox) == True:
-                    if self.agentCharacter.lose_life() == 0:
-                        self.onTick = self.gameOver
+                    self.agentCharacter.lose_life()
                 
             for loot in self.lootList:
                 loot.onTick(dt)
                 if loot.hitBox.colliderect(self.agentCharacter.hitBox):
                     loot.onHit(self.lootList)
+            if self.agentCharacter.remaining_life == 0:
+                self.onTick = self.gameOver
+    
 
             
 
@@ -447,6 +455,8 @@ class WorldActor:
                 element.draw(window)
         for loot in self.lootList:
             loot.draw(window)
+        print(self.agentCharacter.remaining_life)
+        window.blit(self.UILivesList[self.agentCharacter.remaining_life] , (15, 15))
         self.agentCharacter.weapon.draw(window, (self.agentCharacter.sprite[1][0]+self.tileSize*2, self.agentCharacter.sprite[1][1]+0.39*self.tileSize))
 
 
@@ -471,4 +481,3 @@ class WorldActor:
 
 if __name__ == "__main__":
     world = WorldActor()
-    world.loadLevelFromCSV(1)
