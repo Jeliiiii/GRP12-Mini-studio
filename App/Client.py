@@ -1,11 +1,8 @@
 import pygame
 from Shared.Scenes.Menus.MainMenuScene import MainMenuScene
 from Shared.Scenes.Menus.MenuScene import MenuScene
-from Shared.Systems.LifeSystem import LifeSystem
+#from Shared.Systems.LifeSystem import LifeSystem
 
-# import os
-# print("!!!!!!\n!!!!!!\nWORKING DIRECTORY MANUALLY CHANGED\n!!!!!!\n!!!!!!")
-# os.chdir("C:\\Users\\BAPTISTE\\Desktop\\GRP12-Mini-studio")
 
 class Client:
 
@@ -14,7 +11,7 @@ class Client:
         self.server = None
         self.clientSocket = None
         self.initWindow()
-        self.life_system = LifeSystem()
+        #self.life_system = LifeSystem()
 
     def initWindow(self):
         pygame.init()

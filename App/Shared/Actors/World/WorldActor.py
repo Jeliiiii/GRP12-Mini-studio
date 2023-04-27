@@ -10,8 +10,8 @@ from random import randint
 
 class WorldActor:
 
-    def __init__(self, levelId):
-        (self.winWidth, self.winHeight) = pygame.display.get_window_size()
+    def __init__(self, levelId, winSize =  pygame.display.get_window_size()):
+        (self.winWidth, self.winHeight) = winSize
         self.nextScene = None
         self.scrollSpeedX = -20
         self.scrollXDistance = 0
@@ -23,14 +23,15 @@ class WorldActor:
                              "BACK":[]}
         self.loadImages()
         self.background = (self.spritesSurfaces["BACKGROUND"], self.spritesSurfaces["BACKGROUND"].get_rect())
+        self.background2 = (self.spritesSurfaces["BACKGROUND"], self.spritesSurfaces["BACKGROUND"].get_rect())
+        self.background2[1].x = self.background2[1].width
         self.arsenal = {"CLASSIC": WeaponActor(ClassicBullet, self.spritesSurfaces["PURPLE_BULLET"], 0.5, self.firePurpleSurface_1),
                         "TANK": WeaponActor(TankBullet, self.spritesSurfaces["CHICKEN_BULLET"], 6, self.firePurpleSurface_1),
                         "QUADRA": QuadraWeaponActor(ClassicBullet, self.spritesSurfaces["RED_BULLET"], 2, self.fireRedSurface_1),}
-        self.agentCharacter = AgentCharacterActor(200, 300,self.agentSprites, self.arsenal["CLASSIC"], speed=self.tileSize)
+        #self.agentCharacter = AgentCharacterActor(200, 300,self.agentSprites, self.arsenal["CLASSIC"], speed=self.tileSize)
         self.chunksList = {"LOADED":[],"ACTIVE":[],"ARCHIVED":[]}
         self.chunksList["LOADED"] = mapWorldCSVData(self, worldCSVData)
-        self.chunksList["ACTIVE"] = self.chunksList["LOADED"][:2]
-        self.chunksList["LOADED"] = self.chunksList["LOADED"][2:]
+        self.scrollLoadedChunksToActive(2)
         self.bulletListAlly = []
         self.bulletListEnnemy = []
         self.lootList = []
@@ -38,7 +39,123 @@ class WorldActor:
         self.gameOverSprite = None
         
 
+
+
+    def scrollLoadedChunksToActive(self, amountToScroll):
+        self.chunksList["ACTIVE"] = self.chunksList["ACTIVE"][amountToScroll:] + self.chunksList["LOADED"][:amountToScroll]
+        self.chunksList["LOADED"] = self.chunksList["LOADED"][amountToScroll:]
+
+
+    def onTick(self, inputs, dt):
+        self.background[1].x += self.scrollSpeedX * dt * 4 
+        self.background2[1].x += self.scrollSpeedX * dt * 4
+        if self.background[1].x <= -self.background[1].width:
+            self.background[1].x = self.background[1].width
+        elif self.background2[1].x <= -self.background[1].width:
+            self.background2[1].x = self.background[1].width
+        self.scrollXDistance += self.scrollSpeedX * dt * 10  
+        if self.scrollXDistance <= -self.tChunkWidth*self.tileSize:
+            self.scrollXDistance += self.tChunkWidth*self.tileSize
+            self.scrollLoadedChunksToActive(1)
+
+        for bullet in self.bulletListAlly:
+            bullet.onTick(dt)
+            #collision system - to split in CollisionSystem.testList(bulletList, ennemiesList)
+            for chunk in self.chunksList["ACTIVE"]:
+                collidedEnnemyId = bullet.hitBox.collidelist([ennemy.hitBox for ennemy in chunk.ennemiesList])
+                if collidedEnnemyId != -1:
+                    chunk.ennemiesList[collidedEnnemyId].shot(bullet.damage)
+                    if chunk.ennemiesList[collidedEnnemyId].health <= 0:
+                        if 0 < chunk.ennemiesList[collidedEnnemyId].sprite[1][0] < self.winWidth :
+                            if randint(1,3)==1:
+                                self.lootList.append(ArsenalUpdater(self.agentCharacter, self.arsenal,bullet.sprite[1].x, bullet.sprite[1].y, self.spritesSurfaces["RED_DROP"], velX = self.scrollSpeedX/2, velY = -self.scrollSpeedX))
+                        chunk.ennemiesList.remove(chunk.ennemiesList[collidedEnnemyId])
+                        bullet.onHit(self.bulletListAlly)
+                        break
+                
+            
+        for bullet in self.bulletListEnnemy:
+            bullet.onTick(dt)
+            if  bullet.hitBox.colliderect(self.agentCharacter.hitBox):
+                self.agentCharacter.lose_life()
+                bullet.onHit(self.bulletListEnnemy)
+
+        
+
+        for chunk in self.chunksList["ACTIVE"]:
+            for ennemy in chunk.ennemiesList:
+                bulletList = ennemy.onTick(dt)
+                self.bulletListEnnemy += bulletList
+                if ennemy.hitBox.x <=0 :
+                    chunk.ennemiesList.remove(ennemy)
+            bulletList = self.agentCharacter.onTick(inputs, dt)
+            self.bulletListAlly += bulletList
+
+            for obstacle in chunk.obstaclesList:
+                obstacle.onTick(dt)
+                for bullet in self.bulletListAlly:
+                    if obstacle.hitBox.colliderect(bullet.hitBox):
+                        try :
+                            self.bulletListAlly.remove(bullet)
+                        except :
+                            pass
+                for bullet in self.bulletListEnnemy:
+                    if obstacle.hitBox.colliderect(bullet.hitBox):
+                        try :
+                            self.bulletListEnnemy.remove(bullet)
+                        except :
+                            pass
+                #systeme collision dodo/obstacle
+                if  obstacle.hitBox.colliderect(self.agentCharacter.hitBox) == True:
+                    self.agentCharacter.lose_life()
+                
+            for loot in self.lootList:
+                loot.onTick(dt)
+                if loot.hitBox.colliderect(self.agentCharacter.hitBox):
+                    loot.onHit(self.lootList)
+            if self.agentCharacter.remaining_life == 0:
+                self.onTick = self.gameOver
+    
+
+            
+
+    def draw(self, window):
+        window.blit(self.background[0], self.background[1])
+        window.blit(self.background2[0], self.background2[1])
+        self.agentCharacter.draw(window)
+        for bullet in self.bulletListAlly:
+            bullet.draw(window)
+        for bullet in self.bulletListEnnemy:
+            bullet.draw(window)
+        for chunk in self.chunksList["ACTIVE"]:
+            for element in chunk.ennemiesList + chunk.obstaclesList:
+                element.draw(window)
+        for loot in self.lootList:
+            loot.draw(window)
+        window.blit(self.UILivesList[3] , (15, 15))
+        self.agentCharacter.weapon.draw(window, (self.agentCharacter.sprite[1][0]+self.tileSize*2, self.agentCharacter.sprite[1][1]+0.39*self.tileSize))
+
+
+
+
+    def gameOver(self, input, dt):
+        self.gameOverTimer -= 1
+        if 30<= self.gameOverTimer < 40:
+            self.gameOverSprite = (self.explosionList["K1"])
+        elif 20<= self.gameOverTimer < 30:
+            self.gameOverSprite = (self.explosionList["K2"])
+        elif 10<= self.gameOverTimer < 20:
+            self.gameOverSprite = (self.explosionList["K3"])
+        elif 0<= self.gameOverTimer < 10:
+            self.gameOverSprite = (self.explosionList["K4"])
+        else:
+            from ...Scenes.Menus.GameOverScene import GameOverScene
+            self.nextScene = GameOverScene()
+        self.agentCharacter.sprite[0] = self.gameOverSprite
+            
+
     def loadImages(self):
+        """Should be moved to global and outside WorldActor - Images could be loaded during client init"""
         tileSize = self.tileSize
 
     
@@ -369,108 +486,6 @@ class WorldActor:
                                 "RED_DROP":redDrop,}
 
 
-    def onTick(self, inputs, dt):
-        self.background[1].x += self.scrollSpeedX * dt * 4 
-        self.scrollXDistance += self.scrollSpeedX * dt * 10  
-        if self.scrollXDistance <= -self.tChunkWidth*self.tileSize:
-            self.scrollXDistance += self.tChunkWidth*self.tileSize
-            self.chunksList["ACTIVE"] = self.chunksList["ACTIVE"][1:] + self.chunksList["LOADED"][:1]
-            self.chunksList["LOADED"] = self.chunksList["LOADED"][1:]
-
-        for bullet in self.bulletListAlly:
-            bullet.onTick(dt)
-            #collision system - to split in CollisionSystem.testList(bulletList, ennemiesList)
-            for chunk in self.chunksList["ACTIVE"]:
-                collidedEnnemyId = bullet.hitBox.collidelist([ennemy.hitBox for ennemy in chunk.ennemiesList])
-                if collidedEnnemyId != -1:
-                    chunk.ennemiesList[collidedEnnemyId].shot(bullet.damage)
-                    if chunk.ennemiesList[collidedEnnemyId].health <= 0:
-                        if 0 < chunk.ennemiesList[collidedEnnemyId].sprite[1][0] < self.winWidth :
-                            if randint(1,3)==1:
-                                self.lootList.append(ArsenalUpdater(self.agentCharacter, self.arsenal,bullet.sprite[1].x, bullet.sprite[1].y, self.spritesSurfaces["RED_DROP"], self.scrollSpeedX))
-                        chunk.ennemiesList.remove(chunk.ennemiesList[collidedEnnemyId])
-                        bullet.onHit(self.bulletListAlly)
-                        break
-                
-            
-        for bullet in self.bulletListEnnemy:
-            bullet.onTick(dt)
-            if  bullet.hitBox.colliderect(self.agentCharacter.hitBox):
-                self.agentCharacter.lose_life()
-                bullet.onHit(self.bulletListEnnemy)
-
-        
-
-        for chunk in self.chunksList["ACTIVE"]:
-            for ennemy in chunk.ennemiesList:
-                bulletList = ennemy.onTick(dt)
-                self.bulletListEnnemy += bulletList
-                if ennemy.hitBox.x <=0 :
-                    chunk.ennemiesList.remove(ennemy)
-            bulletList = self.agentCharacter.onTick(inputs, dt)
-            self.bulletListAlly += bulletList
-
-            for obstacle in chunk.obstaclesList:
-                obstacle.onTick(dt)
-                for bullet in self.bulletListAlly:
-                    if obstacle.hitBox.colliderect(bullet.hitBox):
-                        try :
-                            self.bulletListAlly.remove(bullet)
-                        except :
-                            pass
-                for bullet in self.bulletListEnnemy:
-                    if obstacle.hitBox.colliderect(bullet.hitBox):
-                        try :
-                            self.bulletListEnnemy.remove(bullet)
-                        except :
-                            pass
-                #systeme collision dodo/obstacle
-                if  obstacle.hitBox.colliderect(self.agentCharacter.hitBox) == True:
-                    self.agentCharacter.lose_life()
-                
-            for loot in self.lootList:
-                loot.onTick(dt)
-                if loot.hitBox.colliderect(self.agentCharacter.hitBox):
-                    loot.onHit(self.lootList)
-            if self.agentCharacter.remaining_life == 0:
-                self.onTick = self.gameOver
-    
-
-            
-
-    def draw(self, window):
-        window.blit(self.background[0], self.background[1])
-        self.agentCharacter.draw(window)
-        for bullet in self.bulletListAlly:
-            bullet.draw(window)
-        for bullet in self.bulletListEnnemy:
-            bullet.draw(window)
-        for chunk in self.chunksList["ACTIVE"]:
-            for element in chunk.ennemiesList + chunk.obstaclesList:
-                element.draw(window)
-        for loot in self.lootList:
-            loot.draw(window)
-        window.blit(self.UILivesList[self.agentCharacter.remaining_life] , (15, 15))
-        self.agentCharacter.weapon.draw(window, (self.agentCharacter.sprite[1][0]+self.tileSize*2, self.agentCharacter.sprite[1][1]+0.39*self.tileSize))
-
-
-
-
-    def gameOver(self, input, dt):
-        self.gameOverTimer -= 1
-        if 30<= self.gameOverTimer < 40:
-            self.gameOverSprite = (self.explosionList["K1"])
-        elif 20<= self.gameOverTimer < 30:
-            self.gameOverSprite = (self.explosionList["K2"])
-        elif 10<= self.gameOverTimer < 20:
-            self.gameOverSprite = (self.explosionList["K3"])
-        elif 0<= self.gameOverTimer < 10:
-            self.gameOverSprite = (self.explosionList["K4"])
-        else:
-            from ...Scenes.Menus.GameOverScene import GameOverScene
-            self.nextScene = GameOverScene()
-        self.agentCharacter.sprite[0] = self.gameOverSprite
-            
 
 
 if __name__ == "__main__":

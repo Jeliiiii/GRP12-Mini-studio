@@ -1,7 +1,7 @@
 from Shared.Actors.Characters.AgentCharacterActor import AgentCharacterActor
 from Shared.Actors.Characters.Ennemies.EnnemyActor import EnnemyActor
-from .Scene import Scene
-from ..Actors.World.WorldActor import WorldActor
+from .MPScene import MPScene
+from ...Actors.World.WorldActor import WorldActor
 from Shared.Actors.operatorWindows.PseudoWindow import * # impoirte pseudoWindow et setup
 from Shared.Actors.operatorWindows.Carthage import Carthage
 from Shared.Actors.operatorWindows.Simon import Simon
@@ -12,11 +12,12 @@ from Shared.Actors.operatorWindows.ToolWindow import *
 screenSize = pygame.display.get_desktop_sizes()
 screenSize = (screenSize[0][0], screenSize[0][1])
 
-class GameOperatorPovScene(Scene):
+class GameOperatorPovMPScene(MPScene):
     
     def __init__(self):
         # random.seed(time.time())
         super().__init__()
+        self.role = 1
         self.timer = random.randint(50, 70)
 
 
@@ -33,12 +34,12 @@ class GameOperatorPovScene(Scene):
 
 
     def updateScene(self, inputs, dt):
-        
+        super().updateScene(inputs, dt)
+        if not self.data:
+            self.data = {"MOUSE_POS":[0,0], "MOUSE_BUTTONS":[], "ACTIVE_KEYS":[]}
         windowsUpdated = []
 
         self.timer -= 1
-
-        print(self.timer)
 
         if self.timer == 0:
             self.timer = randint(50, 70)
@@ -50,7 +51,7 @@ class GameOperatorPovScene(Scene):
                 Simon((randint(0, screenSize[0] - simonGrid * 50), randint(0, screenSize[1] - simonGrid * 50)), simonGrid, simonDiff)
 
         # Updates windows with priority of 0. Hard coded specifically for the SpyingScreen and ToolBelt
-        self.SpyingScreen.onTick(inputs, dt)
+        self.SpyingScreen.onTick(self.data, dt)
         self.ToolBelt.onTick(inputs, dt)
 
         # Calls onTick() on every windows exactly once (despite changing priorities around)
@@ -96,5 +97,5 @@ class GameOperatorPovScene(Scene):
 
 
     def switchMainMenuScene(self):
-        from .Menus.MainMenuScene import MainMenuScene
+        from ..Menus.MainMenuScene import MainMenuScene
         self.nextScene = MainMenuScene()

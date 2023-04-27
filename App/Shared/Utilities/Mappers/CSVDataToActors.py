@@ -58,7 +58,7 @@ def mapChunkCSVData(world, chunkCSVData, offsetChunk):
                 elif tile == 17 : #Enemy shooting under
                     ennemiesList.append(EnnemyActor(x*tileSize+(offsetChunk*world.tChunkWidth*tileSize), y*tileSize, world.idleEnnemySurface_1, WeaponActor(TankBullet, world.spritesSurfaces["IDLE_BULLET"], 0.5, world.firePurpleSurface_1), velX=world.scrollSpeedX, velY=world.scrollSpeedX, bulletVelX=world.scrollSpeedX, bulletVelY= 50)) 
                 elif tile == 18  : # player spawn, unused actually
-                    pass 
+                    world.agentCharacter = AgentCharacterActor(x*tileSize, y*tileSize,world.agentSprites, world.arsenal["CLASSIC"], speed=world.tileSize) 
                 elif tile == 19 : # Operator Wall 
                     pass 
                 elif tile == 20 : # level end

@@ -10,7 +10,7 @@ class SpyWindow(PseudoWindow):
     def __init__(self, coord=(screenSize[0] * 0.1, screenSize[1] * 0.07), dim=(screenSize[0] * 0.8, screenSize[0] * 0.8 * (9/24)), color=(128, 128, 128, 1), closeCond = False):
         super().__init__(coord, dim, color, closeCond)
         self.priority = 0
-        self.worldSpectated = WorldActor(1)
+        self.worldSpectated = WorldActor(0, winSize=self.dim)
         PseudoWindow.loadedPseudoWindows.remove(self)
 
     def draw(self):
@@ -23,4 +23,3 @@ class SpyWindow(PseudoWindow):
 
     def onTick(self, inputs, dt):
         self.worldSpectated.onTick(inputs, dt)
-        pass
