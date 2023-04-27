@@ -11,6 +11,7 @@ class GameAgentPovMPScene(MPScene):
         super().__init__()
         self.world = WorldActor(0)
         self.role = 0
+        print("AgentPOV MP Loaded")
 
         
 

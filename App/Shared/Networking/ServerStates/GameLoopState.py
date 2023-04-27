@@ -17,5 +17,5 @@ class GameLoopState:
 
 
     def stateUpdate(self, event):
-        if(event[0] == 0):
+        if(event[0] == 0 and event[0] != -1):
             self.operatorData = event[1]

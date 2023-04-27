@@ -63,7 +63,7 @@ class Server(Socket):
             data = self.recv(clientSocket)
             if data:
                 if data != "DISCONNECT":
-                    print("[SERVER] - Event Received : ", data)
+                    #print("[SERVER] - Event Received : ", data)
                     self.eventsQueue.put(data)
                     data = None
                 else:

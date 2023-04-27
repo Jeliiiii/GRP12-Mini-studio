@@ -1,3 +1,5 @@
+import time
+
 class InitLevelState:
 
     def __init__(self, clientsThreads = [], data=(0,(0,),(1,))):
@@ -13,7 +15,9 @@ class InitLevelState:
 
 
     def stateUpdate(self, event):
+        print(len(self.clientsThreads))
         if len(self.clientsThreads) == 2:
             from .GameLoopState import GameLoopState
             self.isGameRunning = 1
             self.nextGameState = GameLoopState(clientsThreads = self.clientsThreads, data = (self.globalData, self.agentData, self.operatorData))
+            time.sleep(2)
