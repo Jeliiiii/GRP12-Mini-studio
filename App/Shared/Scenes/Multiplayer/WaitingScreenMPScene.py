@@ -10,7 +10,7 @@ class WaitingScreenMPScene(MPScene):
         
     def updateScene(self, inputs, dt):
         super().updateScene(inputs, dt)
-        if len(self.data) == 2:
+        if self.data[0][0] == 1:
             globalData = self.data[0]
             roleData = self.data[1]
 

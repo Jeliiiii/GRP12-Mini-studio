@@ -8,7 +8,7 @@ class GameLoopState:
         self.clientsThreads = clientsThreads
         self.isGameRunning = data[0]
 
-        self.globalData = (self.isGameRunning) 
+        self.globalData = (self.isGameRunning,) 
         #first item is the role id : 0=agent, 1=operator
         self.agentData = data[1]
         self.operatorData = data[2]

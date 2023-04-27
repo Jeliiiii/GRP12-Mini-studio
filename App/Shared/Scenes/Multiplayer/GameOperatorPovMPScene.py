@@ -36,7 +36,7 @@ class GameOperatorPovMPScene(MPScene):
     def updateScene(self, inputs, dt):
         super().updateScene(inputs, dt)
         if not self.data:
-            self.data = {"MOUSE_POS":[0,0], "MOUSE_BUTTONS":[], "ACTIVE_KEYS":[]}
+            self.data = (-1,{"MOUSE_POS":[0,0], "MOUSE_BUTTONS":[], "ACTIVE_KEYS":[]})
         windowsUpdated = []
 
         self.timer -= 1
@@ -51,7 +51,7 @@ class GameOperatorPovMPScene(MPScene):
                 Simon((randint(0, screenSize[0] - simonGrid * 50), randint(0, screenSize[1] - simonGrid * 50)), simonGrid, simonDiff)
 
         # Updates windows with priority of 0. Hard coded specifically for the SpyingScreen and ToolBelt
-        self.SpyingScreen.onTick(self.data, dt)
+        self.SpyingScreen.onTick(self.data[1], dt)
         self.ToolBelt.onTick(inputs, dt)
 
         # Calls onTick() on every windows exactly once (despite changing priorities around)

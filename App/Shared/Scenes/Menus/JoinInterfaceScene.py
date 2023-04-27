@@ -4,6 +4,7 @@ from Shared.Actors.UI.ButtonActor import ButtonActor
 from .MenuScene import MenuScene
 import pygame
 from Shared.Actors.UI.FormsActors.TypingFieldActor import TypingFieldActor
+from ..Multiplayer.WaitingScreenMPScene import WaitingScreenMPScene
 
 class JoinInterfaceScene(MenuScene):
     
@@ -11,10 +12,8 @@ class JoinInterfaceScene(MenuScene):
         super().__init__("HostInterface")
 
         (windowWidth, windowHeight) = pygame.display.get_window_size()
-        HOST = socket.gethostname()
-        PORT = 5000
 
-        self.menu.buttonsList=[ButtonActor("Join", lambda: ClientSocket().joinServer(socket.gethostname(), 65534)),
+        self.menu.buttonsList=[ButtonActor("Join", self.joinServer),
                                ButtonActor("Back", self.switchMainMenuScene)
                                 ]
         
@@ -41,6 +40,11 @@ class JoinInterfaceScene(MenuScene):
         window.fill( "#111126" )
         for actor in self.HUD:
             actor.draw(window)
+
+    def joinServer(self):
+        self.clientSocket = ClientSocket()
+        self.clientSocket.joinServer("10.189.34.117", self.HUD[1].value)
+        self.sceneSwitcher(WaitingScreenMPScene(clientSocket = self.clientSocket))
 
 
     def switchMainMenuScene(self):
