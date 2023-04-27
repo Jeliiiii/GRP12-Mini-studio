@@ -6,11 +6,10 @@ class WaitingScreenMPScene(MPScene):
     
     def __init__(self, clientSocket=None):
         super().__init__(clientSocket)
-        self.role = -1
         
     def updateScene(self, inputs, dt):
         super().updateScene(inputs, dt)
-        if self.data[0][0] == 1:
+        if len(self.data) == 2:
             globalData = self.data[0]
             roleData = self.data[1]
 
